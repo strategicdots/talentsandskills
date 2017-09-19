@@ -26,13 +26,15 @@
                         </div>
                         <div class="collapse navbar-collapse">
                             <ul class="nav navbar-nav navbar-right">
-                                <li> <a href=""> find jobs </a> </li>
-                                <li> <a href="">candidates </a> </li>
-                                <li> <a href=""> interns </a> </li>
-                                <li> <a href=""> employers </a> </li>
-                                <li> <a href=""> career resources </a> </li>
-                                <li> <a href="login"> log in </a> </li>
-                                <li> <a href="register" class="last"> sign up </a> </li>
+                                <li> <a href="" <?php if($thisPage == "dashboard") {
+    echo currentPage(); } ?>> dashboard </a> </li>
+                                <li> <a href="" <?php if($thisPage == "my-profile") {
+    echo currentPage(); } ?>>update profile </a> </li>
+                                <li> <a href="" <?php if($thisPage == "subscriptions") {
+    echo currentPage(); } ?>> job alerts </a> </li>
+                                <li> <a href="" <?php if($thisPage == "settings") {
+    echo currentPage(); } ?>> account settings </a> </li>
+                                <li> <a href="logout.php" class="last"> logout </a> </li>
                             </ul>
                         </div>
                     </div>

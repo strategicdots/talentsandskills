@@ -15,29 +15,7 @@ function output_message($message="") {
     }
 }
 
-function seperator($layer = NULL) {
-    
-    $output = "";
-    switch($layer) {
-        case "1st" :
-            continue;
-        case "2nd" :
-            $output .= "../";
-            break;
-        case "3rd" :
-            $output .= "../../";
-            break;
-        case "4th" :
-            $output .= "../../../";
-            break;
-        case "5th" :
-            $output .= "../../../../";
-            break;
-        case "6th" :
-            $output .= "../../../../../";
-            break;
-    }
-
+function currentPage() {
+    $output = "class=\"current\""; 
     return $output;
-
 }
