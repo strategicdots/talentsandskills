@@ -2,14 +2,14 @@
 
 class FormValidation {
 
-    public function has_presence($value) {
+    public function hasPresence($value) {
         $trimmed_value = trim($value);
         if (isset($trimmed_value) && ($trimmed_value !== "")) {
             return true;
         }
     }
 
-    public function is_digits($value) {
+    public function isDigits($value) {
         $trimmed_value = trim($value);
         if(ctype_digit($trimmed_value)) { 
             return true;
@@ -18,23 +18,23 @@ class FormValidation {
         }
     }
 
-    public function has_max_length($value, $max) {
+    public function hasMaxLength($value, $max) {
         if(strlen($value) <= (int)$max) {
             return true;
         }
     }
 
-    public function has_min_length($value, $min) {
+    public function hasMinLength($value, $min) {
         if(strlen($value) >= (int) $min) {
             return true;
         }
     }
     
-    public function has_format_matching($value, $regex='//') {
+    public function hasFormatMatching($value, $regex='//') {
 	return preg_match($regex, $value);
 }
     
-    public function right_email_syntax($email) {
+    public function rightEmailSyntax($email) {
         if(preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i", $email)){
             return true; // email syntax is right
         } else { 
@@ -42,7 +42,7 @@ class FormValidation {
         }
     }
 
-    public function is_unique($value, $table, $column) {
+    public function isUnique($value, $table, $column) {
         global $database;
         $escaped_value = $database->escape_value($value);
         $sql = "SELECT COUNT(*) as count FROM {$table} WHERE {$column} = '{$escaped_value}'";
@@ -51,7 +51,7 @@ class FormValidation {
             return true;*/
     }
 
-    public function form_errors($errors = []) {
+    public function formErrors($errors = []) {
         $output = "";
         if (!empty($errors)) {
             $output .= "<div class=\"error m-light-bottom-breather m-light-top-breather \">";
@@ -66,16 +66,16 @@ class FormValidation {
         return $output;
     }
 
-    public function clean_htmloutput($value) {
+    public function cleanHTMLOutput($value) {
         $clean_value = htmlentities($value);
         return $clean_value;
     }
 
-    public function clean_url($value) {
+    public function cleanUrl($value) {
         $clean_value = urlencode($value);
         return $clean_value;
     }
 }
 
-$form_validation = new FormValidation();
+$validation = new FormValidation();
 ?>

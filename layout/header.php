@@ -31,8 +31,8 @@
                                 <li> <a href=""> interns </a> </li>
                                 <li> <a href=""> employers </a> </li>
                                 <li> <a href=""> career resources </a> </li>
-                                <li> <a href="login"> log in </a> </li>
-                                <li> <a href="register" class="last"> sign up </a> </li>
+                                <li> <a href="<?php echo $seperator; ?>login.php"> log in </a> </li>
+                                <li> <a href="<?php echo $seperator; ?>register" class="last"> sign up </a> </li>
                             </ul>
                         </div>
                     </div>

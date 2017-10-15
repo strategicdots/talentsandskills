@@ -57,14 +57,6 @@ class MySQLDatabase {
         return mysqli_fetch_row($resultSet);
     }
 
-    public static function countAll() {
-        global $database;
-        $sql = "SELECT COUNT(*) FROM ".self::$table_name;
-        $resultSet = $database->query($sql);
-        $row = $database->fetchArray($resultSet);
-        return array_shift($row);
-    }
-
     public function numRows($resultSet) {
         return mysqli_num_rows($resultSet);
     }

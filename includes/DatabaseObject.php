@@ -1,5 +1,4 @@
-<?php
-require_once('initialize.php');
+<?php require_once('initialize.php');
 
 class DatabaseObject {
 
@@ -8,6 +7,20 @@ class DatabaseObject {
     // Common Database Objects
     public static function findAll() {
         return static::findBySQLQuery("SELECT * FROM " . static::$table_name);
+    }
+
+    public function delete() {
+        global $database;
+
+        $sql = "DELETE FROM " .$this->table_name . " ";
+        $sql .= "WHERE id=" . $database->escape_value($this->id);
+        $sql .= " LIMIT 1";
+        $database->query($sql);
+        if(($database->affected_rows() == 1)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static function findAllUnderParent($parent, $child) {
@@ -22,6 +35,7 @@ class DatabaseObject {
         global $database;
 
         $resultSet = $database->query($sql);
+
         $objectArray = [];
         while($row =$database->fetchArray($resultSet)) {
             $objectArray[] = static::instantiate($row);
@@ -36,12 +50,16 @@ class DatabaseObject {
     public static function instantiate($record) {
         $object = new static;
 
-        foreach($record as $attribute=>$value) {
-            if($object->hasAttribute($attribute)) {
-                $object->$attribute = $value;
+        if($object) { 
+            foreach($record as $attribute=>$value) {
+                if($object->hasAttribute($attribute)) {
+                    $object->$attribute = $value;
+                }
             }
+            return $object;
+        } else {
+            return null;
         }
-        return $object;
     }
 
     private function hasAttribute ($attribute) {
@@ -72,6 +90,13 @@ class DatabaseObject {
         return $object_array;
 
     }
-}
-?>
+    
+    public static function countAll() {
+        global $database;
+        $sql = "SELECT COUNT(*) FROM ".static::$table_name;
+        $resultSet = $database->query($sql);
+        $row = $database->fetchArray($resultSet);
+        return array_shift($row);
+    }
 
+}

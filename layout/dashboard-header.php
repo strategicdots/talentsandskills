@@ -26,10 +26,12 @@
                         </div>
                         <div class="collapse navbar-collapse">
                             <ul class="nav navbar-nav navbar-right">
-                                <li> <a href="" <?php if($thisPage == "dashboard") {
+                                <li> <a href="../" <?php if($thisPage == "home") {
+    echo currentPage(); } ?>> home </a> </li>
+                                <li> <a href="dashboard.php" <?php if($thisPage == "dashboard") {
     echo currentPage(); } ?>> dashboard </a> </li>
-                                <li> <a href="" <?php if($thisPage == "my-profile") {
-    echo currentPage(); } ?>>update profile </a> </li>
+                                <li> <a href="my-profile.php" <?php if($thisPage == "my-profile") {
+    echo currentPage(); } ?>> my profile </a> </li>
                                 <li> <a href="" <?php if($thisPage == "subscriptions") {
     echo currentPage(); } ?>> job alerts </a> </li>
                                 <li> <a href="" <?php if($thisPage == "settings") {

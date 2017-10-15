@@ -66,7 +66,8 @@
     </div>
 </footer> 
 
-<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo $seperator; ?>js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $seperator; ?>js/bootstrap.min.js"></script>
+<?php if($thisPage == "my-profile") { echo "<script type=\"text/javascript\" src=\"{$seperator}js/profile.js\"></script> <br>" ; } ?>
 </body>
 </html>

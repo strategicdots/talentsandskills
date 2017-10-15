@@ -31,15 +31,14 @@ include_once("{$seperator}includes/initialize.php"); ?>
 
                                 <!-- progress-bar -->
                                 <p class="no-margin small-font-size secheadfont capitalize">profile strength: 65%</p>
-                                <div class="progress-bar">
-                                    <progress max="100" value="65" class="">
-                                        <!-- Browsers that support HTML5 progress element will ignore the html inside `progress` element. Whereas older browsers will ignore the `progress` element and instead render the html inside it. -->
-                                        <div class="progress-bar">
-                                            <span style="width: 65%; height: inherit;"></span>
-                                        </div>
-                                    </progress>
+                                <progress max="100" value="65" class="no-margin">
+                                    <!-- Browsers that support HTML5 progress element will ignore the html inside `progress` element. Whereas older browsers will ignore the `progress` element and instead render the html inside it. -->
+                                    <div class="progress-bar">
+                                        <span style="width: 65%; height: inherit;"></span>
+                                    </div>
+                                </progress>
 
-                                </div> <!-- end .progress-bar -->
+                                <!-- end .progress-bar -->
 
                             </div>
                         </div>
@@ -90,7 +89,8 @@ include_once("{$seperator}includes/initialize.php"); ?>
 
                 </div> <!-- end .mainbar -->
 
-                <div class="sidebar col-sm-4">
+                <!-- sidebar -->
+                <div class="sidebar col-sm-4"> 
 
                     <!-- shortlisted jobs -->
                     <div class="light-bx-shadow m-mid-bottom-breather">
@@ -133,41 +133,13 @@ include_once("{$seperator}includes/initialize.php"); ?>
                         </div>
                     </div> 
 
-
-                    <!-- profile -->
-                    <!--<div class="profile">
-<ul class="">
-<li class="active"><a href="">My Profile</a></li>
-<li><a>My Resume</a>
-<div id="">
-<ul>
-<li><a href="#education">Education</a></li>
-<li><a href="#experience">Experience</a></li>
-<li><a href="#portfolio">Portfolio</a></li>
-<li><a href="#skills">Skills</a></li>
-<li><a href="#awards">Honors Award</a></li>
-</ul>
-</div>
-</li>
-<li><a href="">Shortlisted jobs</a></li>
-<li><a href=""> Applied jobs</a></li>
-<li><a href=""> Job Alerts</a></li>
-<li><a href="">CV &amp; Cover Letter</a></li>
-<li><a href="">Change Password</a></li>
-<li><a href="">Logout</a></li>
-</ul>
-</div>
---><!-- end .profile -->
-
-                </div> <!-- end .sidebar -->
+                </div>  <!-- end .sidebar -->
             </div>
         </div> 
 
-        <!-- .sidebar -->
-
     </div>
 </div>
-<!-- end .topbar -->
+<!-- end main content -->
 
 <!-- footer -->
 <?php include_once("{$seperator}layout/footer.php"); ?>
