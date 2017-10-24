@@ -1,7 +1,5 @@
 <?php require_once('initialize.php');
 
 interface paginationQuery {
-    protected paginationSQL() {
-
-    }
+    public function paginationSQL();
 }

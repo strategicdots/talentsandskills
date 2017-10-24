@@ -25,6 +25,7 @@ require_once("validations.php");
 // load database-related classes
 require_once("DatabaseObject.php");
 require_once("MySQLDatabase.php");
+require_once("Session.php");
 require_once("users.php");
 require_once("admin.php");
 require_once("jobFields.php");
@@ -43,3 +44,5 @@ require_once("jobDescription.php");
 require_once("jobs.php");
 require_once("interfaces.php");
 require_once("salaryRange.php");
+require_once("fileUpload.php");
+require_once("resumeUpload.php");

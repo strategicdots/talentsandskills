@@ -6,3 +6,5 @@ class State extends DatabaseObject {
     public $name;
 
 }
+
+$states = State::findAll();

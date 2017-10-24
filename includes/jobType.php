@@ -6,3 +6,5 @@ class JobType extends DatabaseObject {
     public $type;
 
 }
+
+$jobType = JobType::findAll();

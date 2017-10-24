@@ -88,7 +88,20 @@ class Jobs extends DatabaseObject {
             $sql .= "='" . $database->escapeValue($value) . "' ";
             $i++;
         }
-        
+
+        $jobObjects = self::findBySQLQuery($sql);
+
+        if($jobObjects) { 
+            return $jobObjects; 
+        } else {
+            return false;
+        }
+
+    }
+
+    public static function featuredJobs() {
+        $sql = "SELECT * FROM " . self::$table_name . " LIMIT 5";
+
         $jobObjects = self::findBySQLQuery($sql);
 
         if($jobObjects) { 

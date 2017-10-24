@@ -23,10 +23,10 @@
                         <div class="footer-bx">
                             <h4 class="hdln">Important Pages</h4>
                             <ul class="no-left-padding">
-                                <li class=""><a href="">About Us</a></li>
+                                <li class=""><a href="<?php echo $seperator; ?>about-us.php">About Us</a></li>
                                 <li class=""><a href="">Recruiting  Services</a></li>
-                                <li class=""><a href="">CV Packages</a></li>
-                                <li class=""><a href="">Terms and Condition</a></li>
+                                <li class=""><a href="<?php echo $seperator; ?>cv-packages.php"">CV Packages</a></li>
+                                <li class=""><a href="">Terms and Conditions</a></li>
                                 <li class=""><a href="">Contact Us</a></li>
                                 <li class=""><a href="">Employer</a></li>
                                 <li class=""><a href="">Candidate</a></li>

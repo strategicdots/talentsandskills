@@ -5,5 +5,6 @@ class JobFields extends DatabaseObject {
     public $id;
     public $name;
 
-  
 }
+
+$jobFields = JobFields::findAll();

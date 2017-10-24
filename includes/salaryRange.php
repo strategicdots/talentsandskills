@@ -6,3 +6,5 @@ class SalaryRange extends DatabaseObject {
     public $salary_range;
 
 }
+
+$salaryRange = SalaryRange::findAll();

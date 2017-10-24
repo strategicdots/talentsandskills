@@ -14,9 +14,11 @@ class User extends DatabaseObject {
     public $dob;
     public $avatar_url;
     public $employer;
+    public $candidate;
     public $personal_statement;
     public $password;
-
+    public $cv_path;
+    
     public function fullName() {
         if(isset($this->firstname) && isset($this->lastname)) {
             return $this->firstname . " " . $this->lastname;
@@ -27,7 +29,7 @@ class User extends DatabaseObject {
 
     public function create() {
         global $database;
-        $hashed_password = password_hash($this->password);
+        $hashed_password = password_encrypt($this->password);
 
         $sql_query = "INSERT INTO " . self::$table_name . " ( ";
         $sql_query .= "firstname, lastname, gender, phone, email, address, location, dob, employer, personal_statement, password ";
@@ -94,7 +96,9 @@ class User extends DatabaseObject {
     public static function findDetailsByEmail($email) {
         global $database;
 
-        $sql = "SELECT * FROM users WHERE email = '{$database->escapeValue($email)}' LIMIT 1";
+        $sql  = "SELECT * FROM " . self::$table_name;
+        $sql .= " WHERE email = '{$database->escapeValue($email)}' ";
+        $sql .= " LIMIT 1";
 
         $result_array = $database->fetchArray($database->query($sql));
 
