@@ -100,19 +100,14 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                 <p class="headfont uppercase no-margin">personal details </p>
                             </div>
 
-                            <div class="errors hide-el" id="">
-                                <ul id="pd-errors">
-                                </ul>
-                            </div>
-
-                            <div class="p-light-bottom-breather p-mid-side-breather" id="di-pd">
+                            <div class="p-light-bottom-breather p-mid-side-breather">
                                 <div class=" m-light-bottom-breather">
                                     <?php if(!is_null($user->personal_statement)): ?>
-                                    <p class="capitalize" data-post="personal_statement"><span class="txt-bold">Personal Statement:</span>
+                                    <p class="capitalize"><span class="txt-bold">Personal Statement:</span>
                                         <?php echo $user->personal_statement; ?> </p>
 
                                     <?php else: ?>
-                                    <p class="capitalize">You don't have any personal statement. <a href="">click here</a> to add one</p>
+                                    <p class="capitalize">You don't have any personal statement. <a href="update-profile.php?type=personal_details">click here</a> to add one</p>
                                     <?php endif; ?>
                                 </div>
 

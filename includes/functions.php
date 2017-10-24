@@ -743,6 +743,12 @@ function maxCVSize() {
     return $file_size;
 }
 
+function maxFileSize() {
+    // IMB = 1048576
+    $file_size = 1048576 * 1.5;
+    return $file_size;
+}
+
 function cvFormat($type) { 
     if($type == "application/pdf" ||
        $type == "application/msword" ||
