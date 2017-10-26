@@ -23,10 +23,14 @@ class DatabaseObject {
         }
     }
 
-    public static function findAllUnderParent($parent, $child) {
+    public static function findAllUnderParent($parent, $child, $order = false) {
         $sql  = "SELECT * FROM ";
         $sql .= static::$table_name;
         $sql .= " WHERE " . $child . "=" . $parent;
+
+        if($order) {
+            $sql .= " ORDER BY id DESC";
+        }
 
         return static::findBySQLQuery($sql);
     }

@@ -1,26 +1,39 @@
 <?php $seperator = "../../";
 include_once("{$seperator}includes/initialize.php");
 
-// if(!isAjaxRequest()) { redirect_to($seperator); }
-if(!$_POST['submit']) {redirect_to("$seperator"); }
+if(!$_POST['submit']) {redirect_to($seperator); }
 
-switch($_POST['update_type']) {
+// convert text to lists
+function convertToList($text) {
+    $output  = "<ul><li>";
+    $output .= str_replace("<br />", "</li><li>", nl2br(trim($_POST['requirements'])));
+    $output .= "</li></ul>";
 
-        //  PERSONAL DETAILS SECTION
+    return $output;
+    
+}
 
-    case "pd" :
-        $type = "personal_details";
+switch($_POST['type']) {
+
+        //  CREATE NEW JOB
+
+    case "post" :
         $errors = [];
 
-        $raw_fields        = [
-            'phone'         => $_POST['phone'], 
-            'email'         => $_POST['email'], 
-            'address'       => $_POST['address'], 
-            'personal_statement'       => $_POST['personal_statement'], 
-            'location'      => $_POST['location'], 
-            'day'           => $_POST['dob_d'], 
-            'month'         => $_POST['dob_m'], 
-            'year'          => $_POST['dob_y'] 
+        $raw_fields             = [
+            'title'                 => $_POST['title'], 
+            'job_field'             => $_POST['job_field'], 
+            'qualification'         => $_POST['qualification'], 
+            'job_experience'        => $_POST['job_experience'], 
+            'job_type'              => $_POST['job_type'], 
+            'location'              => $_POST['location'], 
+            'keywords'              => $_POST['keywords'], 
+            'day'                   => $_POST['d'], 
+            'month'                 => $_POST['m'], 
+            'year'                  => $_POST['y'], 
+            'description'           => $_POST['description'], 
+            'requirements'          => $_POST['requirements'],             
+            'responsibilities'      => $_POST['responsibilities']             
         ];
 
         // check for presence
@@ -30,37 +43,44 @@ switch($_POST['update_type']) {
             }
         }
 
-        // check for email format
-        if(!isset($errors['email'])) {
-
-            // check email
-            if(!$validation->rightEmailSyntax(trim($_POST['email']))) {
-                $errors['email'] = "Email not in the right format";
-            }
-        }
-
         // if errors are present
         if(!empty($errors)) {
-            $session->errors($errors);
-            redirect_to("{$seperator}candidate/update-profile.php?type={$type}");
+            $_SESSION['errors'] = $errors;
+            redirect_to("{$seperator}employer/create-job.php");
 
         }
 
         // else continue
-        $user = User::findDetails($session->candidateID);
+        
+        // converting requirements and responsibilities to list items
+        // and reassigning
+        $_POST['responsibilities'] = convertToList($_POST['responsibilities']);
+        $_POST['requirements']     = convertToList($_POST['requirements']);
 
-        $user->phone         = trim($_POST['phone']); 
-        $user->email         = trim($_POST['email']); 
-        $user->employer      = trim($_POST['employer']); 
-        $user->address       = trim($_POST['address']); 
-        $user->personal_statement       = trim($_POST['personal_statement']); 
-        $user->location      = trim($_POST['location']); 
-        $user->dob           = trim($_POST['dob_d']) . "/" . trim($_POST['dob_m']) . "/" . trim($_POST['dob_y']); 
+        // converting deadline to timestamp
+        $timestamp = strtotime("{$_POST['d']}-{$_POST['m']}-{$_POST['y']}");
+        $deadline  = date('Y-m-d G:i:s', $timestamp);
+        
+        // instantiate and continue
+        $job = new Jobs();
 
-        if($user->update()) {
-            $session->message("personal details updated successfully");
-            redirect_to("{$seperator}candidate/my-profile.php");
-
+        $job->deadline          = $deadline; 
+        $job->title             = trim($_POST['title']); 
+        $job->job_field         = trim($_POST['job_field']); 
+        $job->qualification     = trim($_POST['qualification']); 
+        $job->job_experience    = trim($_POST['job_experience']); 
+        $job->job_type          = trim($_POST['job_type']); 
+        $job->keywords          = trim($_POST['keywords']); 
+        $job->description       = trim($_POST['description']); 
+        $job->requirements      = trim($_POST['requirements']); 
+        $job->responsibilities  = trim($_POST['responsibilities']); 
+        $job->location          = trim($_POST['location']); 
+        $job->salary_range      = ($_POST['salary_range']); 
+        $job->employer_id       = $session->employerID; 
+        
+        if($job->create()) {
+            $session->message("job posted successfully");
+            redirect_to("{$seperator}employer/dashboard.php");
         }
 
         break;
@@ -92,10 +112,10 @@ switch($_POST['update_type']) {
 
         }
 
-        $desiredJob = DesiredJob::findAllUnderParent($session->candidateID, "user_id");
+        $desiredJob = DesiredJob::findAllUnderParent($session->id, "user_id");
 
         $desiredJob[0]->job_title  = $_POST['job_title']; 
-        $desiredJob[0]->user_id    = $session->candidateID; 
+        $desiredJob[0]->user_id    = $session->id; 
         $desiredJob[0]->job_field  = $_POST['job_field']; 
         $desiredJob[0]->job_type   = $_POST['job_type']; 
         $desiredJob[0]->salary_range = $_POST['salary_range']; 
@@ -152,7 +172,7 @@ switch($_POST['update_type']) {
             $school->grade      = $_POST['grade']; 
             $school->year       = $_POST['year']; 
             $school->location   = $_POST['location'];
-            $school->user_id   = $session->candidateID;
+            $school->user_id   = $session->id;
 
             if($school->create()) {
                 $session->message("new education entry added successfully");
@@ -162,7 +182,7 @@ switch($_POST['update_type']) {
 
         } else { // update entry 
 
-            $school = School::findAllUnderParent($session->candidateID, "user_id");
+            $school = School::findAllUnderParent($session->id, "user_id");
 
             $school[0]->course     = $_POST['course']; 
             $school[0]->degree    = $_POST['degree']; 

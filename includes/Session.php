@@ -1,18 +1,18 @@
 <?php
 class Session {
 
-    private $loggedIn=false;
-    public $id;
+    private $candidateLoggedIn=false;
+    public $candidateID;
+    public $employerID;
     public $message;
-    public $errors;
+    // public $errors;
 
     function __construct() {
-        // session_start();
         $this->checkMessage();
-        $this->checkErrors();
-        $this->checkLogin();
+        $this->checkCandidateLogin();
+        $this->checkEmployerLogin();
 
-        if($this->loggedIn) {
+        if($this->candidateLoggedIn || $this->employerLoggedIn) {
             // session_regenerate_id(true);
         } 
         else {
@@ -21,33 +21,64 @@ class Session {
     }
 
     // LOGIN & LOGOUT DETAILS
-    public function isLoggedIn() {
-        return $this->loggedIn;
+    public function isCandidateLoggedIn() {
+        return $this->candidateLoggedIn;
     }
 
-    public function login($user) {
+    public function candidateLogin($candidate) {
         // database should find user based on username/password
         if($user){
-            $this->id = $_SESSION['id'] = $user->id;
-            $this->loggedIn = true;
+            $this->candidateID = $_SESSION['candidateID'] = $candidate->candidateID;
+            $this->candidateLoggedIn = true;
         }
     }
 
-    public function logout() {
-        unset($_SESSION['id']);
-        unset($this->id);
-        $this->loggedIn = false;
+    public function candidateLogout() {
+        unset($_SESSION['candidateID']);
+        unset($this->candidateID);
+        $this->candidateLoggedIn = false;
     }
 
-    private function checkLogin() {
-        if(isset($_SESSION['id'])) {
-            $this->id = $_SESSION['id'];
-            $this->loggedIn = true;
+    private function checkCandidateLogin() {
+        if(isset($_SESSION['candidateID'])) {
+            $this->candidateID = $_SESSION['candidateID'];
+            $this->candidateLoggedIn = true;
         } else {
-            unset($this->id);
-            $this->loggedIn = false;
+            unset($this->candidateID);
+            $this->candidateLoggedIn = false;
         }
     }
+
+
+        // ADMIN LOGIN & LOGOUT DETAILS
+        public function isEmployerLoggedIn() {
+            return $this->employerLoggedIn;
+        }
+    
+        public function employerLogin($employer) {
+            if($admin){
+                $this->employerID = $_SESSION['employerID'] = $employerID;
+                $this->employerLoggedIn = true;
+            }
+        }
+    
+        public function employerLogout() {
+            unset($_SESSION['employerID']);
+            unset($this->employerID);
+            $this->employerLoggedIn = false;
+        }
+    
+        private function checkEmployerLogin() {
+            if(isset($_SESSION['employerID'])) {
+                $this->employerID = $_SESSION['employerID'];
+                $this->employerLoggedIn = true;
+            } else {
+                unset($this->employerID);
+                $this->employerLoggedIn = false;
+            }
+        }
+    
+
 
     // SESSION MESSAGES
     private function checkMessage() {
@@ -67,7 +98,7 @@ class Session {
     }
 
     // session error display
-    private function checkErrors() {
+    /* private function checkErrors() {
         if(isset($_SESSION['errors'])) {
             $this->errors = $_SESSION['errors'];
             unset($_SESSION['errors']);
@@ -75,15 +106,15 @@ class Session {
             $this->errors = "";
         }
 
-    }
+    } */
     
-    public function errors($errors = "") {
-        if(!empty($error)) {
-            $_SESSION['errors'] = $errors;
-        } else {
-            return $this->errors;
-        }
-    }
+    // public function errors($errors = "") {
+    //     if(!empty($error)) {
+    //         $_SESSION['errors'] = $errors;
+    //     } else {
+    //         return $this->errors;
+    //     }
+    // }
 }
 
 $session = new Session();

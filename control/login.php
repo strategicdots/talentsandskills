@@ -32,14 +32,21 @@ if(isset($_POST['submit'])) {
             if($entry->candidate == 1) {
                 if(password_verify($password, $entry->password)) { // Password Match
                     $user = new User();
-                    $_SESSION['id'] = $user->id = $entry->id;
+                    $_SESSION['candidateID'] = $user->id = $entry->id;
                     redirect_to("{$seperator}candidate/dashboard.php");
                 } else {
                     $session->message("email/password does not match");
                     redirect_to("{$seperator}login.php");
                 }
-            } elseif($user->employer == 1) {
-
+            } elseif($entry->employer == 1) {
+                if(password_verify($password, $entry->password)) { // Password Match
+                    $user = new Employer();
+                    $_SESSION['employerID'] = $employer->id = $entry->id;
+                    redirect_to("{$seperator}employer/dashboard.php");
+                } else {
+                    $session->message("email/password does not match");
+                    redirect_to("{$seperator}login.php");
+                }
             }
 
         } else {

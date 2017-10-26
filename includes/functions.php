@@ -280,14 +280,14 @@ function CSForm($desiredJob = null) {
             $output .= "<option value=\""; 
             $output .=  $range->salary_range; 
             $output .= "\" selected>"; 
-            $output .=  $range->salary_range; 
+            $output .=  formatSalaryRange($range->salary_range); 
             $output .= "</option>";
 
         } else { 
             $output .= "<option value=\""; 
             $output .=  $range->salary_range; 
             $output .= "\">"; 
-            $output .=  $range->salary_range; 
+            $output .=  formatSalaryRange($range->salary_range); 
             $output .= "</option>";
 
         }
@@ -728,7 +728,7 @@ function sideSearch($states, $seperator=null) {
     $output .= "</select>";
     $output .= "</div>";
     $output .= "<div class=\"form-group\">";
-    $output .= "<input type=\"submit\" name=\"submit\" value=\"find jobs\" class=\"form-control btn sec-btn uppercase\">";
+    $output .= "<input type=\"submit\" value=\"find jobs\" class=\"form-control btn sec-btn uppercase\">";
     $output .= "</div>";
     $output .= "</form>";
     $output .= "</div>";
@@ -779,5 +779,57 @@ function inputYear($inputName, $selectedYear = null) {
 
     $output .= "</select>";
 
+    return $output;
+}
+
+function formatSalaryRange($range) {
+    return str_replace("#", "&#x20A6;", $range);
+}
+// EMPLOYER FUNCTIONS
+
+function jobPosted($jobsPosted) {
+    $i = 0;
+    $currentTime = strtotime("now"); // convert current time to unix timestamp
+    
+    $output  = "";
+    $output  = "<div class=\"table-responsive\"><table><tbody>";
+
+    // table head
+    $output .= "<tr class=\"capitalize\">";
+    $output .= "<td>S/N</td>";
+    $output .= "<td>job title</td>";
+    $output .= "<td>current status</td>";
+    $output .= "<td>action</td>";
+    $output .= "</tr>";
+
+    // table data
+    foreach($jobsPosted as $job) {
+        $i++;
+        $deadline = strtotime($job->deadline); // convert deadline to unix timestamp      
+
+        $output .= "<tr>";
+
+        // serial number
+        $output .= "<td>" . $i . "</td>";
+
+        // job title
+        $output .= "<td class=\"capitalize\"><a href=\"\">";
+        $output .= $job->title . "</a></td>";
+
+        // current status
+        if ($currentTime <= $deadline) {
+            $output .= "<td class=\"capitalize\"> live </td>"; 
+        } else {
+            $output .= "<td class=\"capitalize\"> expired </td>"; 
+
+        }
+        
+        // action
+        $output .= "<td class=\"small-font-size\"> <a href=\"\">edit</a><br>";
+        $output .= "<a href=\"\">delete</a></td>";
+
+    }
+    $output .= "</tbody></table></div>";
+    
     return $output;
 }

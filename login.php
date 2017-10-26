@@ -1,7 +1,9 @@
 <?php $thisPage = "login"; $seperator=""; 
 include_once("includes/initialize.php"); 
-if($session->isLoggedIn()) {
+if($session->isCandidateLoggedIn()) {
     redirect_to("candidate/dashboard.php"); 
+} elseif($session->isEmployerLoggedIn()) {
+    redirect_to("employer/dashboard.php");
 }
 ?>
 

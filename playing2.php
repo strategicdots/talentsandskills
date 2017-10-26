@@ -1,117 +1,45 @@
 <?php
-$output = "<form action=\"../control/candidate/profile.php\" method=\"post\" class=\"sm\">";
-$output .= "<input type=\"hidden\" value=\"cs\" name=\"update_type\">";
-$output .= "<div class=\"row\">";
-$output .= "<div class=\"col-sm-6\">";
-$output .= "<div class=\"form-group\">";
-$output .= "<label class=\"txt-bold small-font-size capitalize\">desired job title</label>";
-$output .= "<input type=\"text\" class=\"form-control\" value=\"";
+function jobPosted($jobPosted) {
+    $i = 0;
+    $currentTime = strtotime("now"); // convert current time to unix timestamp
+    
+    $output  = "";
+    $output  = "<div class=\"table-responsive\"><table><tbody>";
 
-if(isset($desiredJob[0]->job_title)) {
-    $output .=  $desiredJob[0]->job_title; 
+    // table head
+    $output .= "<tr class=\"capitalize\">";
+    $output .= "<td>S/N</td>";
+    $output .= "<td>job title</td>";
+    $output .= "<td>current status</td>";
+    $output .= "<td>action</td>";
+    $output .= "</tr>";
 
-} else {
- 
-    $output .=  ""; 
-} 
+    // table data
+    foreach($jobsPosted as $job) {
+        $i++;
+        $deadline = strtotime($job->deadline); // convert deadline to unix timestamp      
 
-$output .= "\" name=\"job_title\" placeholder=\"enter your desired job title\"></div>";
-$output .= "<div class=\"form-group\">";
-$output .= "<label class=\"txt-bold small-font-size capitalize\">job field</label>";
-$output .= "<select name=\"job_field\" class=\"form-control\">";
-$output .= "<option value=\"\">choose your field</option>";
- 
-foreach($jobFields as $job_field) {  
+        $output .= "<tr>";
 
-    if($job_field->name == $desiredJob[0]->job_field ) { 
-        $output .= "<option value=\""; 
-        $output .=  $job_field->name; 
-        $output .= "\" selected>"; 
-        $output .=  ucwords($job_field->name); 
-        $output .= "</option>";
+        // serial number
+        $output .= "<td>" . $i . "</td>";
 
-    } else { 
-        $output .= "<option value=\""; 
-        $output .=  $job_field->name; 
-        $output .= "\">"; 
-        $output .=  ucwords($job_field->name); 
-        $output .= "</option>";
+        // job title
+        $output .= "<td>" . $job->title . "</td>";
 
-    }
+        // current status
+        if ($currentTime > $deadline) {
+            $output .= "<td> live </td>"; 
+        } else {
+            $output .= "<td> expired </td>"; 
 
-}
-
-$output .= "</select></div>";
-$output .= "<div class=\"form-group\">";
-$output .= "<label class=\"txt-bold small-font-size capitalize\">job type</label>";
-$output .= "<select name=\"job_type\" class=\"form-control capitalize\">";
-
-foreach($jobType as $type) {  
-    if($type->time_span == $desiredJob[0]->job_type) { 
-        $output .= "<option value=\""; 
-        $output .=  $type->type; 
-        $output .= "\" selected>"; 
-        $output .=  $type->type; 
-        $output .= "</option>";
-
-    } else { 
-        $output .= "<option value=\""; 
-        $output .=  $type->type; 
-        $output .= "\">"; 
-        $output .=  $type->type; 
-        $output .= "</option>";
-    }
-}
-
-$output .= "</select></div></div>";
-$output .= "<div class=\"col-sm-6 m-light-bottom-breather\">";
-$output .= "<div class=\"form-group\">";
-$output .= "<label class=\"txt-bold small-font-size capitalize\">preferred salary</label>";
-$output .= "<select name=\"salary_range\" class=\"form-control capitalize\">";
-
-foreach($salaryRange as $range) {
-    if($range->salary_range == $desiredJob[0]->salary_range) { 
-        $output .= "<option value=\""; 
-        $output .=  $range->salary_range; 
-        $output .= "\" selected>"; 
-        $output .=  $range->salary_range; 
-        $output .= "</option>";
-
-    } else { 
-        $output .= "<option value=\""; 
-        $output .=  $range->salary_range; 
-        $output .= "\">"; 
-        $output .=  $range->salary_range; 
-        $output .= "</option>";
+        }
+        
+        // action
+        $output .= "<td class\"small-font-size\"> <a href=\"\">Edit</a><br>";
+        $output .= "<a href=\"\">delete</a></td>";
 
     }
-}
-$output .= "</select></div>";
-
-$output .= "<div class=\"form-group\">";
-$output .= "<label class=\"txt-bold small-font-size capitalize\">desired job location</label>";
-$output .= "<select name=\"location\" id=\"\" class=\"form-control\">";
-$output .= "<option>desired job location</option>";
-
-foreach($states as $state) { 
-    if($state->name == $desiredJob[0]->location) { 
-        $output .= "<option value=\""; 
-        $output .=  $state->name; 
-        $output .= "\" selected>"; 
-        $output .=  $state->name; 
-        $output .= "</option>";
-    } else {  
-        $output .= "<option value=\""; 
-        $output .=  $state->name; 
-        $output .= "\">"; 
-        $output .=  $state->name; 
-        $output .= "</option>";
-    }
-}
-$output .= "</select></div></div><div class=\"sm-container m-vlight-breather\">";
-$output .= "<div class=\"row\">";
-$output .= "<div class=\"col-sm-8\">";
-$output .= "<input type=\"submit\" value=\"Confirm Changes\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
-$output .= " <div class=\"col-sm-4\">";
-$output .= "<a href=\"my-profile.php\" class=\"form-control capitalize btn main-btn\">cancel</a>";
-$output .= "</div></div></div></div></form>";
+    $output .= "</tbody></table></div>";
+    
+    return $output;

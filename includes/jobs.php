@@ -5,38 +5,53 @@ class Jobs extends DatabaseObject {
 
     public $id;
     public $employer_id;
-    public $employer;
-    public $keywords;
     public $title;
     public $job_field;
-    public $job_experience;
-    public $job_level;
     public $job_type;
     public $location;
     public $salary_range;
     public $deadline;
+    public $keywords;
+    public $job_experience;
+    public $description;
+    public $responsibilities;
+    public $requirements;
+    public $qualification;
+
+    public $employer;
+    public $job_level;
+    
 
     public function create() {
         global $database;
 
-        $sql_query = "INSERT INTO " . self::$table_name . " ( ";
-        $sql_query .= "employer_id, title, job_field, job_type, location, salary_range, deadline ";
-        $sql_query .= ") VALUES ('";
-        $sql_query .= $database->escape_value($this->employer_id) . "', '";
-        $sql_query .= $database->escape_value($this->title) . "', '";
-        $sql_query .= $database->escape_value($this->job_field) . "', '";
-        $sql_query .= $database->escape_value($this->job_type) . "', '";
-        $sql_query .= $database->escape_value($this->location) . "', '";
-        $sql_query .= $database->escape_value($this->salary_range) . "', '";
-        $sql_query .= $database->escape_value($this->deadline) . "')";
+        $sql  = "INSERT INTO " . self::$table_name . " ( ";
+        $sql .= "employer_id, title, job_field, job_type, location, salary_range, deadline, ";
+        $sql .= "keywords, job_experience, description, responsibilities, requirements, qualification ";
+        $sql .= ") VALUES ('";
+        $sql .= $database->escapeValue($this->employer_id) . "', '";
+        $sql .= $database->escapeValue($this->title) . "', '";
+        $sql .= $database->escapeValue($this->job_field) . "', '";
+        $sql .= $database->escapeValue($this->job_type) . "', '";
+        $sql .= $database->escapeValue($this->location) . "', '";
+        $sql .= $database->escapeValue($this->salary_range) . "', '";
+        $sql .= $database->escapeValue($this->deadline) . "', '";
+        $sql .= $database->escapeValue($this->keywords) . "', '";
+        $sql .= $database->escapeValue($this->job_experience) . "', '";
+        $sql .= $database->escapeValue($this->description) . "', '";
+        $sql .= $database->escapeValue($this->responsibilities) . "', '";
+        $sql .= $database->escapeValue($this->requirements) . "', '";
+        $sql .= $database->escapeValue($this->qualification) . "')";
 
-        if($database->query($sql_query)) {
-            $this->id = $database->insert_id();
+        // echo $sql; exit;
+        if($database->query($sql)) {
+            $this->id = $database->insertID();
             return true;
         } else {
             return false;
         }
     }
+
 
     public function update() {
         global $database;
@@ -100,7 +115,7 @@ class Jobs extends DatabaseObject {
     }
 
     public static function featuredJobs() {
-        $sql = "SELECT * FROM " . self::$table_name . " LIMIT 5";
+        $sql = "SELECT * FROM " . self::$table_name . " ORDER BY id DESC LIMIT 5 ";
 
         $jobObjects = self::findBySQLQuery($sql);
 

@@ -5,3 +5,5 @@ class JobExperience extends DatabaseObject {
     public $id;
     public $years;
 }
+
+$jobExperience = JobExperience::findAll();

@@ -577,7 +577,6 @@ select,
 input button {
     height: 45px !important;
     padding-left: 15px;
-    text-transform: capitalize;
 }
 
 select {
@@ -692,9 +691,9 @@ h1 span {
 
 /* .dropdown-menu>li>a:hover, 
 .dropdown-menu>li>a:focus {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-top: 5px;
+padding-top: 10px;
+padding-bottom: 10px;
+margin-top: 5px;
 } */
 
 .dropdown-menu>li>a {
@@ -912,7 +911,39 @@ footer li a:hover {
 }
 
 
-/* candidate dashboard */
+/* USER DASHBOARDS AND PAGES */
+
+.dashboard table {
+    border-radius: 10px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.dashboard table.td-4 td {
+    width: 25%;
+}
+
+/*.auth_dashboard table {
+    margin-top: 0px;
+
+}*/
+
+.dashboard td,
+.dashboard th {
+    padding: 5px 7px;
+    text-align: center;
+}
+.dashboard tr:nth-child(1) {
+    background-color: #0000ff !important;
+    font-weight: 700 !important;
+    color: #fff;
+}
+
+.dashboard tr:nth-child(odd) {
+    background-color: #ddd;
+}
 
 .bioimage>img {
     max-height: 80px;

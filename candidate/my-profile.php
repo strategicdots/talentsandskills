@@ -2,9 +2,9 @@
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
-if (!$session->isLoggedIn()) {redirect_to("{$seperator}login.php"); } 
+if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 
-$user               = User::findDetails($session->id);
+$user               = User::findDetails($session->candidateID);
 $desiredJob         = DesiredJob::findAllUnderParent($user->id, "user_id");
 $schools            = School::findAllUnderParent($user->id, "user_id");
 $skills             = Skills::findAllUnderParent($user->id, "user_id");
@@ -216,8 +216,8 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                     <div class="col-sm-6">
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">prefered salary</p>
-                                            <p class="small-font-size capitalize" data-post="salary_range">
-                                                <?php echo $desiredJob[0]->salary_range; ?> (Monthly)</p>
+                                            <p class="small-font-size capitalize">
+                                                <?php echo formatSalaryRange($desiredJob[0]->salary_range); ?> (Monthly)</p>
                                             <p class="mid-font-size"></p>
                                         </div>
 

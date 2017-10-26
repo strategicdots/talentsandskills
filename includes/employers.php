@@ -1,9 +1,12 @@
 <?php require_once('initialize.php');
 
 class Employer extends DatabaseObject {
-    protected static $table_name="employers";
+    protected static $table_name="users";
     public $id;
-    public $name;
+    public $company_name;
+    public $about_company;
+    public $firstname;
+    public $lastname;
     public $phone;
     public $email;
     public $job_field;
@@ -12,19 +15,22 @@ class Employer extends DatabaseObject {
 
     public function create() {
         global $database;
-        $hashed_password = password_hash($this->password);
+        $hashedPassword = password_encrypt($this->password);
 
         $sql_query = "INSERT INTO " . self::$table_name . " ( ";
-        $sql_query .= "name, phone, email, job_field, password ";
+        $sql_query .= "company_name, about_company, firstname, lastname, phone, email, job_field, password ";
         $sql_query .= ") VALUES ('";
-        $sql_query .= $database->escape_value($this->name) . "', '";
-        $sql_query .= $database->escape_value($this->phone) . "', '";
-        $sql_query .= $database->escape_value($this->email) . "', '";
-        $sql_query .= $database->escape_value($this->job_field) . "', '";
-        $sql_query .= $hashed_password . "')";
+        $sql_query .= $database->escapeValue($this->company_name) . "', '";
+        $sql_query .= $database->escapeValue($this->about_company) . "', '";
+        $sql_query .= $database->escapeValue($this->firstname) . "', '";
+        $sql_query .= $database->escapeValue($this->lastname) . "', '";
+        $sql_query .= $database->escapeValue($this->phone) . "', '";
+        $sql_query .= $database->escapeValue($this->email) . "', '";
+        $sql_query .= $database->escapeValue($this->job_field) . "', '";
+        $sql_query .= $hashedPassword . "')";
 
         if($database->query($sql_query)) {
-            $this->id = $database->insert_id();
+            $this->id = $database->insertID();
             return true;
         } else {
             return false;
@@ -37,7 +43,8 @@ class Employer extends DatabaseObject {
         $sql  = "UPDATE users SET ";
         $sql .= "email='" . $database->escapeValue($this->email) . "', ";
         $sql .= "phone='" . $database->escapeValue($this->phone) . "', ";
-        $sql .= "company_name='" . $database->escapeValue($this->name) . "', ";
+        $sql .= "company_name='" . $database->escapeValue($this->company_name) . "', ";
+        $sql .= "about_company='" . $database->escapeValue($this->about_company) . "', ";
         $sql .= "job_field='" . $database->escapeValue($this->job_field) . "', ";
         $sql .= "WHERE id=" . $database->escapeValue($this->id);
 

@@ -2,7 +2,8 @@
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
-// if (!$session->isLoggedIn()) {redirect_to("{$seperator}login.php"); } 
+ if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
+ $user = findDetails($session->candidateID);
 
 // process form data 
 if(isset($_POST['submit'])) {
@@ -16,7 +17,7 @@ if(isset($_POST['submit'])) {
   
           if($resume->upload()) {
               /* save path in db */
-              if($resume->updateDB(1)) {
+              if($resume->updateDB($session->candidateID)) {
                   // send confirmation msg and redirect
                   $session->message("CV uploaded successfully");
                   

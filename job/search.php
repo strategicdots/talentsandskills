@@ -1,29 +1,41 @@
 <?php $thisPage = "job-search"; $seperator="../"; 
 include_once("{$seperator}includes/initialize.php");
 
-if(!$_GET['submit']){ redirect_to($seperator); }
+/* if(isset($session->candidateID)) {
+    $user = User::findDetails($session->candidateID);
+} */
 
-$jobs = "";
-if($_GET['submit'] == "find jobs") {
+if(!$_GET){ redirect_to($seperator); }
 
-    $location = trim($_GET['location']);
-    $keyword  = trim($_GET['keyword']);
+$location = trim($_GET['location']);
+$keyword  = trim($_GET['keyword']);
 
-    $jobs = Jobs::topSearch($keyword, $location);
+$jobs = Jobs::topSearch($keyword, $location);
 
-} elseif($_GET['submit'] == "filter") { // filter search results
+ if((isset($_POST['submit']) && ($_POST['submit'] == "filter"))) { // filter search results
+    
+    // unseting submit 
+    unset($_POST['submit']);
+    
+    //appending the GET variables to POST to filter along
+    if(!empty($_GET['location'])) { $_POST['location'] = trim($_GET['location']); }
+    if(!empty($_GET['keyword'])) { $_POST['keyword'] = trim($_GET['keyword']); }
 
-    unset($_GET['submit']);
-
-    $jobs = Jobs::jobFilter($_GET);
+    //print_r($_POST); exit;
+    $jobs = Jobs::jobFilter($_POST);
 }
-
-$jobExperience = JobExperience::findAll(); $jobLevel = JobLevel::findAll(); $jobType = JobType::findAll(); 
-$states = State::findAll(); $jobField = JobFields::findAll(); $salaryRange = SalaryRange::findAll();
 ?>
 
 <!-- header -->
-<?php include_once("{$seperator}layout/dashboard-header.php"); ?>
+<?php 
+if(isset($session->candidateID)) { 
+    include_once("{$seperator}layout/dashboard-header.php"); 
+} elseif(isset($session->employerID)) {
+    include_once("{$seperator}layout/em-dashboard-header.php");     
+} else {
+    include_once("{$seperator}layout/header.php");         
+}
+?>
 
 <style>
 
@@ -84,7 +96,7 @@ $states = State::findAll(); $jobField = JobFields::findAll(); $salaryRange = Sal
 
                             <div class="panel-group capitalize" id="accordion">
 
-                                <form id='search_filter'>
+                                <form id='search_filter' method="post" action="#">
 
                                     <!-- experience -->
                                     <div class="panel panel-default">
@@ -133,7 +145,7 @@ $states = State::findAll(); $jobField = JobFields::findAll(); $salaryRange = Sal
                                             <div class="panel-body">
                                                 <?php foreach($salaryRange as $range): ?>
                                                 <div class="p-mid-side-breather">
-                                                    <label class="radio"> <input type="radio" name="salary_range" id="" value="<?php echo $range->salary_range; ?>"> <?php echo $range->salary_range; ?></label>
+                                                    <label class="radio"> <input type="radio" name="salary_range" id="" value="<?php echo $range->salary_range; ?>"> <?php echo formatSalaryRange($range->salary_range); ?></label>
                                                 </div>
                                                 <?php endforeach; ?>
                                             </div>
@@ -216,13 +228,11 @@ $states = State::findAll(); $jobField = JobFields::findAll(); $salaryRange = Sal
                     
                     <?php else: ?>
                     <div class="text-center">
-                        <p class="lead capitalize"> <?php echo Jobs::countAll(); ?> Jobs matching your search criteria</p>
+                        <p class="lead capitalize"> <?php echo count($jobs); ?> Jobs matching your search criteria</p>
                     </div>
 
-                    <?php foreach($jobs as $job): 
+                    <?php foreach($jobs as $job):  
                     $employer = Employer::findDetails($job->employer_id); 
-                    $fullJobDesc = JobDescription::findAllUnderParent($job->id, "job_id"); 
-                    $trimmedJobDesc = trimContent(($fullJobDesc[0]->brief_desc), 40);
                     ?>
 
                     <div class="item">
@@ -231,7 +241,7 @@ $states = State::findAll(); $jobField = JobFields::findAll(); $salaryRange = Sal
                                 <div class="col-sm-2">
                                     <div class="emplyr-img-bx">
                                         <?php if($employer->avatar_url): ?>
-                                        <img src="<?php echo avatar_url; ?>" class="img-responsive">
+                                        <img src="<?php echo $employer->avatar_url; ?>" class="img-responsive">
                                         <?php else: ?>
                                         <img src="<?php echo $seperator; ?>img/company.png" class="img-responsive">
                                         <?php endif; ?>
@@ -239,13 +249,13 @@ $states = State::findAll(); $jobField = JobFields::findAll(); $salaryRange = Sal
                                 </div>
                                 <div class="col-sm-9">
                                     <h2 class="mid-font-size capitalize no-margin"><?php echo $job->title; ?></h2>
-                                    <p class="small-font-size secheadfont uppercase"><?php echo $employer->name; ?></p>
+                                    <p class="small-font-size secheadfont uppercase"><?php echo $employer->company_name; ?></p>
                                     <div class="small-font-size">
                                         <p class="no-margin txt-bold capitalize"><?php echo $job->location; ?></p>
-                                        <p class="no-top-margin txt-bold capitalize"><?php echo $job->salary_range; ?> / per month</p>
+                                        <p class="no-top-margin txt-bold capitalize"><?php echo formatSalaryRange($job->salary_range); ?> / per month</p>
                                     </div>
                                     <div class="">
-                                        <p class="mid-font-size"><?php echo $trimmedJobDesc; ?></p>
+                                        <p class="mid-font-size"><?php echo trimContent($job->description, 40); ?></p>
                                     </div>
                                     <div class="m-vlight-breather">
                                         <a href="./?id=<?php echo $job->id; ?>" class="btn main-btn btn-lg capitalize">apply</a>

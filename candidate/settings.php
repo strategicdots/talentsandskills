@@ -2,9 +2,9 @@
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
-if (!$session->isLoggedIn()) {redirect_to("{$seperator}login.php"); } 
+if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 
-$user               = User::findDetails($session->id);
+$user               = User::findDetails($session->candidateID);
 $desiredJob         = DesiredJob::findAllUnderParent($user->id, "user_id");
 $schools            = School::findAllUnderParent($user->id, "user_id");
 $skills             = Skills::findAllUnderParent($user->id, "user_id");
