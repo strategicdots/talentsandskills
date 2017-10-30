@@ -21,20 +21,19 @@ $jobs = Jobs::topSearch($keyword, $location);
     if(!empty($_GET['location'])) { $_POST['location'] = trim($_GET['location']); }
     if(!empty($_GET['keyword'])) { $_POST['keyword'] = trim($_GET['keyword']); }
 
-    //print_r($_POST); exit;
     $jobs = Jobs::jobFilter($_POST);
 }
 ?>
 
 <!-- header -->
 <?php 
-if(isset($session->candidateID)) { 
+/* if(isset($session->candidateID)) { 
     include_once("{$seperator}layout/dashboard-header.php"); 
 } elseif(isset($session->employerID)) {
     include_once("{$seperator}layout/em-dashboard-header.php");     
-} else {
+} else { */
     include_once("{$seperator}layout/header.php");         
-}
+/* } */
 ?>
 
 <style>

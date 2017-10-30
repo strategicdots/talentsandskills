@@ -4,14 +4,14 @@ include_once("{$seperator}includes/initialize.php");
 if(!$_POST['submit']) {redirect_to($seperator); }
 
 // convert text to lists
-function convertToList($text) {
-    $output  = "<ul><li>";
-    $output .= str_replace("<br />", "</li><li>", nl2br(trim($_POST['requirements'])));
-    $output .= "</li></ul>";
+// function convertToList($text) {
+//     $output  = "<ul><li>";
+//     $output .= str_replace("<br />", "</li><li>", nl2br(trim($_POST['requirements'])));
+//     $output .= "</li></ul>";
 
-    return $output;
+//     return $output;
     
-}
+// }
 
 switch($_POST['type']) {
 
@@ -31,9 +31,7 @@ switch($_POST['type']) {
             'day'                   => $_POST['d'], 
             'month'                 => $_POST['m'], 
             'year'                  => $_POST['y'], 
-            'description'           => $_POST['description'], 
-            'requirements'          => $_POST['requirements'],             
-            'responsibilities'      => $_POST['responsibilities']             
+            'description'           => $_POST['description'] 
         ];
 
         // check for presence
@@ -54,8 +52,8 @@ switch($_POST['type']) {
         
         // converting requirements and responsibilities to list items
         // and reassigning
-        $_POST['responsibilities'] = convertToList($_POST['responsibilities']);
-        $_POST['requirements']     = convertToList($_POST['requirements']);
+        // $_POST['responsibilities'] = convertToList($_POST['responsibilities']);
+        // $_POST['requirements']     = convertToList($_POST['requirements']);
 
         // converting deadline to timestamp
         $timestamp = strtotime("{$_POST['d']}-{$_POST['m']}-{$_POST['y']}");
@@ -71,9 +69,7 @@ switch($_POST['type']) {
         $job->job_experience    = trim($_POST['job_experience']); 
         $job->job_type          = trim($_POST['job_type']); 
         $job->keywords          = trim($_POST['keywords']); 
-        $job->description       = trim($_POST['description']); 
-        $job->requirements      = trim($_POST['requirements']); 
-        $job->responsibilities  = trim($_POST['responsibilities']); 
+        $job->description       = htmlentities(trim($_POST['description'])); 
         $job->location          = trim($_POST['location']); 
         $job->salary_range      = ($_POST['salary_range']); 
         $job->employer_id       = $session->employerID; 

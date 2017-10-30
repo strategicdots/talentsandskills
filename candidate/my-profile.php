@@ -25,71 +25,9 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                 <!-- sidebar -->
                 <div class="sidebar col-sm-4">
-
-                    <!-- about me -->
-                    <div class="light-bx-shadow m-mid-bottom-breather">
-                        <div class="p-vlight-breather sec-bg p-mid-side-breather">
-                            <p class="headfont uppercase no-margin text-center">about me</p>
-                        </div>
-                        <div class="p-mid-side-breather p-light-breather">
-
-                            <div class="row m-mid-bottom-breather">
-
-                                <div class="col-sm-4 bioimage">
-                                    <img class="img-center img-circle" src="../img/candidate-placeholder.jpg" alt="">
-                                </div>
-
-                                <div class="col-sm-8 bio-details">
-                                    <p class="headfont lead no-margin">
-                                        <?php echo $user->fullName(); ?>
-                                    </p>
-                                    <!-- <p class="mid-font-size no-margin">PHP Developer | Lagos</p> -->
-                                    <p class="mid-font-size">
-                                        <?php echo $user->email; ?>
-                                    </p>
-                                    <p class="mid-font-size no-margin"><span class="txt-bold">Mobile:</span>
-                                        <?php echo $user->phone; ?>
-                                    </p>
-                                    <p class="mid-font-size"><span class="txt-bold">D.O.B: </span>
-                                        <?php echo $user->dob; ?>
-                                    </p>
-
-                                </div>
-                            </div>
-
-                            <!-- progress-bar -->
-                            <p class="no-margin small-font-size secheadfont capitalize">profile strength: 65%</p>
-                            <progress max="100" value="65" class=" m-vlight-bottom-breather">
-                                <!-- Browsers that support HTML5 progress element will ignore the html inside `progress` element. Whereas older browsers will ignore the `progress` element and instead render the html inside it. -->
-                                <div class="progress-bar">
-                                    <span style="width: 65%; height: inherit;"></span>
-                                </div>
-                            </progress>
-                            <!-- end .progress-bar -->
-
-                            <?php if(!$user->cv_path): ?>
-                            <!-- upload cv button -->
-                            <div class=""><a href="upload-cv.php" class="uppercase btn sec-btn btn-max">upload your cv</a></div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-
-                    <!-- applied jobs -->
-                    <div class="light-bx-shadow m-mid-bottom-breather">
-                        <div class="p-vlight-breather sec-bg p-mid-side-breather">
-                            <p class="headfont uppercase no-margin text-center">applied jobs</p>
-                        </div>
-                        <div class="p-mid-side-breather p-light-breather">
-                            <p class="">You haven't applied for any job</p>
-                        </div>
-                    </div>
-
-
-                    <!-- sidebar form-->
-                    <?php echo sideSearch($states, $seperator); ?>
-
+                    <?php echo candidateSidebar($user); ?>
                 </div>
-
+                
                 <!-- mainbar -->
                 <div class="col-sm-8 mainbar">
 
@@ -103,11 +41,13 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                             <div class="p-light-bottom-breather p-mid-side-breather">
                                 <div class=" m-light-bottom-breather">
                                     <?php if(!is_null($user->personal_statement)): ?>
-                                    <p class="capitalize"><span class="txt-bold">Personal Statement:</span>
+                                    <p class="capitalize">
+                                        <span class="txt-bold">Personal Statement:</span>
                                         <?php echo $user->personal_statement; ?> </p>
 
                                     <?php else: ?>
-                                    <p class="capitalize">You don't have any personal statement. <a href="update-profile.php?type=personal_details">click here</a> to add one</p>
+                                    <p class="capitalize">You don't have any personal statement.
+                                        <a href="update-profile.php?type=personal_details">click here</a> to add one</p>
                                     <?php endif; ?>
                                 </div>
 
@@ -115,8 +55,11 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                     <div class="col-sm-4">
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">Email</p>
-                                            <p class="small-font-size capitalize" data-post="email">
-                                                <?php echo $user->email; ?>
+                                            <p class="small-font-size">
+                                                <?php 
+                                                    if(isset($user->email)) {echo $user->email; } 
+                                                    else { echo "You haven't updated your email address"; }
+                                                ?>
                                             </p>
                                         </div>
                                     </div>
@@ -124,8 +67,12 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                     <div class="col-sm-4">
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">Phone Number</p>
-                                            <p class="small-font-size capitalize" data-post="phone">
-                                                <?php echo $user->phone; ?> </p>
+                                            <p class="small-font-size">
+                                                <?php 
+                                                    if(isset($user->phone)) {echo $user->phone; } 
+                                                    else { echo "You don't have any phone number in our records"; }
+                                                ?> 
+                                            </p>
 
                                         </div>
                                     </div>
@@ -133,8 +80,11 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                     <div class="col-sm-4">
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">Date of Birth</p>
-                                            <p class="small-font-size capitalize" data-post="dob">
-                                                <?php echo $user->dob; ?>
+                                            <p class="small-font-size">
+                                                <?php 
+                                                if(isset($user->dob)) {echo $user->dob; } 
+                                                else { echo "You haven't updated your date of birth"; }
+                                                ?>
                                             </p>
                                         </div>
                                     </div>
@@ -145,8 +95,11 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                     <div class="col-sm-4">
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">Gender</p>
-                                            <p class="small-font-size capitalize" data-post="gender">
-                                                <?php echo $user->gender; ?>
+                                            <p class="small-font-size">
+                                                <?php 
+                                                    if(isset($user->gender)) {echo $user->gender; } 
+                                                    else { echo "You haven't updated your gender status"; }
+                                                ?>
                                             </p>
                                         </div>
                                     </div>
@@ -154,8 +107,11 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                     <div class="col-sm-4">
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">Location</p>
-                                            <p class="small-font-size capitalize" data-post="location">
-                                                <?php echo $user->location; ?>
+                                            <p class="small-font-size">
+                                                <?php 
+                                                    if(isset($user->location)) {echo $user->location; } 
+                                                    else { echo "You haven't updated your current location"; }
+                                                ?>
                                             </p>
                                         </div>
                                     </div>
@@ -163,7 +119,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                 </div>
 
                                 <div class="clearfix small-font-size">
-                                    <a href="update-profile.php?type=personal_details" id="" class="btn sec-btn capitalize pull-right">edit</a>
+                                    <a href="update-profile.php?type=personal_details" class="btn sec-btn capitalize pull-right">edit</a>
                                 </div>
                             </div>
 
@@ -179,36 +135,41 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                 <p class="headfont uppercase no-margin">career summary</p>
                             </div>
 
-                            <div class="errors hide-el" id="">
-                                <ul id="cs-errors">
-                                </ul>
-                            </div>
-                            <div class="p-light-bottom-breather p-mid-side-breather" id="di-cs">
+                            <div class="p-light-bottom-breather p-mid-side-breather">
 
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">desired job type</p>
-                                            <p class="small-font-size capitalize" data-post="job_title">
-                                                <?php echo $desiredJob[0]->job_title; ?>
+                                            <p class="small-font-size">
+                                                <?php 
+                                                    if(isset($desiredJob[0]->job_title)) {echo $desiredJob[0]->job_title; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
-                                            <p class="mid-font-size"></p>
+                                            
                                         </div>
 
                                         <div class="m-vlight-top-breather">
                                             <p class="mid-font-size capitalize no-margin txt-bold">field</p>
-                                            <p class="small-font-size capitalize" data-post="job_field">
-                                                <?php echo $desiredJob[0]->job_field; ?>
+                                            <p class="small-font-size">
+                                                <?php 
+                                                    if(isset($desiredJob[0]->job_field)) {echo $desiredJob[0]->job_field; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
-                                            <p class="mid-font-size"></p>
+                                            
                                         </div>
 
                                         <div class="m-vlight-top-breather">
                                             <p class="mid-font-size capitalize no-margin txt-bold">avaliability</p>
-                                            <p class="small-font-size capitalize" data-post="job_type">
-                                                <?php echo $desiredJob[0]->job_type; ?>
+                                            <p class="small-font-size">
+                                                <?php 
+                                                    if(isset($desiredJob[0]->job_type)) {echo $desiredJob[0]->job_type; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
-                                            <p class="mid-font-size"></p>
+                                            
                                         </div>
 
                                     </div>
@@ -217,16 +178,22 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">prefered salary</p>
                                             <p class="small-font-size capitalize">
-                                                <?php echo formatSalaryRange($desiredJob[0]->salary_range); ?> (Monthly)</p>
-                                            <p class="mid-font-size"></p>
+                                                <?php 
+                                                    if(isset($desiredJob[0]->salary_range)) {echo formatSalaryRange($desiredJob[0]->salary_range); } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
+                                                
                                         </div>
 
                                         <div class="m-vlight-top-breather">
                                             <p class="mid-font-size capitalize no-margin txt-bold">desired location</p>
-                                            <p class="small-font-size capitalize" data-post="location">
-                                                <?php echo $desiredJob[0]->location; ?>
+                                            <p class="small-font-size">
+                                                <?php 
+                                                    if(isset($desiredJob[0]->location)) {echo $desiredJob[0]->location; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
-                                            <p class="mid-font-size"></p>
+                                            
                                         </div>
 
                                     </div>
@@ -234,7 +201,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                 </div>
 
                                 <div class="clearfix small-font-size">
-                                    <a href="update-profile.php?type=career_summary" id="" class="btn sec-btn capitalize pull-right">edit</a>
+                                    <a href="update-profile.php?type=career_summary" class="btn sec-btn capitalize pull-right">edit</a>
                                 </div>
                             </div>
 
@@ -250,22 +217,23 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                 <p class="headfont uppercase no-margin">education</p>
                             </div>
 
-                            <div class="errors hide-el" id="edu-errors">
-                                <ul id="cs-errors">
-                                </ul>
-                            </div>
-
-                            <div id="di-edu" class="p-light-bottom-breather p-mid-side-breather">
-                                <?php foreach($schools as $school): ?>
+                            <div class="p-light-bottom-breather p-mid-side-breather">
+                                <?php if(!empty($schools)) : foreach($schools as $school): ?>
 
                                 <div class="row m-vlight-breather">
                                     <div class="col-sm-4">
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">
-                                                <?php echo $school->course; ?>
+                                                <?php 
+                                                    if(isset($school->course)) {echo $school->course; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
                                             <p class="small-font-size capitalize">
-                                                <?php echo $school->degree; ?>
+                                                <?php 
+                                                    if(isset($school->degree)) {echo $school->degree; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
                                         </div>
                                     </div>
@@ -273,10 +241,17 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                     <div class="col-sm-4">
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">
-                                                <?php echo $school->school; ?>
+                                                <?php 
+                                                    if(isset($school->school)) {echo $school->school; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
                                             <p class="small-font-size capitalize">
-                                                <?php echo $school->location; ?>
+                                                
+                                                <?php 
+                                                    if(isset($school->location)) {echo $school->location; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
                                         </div>
                                     </div>
@@ -284,18 +259,36 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                     <div class="col-sm-4">
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">
-                                                <?php echo $school->grade; ?>
+                                                
+                                                <?php 
+                                                    if(isset($school->grade)) {echo $school->grade; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
                                             <p class="small-font-size capitalize">Finished:
-                                                <?php echo $school->year; ?>
+                                                
+                                                <?php 
+                                                    if(isset($school->year)) {echo $school->year; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <?php endforeach; ?>
+                                <?php else: ?>
+                                <div class="row m-vlight-breather p-mid-side-breather">
+                                    
+                                    <p class="mid-font-size no-margin">
+                                        You haven't updated your educational details
+                                    </p>
+                                       
+                                </div>
+                                <?php endif; ?>
+
                                 <div class="clearfix small-font-size">
-                                    <a href="update-profile.php?type=education" id="" class="btn sec-btn capitalize pull-right">edit</a>
+                                    <a href="update-profile.php?type=education" class="btn sec-btn capitalize pull-right">edit</a>
                                 </div>
                             </div>
 
@@ -313,14 +306,17 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                             <div class="p-light-bottom-breather p-mid-side-breather">
 
-                                <?php foreach ($skills as $skill) : ?>
+                                <?php if(isset($skills)): foreach ($skills as $skill) : ?>
                                 <p class="capitalize">
                                     <?php echo $skill->skill_name; ?> </p>
-                                <?php endforeach; ?>
+                                <?php endforeach; else: ?>
 
+                                <p class=""> You haven't updated your professional skill set </p>
+                                <?php endif; ?>
+                                
                                 <div class="clearfix small-font-size">
-                                <a href="update-profile.php?type=skills" id="" class="btn sec-btn capitalize pull-right">edit</a>
-                            </div>
+                                    <a href="update-profile.php?type=skills" id="" class="btn sec-btn capitalize pull-right">edit</a>
+                                </div>
 
                             </div>
 
@@ -339,15 +335,23 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                             </div>
                             <div class="p-light-bottom-breather p-mid-side-breather">
 
-                                <?php foreach($memberships as $member) : ?>
+                                <?php if(isset($memberships)): foreach($memberships as $member) : ?>
                                 <div class="m-light-top-breather">
                                     <p class="mid-font-size capitalize no-margin txt-bold">
-                                        <?php echo $member->organization; ?> </p>
+                                        <?php 
+                                            if(isset($member->organization)) {echo $member->organization; } 
+                                            else { echo "Nothing is on this field"; }
+                                        ?>
                                     <p class="small-font-size capitalize">
-                                        <?php echo $member->year; ?>
+                                        <?php 
+                                            if(isset($member->year)) {echo $member->year; } 
+                                            else { echo "Nothing is on this field"; }
+                                        ?>
                                     </p>
                                 </div>
-                                <?php endforeach; ?>
+                                <?php endforeach; else: ?>
+                                <p>You are not a member of any organization yet.</p>
+                                <?php endif; ?>
 
                                 <div class="clearfix small-font-size">
                                     <a href="update-profile.php?type=memberships" id="" class="btn sec-btn capitalize pull-right">edit</a>
@@ -369,14 +373,17 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                             </div>
                             <div class="p-light-bottom-breather p-mid-side-breather">
 
-                                <?php foreach($employmentHistory as $employment): ?>
+                                <?php if(isset($employmentHistory)): foreach($employmentHistory as $employment): ?>
 
                                 <div class="row m-vlight-breather">
                                     <div class="col-sm-4">
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">employer</p>
                                             <p class="small-font-size capitalize">
-                                                <?php echo $employment->employer; ?>
+                                                <?php 
+                                                    if(isset($employmentHistory->employer)) {echo $employmentHistory->employer; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
                                         </div>
                                     </div>
@@ -385,7 +392,10 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">job title</p>
                                             <p class="small-font-size capitalize">
-                                                <?php echo $employment->job_title; ?>
+                                                <?php 
+                                                    if(isset($employmentHistory->job_title)) {echo $employmentHistory->job_title; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
                                         </div>
                                     </div>
@@ -394,7 +404,10 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                         <div class="">
                                             <p class="mid-font-size capitalize no-margin txt-bold">time span</p>
                                             <p class="small-font-size capitalize">
-                                                <?php echo $employment->time_span; ?>
+                                                <?php 
+                                                    if(isset($employmentHistory->time_span)) {echo $employmentHistory->time_span; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                             </p>
                                         </div>
                                     </div>
@@ -405,22 +418,28 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                         <p class="mid-font-size capitalize no-margin txt-bold">Responsibilities</p>
                                         <p class="small-font-size capitalize">
                                             <?php echo $employment->responsibilities; ?>
+                                                <?php 
+                                                    if(isset($employmentHistory->responsibilities)) {echo $employmentHistory->responsibilities; } 
+                                                    else { echo "Nothing is on this field"; }
+                                                ?>
                                         </p>
                                     </div>
 
                                 </div>
                                 <hr>
 
-                                <?php endforeach; ?>
+                                <?php endforeach; else: ?>
+                                <p>You haven't added any employment history yet.</p>
+                                <?php endif; ?>
+
                                 <div class="clearfix small-font-size">
-                                    <a href="update-profile.php?type=employment_history" id="" class="btn sec-btn capitalize pull-right">edit</a>
+                                    <a href="update-profile.php?type=employment_history" class="btn sec-btn capitalize pull-right">edit</a>
                                 </div>
                             </div>
 
                         </div>
 
-                    </div>
-                    <!-- end employment history -->
+                    </div> <!-- end employment history -->
 
                     <!-- interests -->
                     <div class="m-mid-top-breather">
@@ -431,7 +450,13 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                             <div class="p-light-bottom-breather p-mid-side-breather">
 
                                 <p class="capitalize">
-                                    <?php foreach($interests as $interest){ echo $interest->interest . ", "; } ?>
+                                    <?php if(isset($interests)) {
+                                         foreach($interests as $interest){ echo $interest->interest . ", "; }
+                                         
+                                    } else {
+                                        echo "You haven't updated this section.";
+                                    }
+                                    ?>
                                 </p>
 
                                 <div class="clearfix small-font-size">

@@ -5,12 +5,13 @@ class Session {
     public $candidateID;
     public $employerID;
     public $message;
-    // public $errors;
+    public $errors;
 
     function __construct() {
         $this->checkMessage();
         $this->checkCandidateLogin();
         $this->checkEmployerLogin();
+        $this->checkErrors();
 
         if($this->candidateLoggedIn || $this->employerLoggedIn) {
             // session_regenerate_id(true);
@@ -98,7 +99,7 @@ class Session {
     }
 
     // session error display
-    /* private function checkErrors() {
+    private function checkErrors() {
         if(isset($_SESSION['errors'])) {
             $this->errors = $_SESSION['errors'];
             unset($_SESSION['errors']);
@@ -106,15 +107,15 @@ class Session {
             $this->errors = "";
         }
 
-    } */
+    }
     
-    // public function errors($errors = "") {
-    //     if(!empty($error)) {
-    //         $_SESSION['errors'] = $errors;
-    //     } else {
-    //         return $this->errors;
-    //     }
-    // }
+    public function errors($errors = "") {
+        if(!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+        } else {
+            return $this->errors;
+        }
+    }
 }
 
 $session = new Session();

@@ -46,3 +46,4 @@ require_once("interfaces.php");
 require_once("salaryRange.php");
 require_once("fileUpload.php");
 require_once("resumeUpload.php");
+require_once("applicants.php");

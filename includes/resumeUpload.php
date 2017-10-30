@@ -2,20 +2,20 @@
 
 class Resume extends FileUpload {
     protected static $table_name = "users";
-    public static $parentDir = "../uploads";
+    public static $parentDir = "../../uploads";
 
    
     public function upload() {
-        if(!empty($this->errors)) { return false; }
+        if(!empty($this->errors)) { exit; return false; }
 
         if(empty($this->filename) || empty($this->temp_path)) {
-                
+             
              $this->errors[] = "The file location was not available.";
                 return false;
             }
 
         if(!cvFormat($this->type)) {
-                
+            
                 $this->errors[]  = "The file uploaded is not in the right format. <br>"; 
                 $this->errors[] .= "Please make sure the document is in .pdf, .doc or .docx";
                 return false;
@@ -23,18 +23,19 @@ class Resume extends FileUpload {
             
         // check if file exists
         if(file_exists($this->targetPath())) {
-
+             
             $this->errors[] = "please, rename this file and resend.";
                 return false;
         }
 
         if(move_uploaded_file($this->temp_path, $this->targetPath())) {
-
+             
                 unset($this->temp_path);
                 return true;
             
         } else {                
-                // File was not moved.
+             
+              // File was not moved.
                 $this->errors[] = "The file upload failed, possibly due to incorrect permissions on the upload folder.";
                 return false;
             }

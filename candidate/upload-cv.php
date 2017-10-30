@@ -3,7 +3,7 @@ include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
  if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
- $user = findDetails($session->candidateID);
+ $user = User::findDetails($session->candidateID);
 
 // process form data 
 if(isset($_POST['submit'])) {
@@ -40,10 +40,8 @@ if(isset($_POST['submit'])) {
           }  
       }
   
-  }
+}
   
- 
-$user               = User::findDetails('1');
 $desiredJob         = DesiredJob::findAllUnderParent($user->id, "user_id");
 $schools            = School::findAllUnderParent($user->id, "user_id");
 $skills             = Skills::findAllUnderParent($user->id, "user_id");
@@ -64,80 +62,8 @@ $interests          = Interest::findAllUnderParent($user->id, "user_id");
 
                         <!-- sidebar -->
                         <div class="sidebar col-sm-4">
-
-                              <!-- about me -->
-                              <div class="light-bx-shadow m-mid-bottom-breather">
-                                    <div class="p-vlight-breather sec-bg p-mid-side-breather">
-                                          <p class="headfont uppercase no-margin text-center">about me</p>
-                                    </div>
-                                    <div class="p-mid-side-breather p-light-breather">
-
-                                          <div class="row m-mid-bottom-breather">
-
-                                                <div class="col-sm-4 bioimage">
-                                                      <img class="img-center img-circle" src="../img/candidate-placeholder.jpg" alt="">
-                                                </div>
-
-                                                <div class="col-sm-8 bio-details">
-                                                      <p class="headfont lead no-margin">
-                                                            <?php echo $user->fullName(); ?>
-                                                      </p>
-                                                      <!-- <p class="mid-font-size no-margin">PHP Developer | Lagos</p> -->
-                                                      <p class="mid-font-size">
-                                                            <?php echo $user->email; ?>
-                                                      </p>
-                                                      <p class="mid-font-size no-margin"><span class="txt-bold">Mobile:</span>
-                                                            <?php echo $user->phone; ?>
-                                                      </p>
-                                                      <p class="mid-font-size"><span class="txt-bold">D.O.B: </span>
-                                                            <?php echo $user->dob; ?>
-                                                      </p>
-
-                                                </div>
-                                          </div>
-
-                                          <!-- progress-bar -->
-                                          <p class="no-margin small-font-size secheadfont capitalize">profile strength: 65%</p>
-                                          <progress max="100" value="65" class=" m-vlight-bottom-breather">
-                                                <!-- Browsers that support HTML5 progress element will ignore the html inside `progress` element. Whereas older browsers will ignore the `progress` element and instead render the html inside it. -->
-                                                <div class="progress-bar">
-                                                      <span style="width: 65%; height: inherit;"></span>
-                                                </div>
-                                          </progress>
-                                          <!-- end .progress-bar -->
-
-                                    </div>
-                              </div>
-
-                              <!-- shortlisted jobs -->
-                              <div class="light-bx-shadow m-mid-bottom-breather">
-                                    <div class="p-vlight-breather sec-bg p-mid-side-breather">
-                                          <p class="headfont uppercase no-margin text-center">shortlisted jobs</p>
-                                    </div>
-                                    <div class="p-mid-side-breather p-light-breather">
-                                          <p class="">You haven't shortlisted any jobs</p>
-                                    </div>
-                              </div>
-
-                              <!-- applied jobs -->
-                              <div class="light-bx-shadow m-mid-bottom-breather">
-                                    <div class="p-vlight-breather sec-bg p-mid-side-breather">
-                                          <p class="headfont uppercase no-margin text-center">applied jobs</p>
-                                    </div>
-                                    <div class="p-mid-side-breather p-light-breather">
-                                          <p class="">You haven't applied for any job</p>
-                                    </div>
-                              </div>
-
-
-                              <!-- sidebar form-->
-                              <div class="light-bx-shadow m-mid-bottom-breather">
-
-                                    <?php echo sideSearch($states, $seperator); ?>
-
-                              </div>
+                              <?php echo candidateSidebar($user); ?>
                         </div>
-
                         <!-- mainbar -->
                         <div class="col-sm-8 mainbar">
 
@@ -156,11 +82,15 @@ $interests          = Interest::findAllUnderParent($user->id, "user_id");
                                           ?>
 
                                           <!-- cv form -->
-                                          <form method="post" action="#" enctype="multipart/form-data">
+                                          <form method="post" action="" enctype="multipart/form-data">
                                                 <div class="m-light-bottom-breather">
                                                       <ul class="no-list-style no-left-padding">
-                                                            <li>The file size must not be more than <span class="txt-bold">500KB</span></li>
-                                                            <li>File format must be any of these: <span class="txt-bold">.pdf, .docx, .doc </span></li>
+                                                            <li>The file size must not be more than
+                                                                  <span class="txt-bold">500KB</span>
+                                                            </li>
+                                                            <li>File format must be any of these:
+                                                                  <span class="txt-bold">.pdf, .docx, .doc </span>
+                                                            </li>
                                                       </ul>
                                                 </div>
 

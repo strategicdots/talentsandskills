@@ -51,14 +51,14 @@ if(isset($_POST['submit'])) {
 
         } else {
             // check if it's a temporary user
-            $temp_user = new TempUser();
+            /* $temp_user = new TempUser();
             if($temp_user->temporary_user($email)) {
                 $session->message("Your account is unverified, please enter your email to verify your account.");
                 redirect_to("../verification/");
             } else {
                 $session->message("The records for this email is not found");
                 redirect_to("{$seperator}login.php"); 
-            }
+            } */
         }
     } else {
         $_SESSION['errors'] = $errors;

@@ -54,6 +54,29 @@ class User extends DatabaseObject {
         }
     }
 
+    public function testCreate() {
+        global $database;
+        $hashed_password = password_encrypt($this->password);
+
+        $sql  = "INSERT INTO " . self::$table_name . " ( ";
+        $sql .= "firstname, lastname, phone, email, candidate, password ";
+        $sql .= ") VALUES ('";
+        $sql .= $database->escapeValue($this->firstname) . "', '";
+        $sql .= $database->escapeValue($this->lastname) . "', '";
+        $sql .= $database->escapeValue($this->phone) . "', '";
+        $sql .= $database->escapeValue($this->email) . "', '";
+        $sql .= $database->escapeValue($this->candidate) . "', '";
+        $sql .= $hashed_password . "')";
+
+        if($database->query($sql)) {
+            $this->id = $database->insertID();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     public function update() {
         global $database;
 

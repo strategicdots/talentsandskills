@@ -32,7 +32,12 @@ class DatabaseObject {
             $sql .= " ORDER BY id DESC";
         }
 
-        return static::findBySQLQuery($sql);
+        $result = static::findBySQLQuery($sql);
+        if($result) {
+            return $result;
+        } else {
+            return null;
+        }
     }
 
     public static function findBySQLQuery($sql="") {
@@ -47,14 +52,14 @@ class DatabaseObject {
         if($objectArray) {
             return $objectArray;
         } else {
-            return false;
+            return null;
         }
     } 
 
     public static function instantiate($record) {
         $object = new static;
 
-        if($object) { 
+        if(!empty($record)) { 
             foreach($record as $attribute=>$value) {
                 if($object->hasAttribute($attribute)) {
                     $object->$attribute = $value;
@@ -89,9 +94,15 @@ class DatabaseObject {
     public static function findDetails($id) {
         global $database;
         $sql = "SELECT * FROM ". static::$table_name . " WHERE id = '{$database->escapeValue($id)}' LIMIT 1";
+  
         $result_array = $database->fetchArray($database->query($sql));
-        $object_array = static::instantiate($result_array);
-        return $object_array;
+        
+        if(!empty($result_array)) { 
+            $object_array = static::instantiate($result_array);
+            return $object_array;
+        } else {
+            return false;
+        }
 
     }
     

@@ -20,6 +20,206 @@ $day = date('d', $time);  $month = date('m', $time);  $year = date('Y', $time);
         <div class="container">
 
             <div class="row">
+
+                <!-- mainbar -->
+                <div class="col-sm-9 mainbar">
+
+                    <div class="jobs">
+                        <div class="light-bx-shadow">
+                            <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
+                                <p class="headfont uppercase no-margin">create a job posting</p>
+                            </div>
+                            <div class="p-mid-bottom-breather p-mid-side-breather">
+                                <?php echo inline_errors(); ?>
+                                <form method="post" action="../control/employer/job.php">
+                                    <input type="hidden" name="type" value="post">
+                                    <p class="headfont brandtxt-color capitalize">job prerequisites</p>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+
+                                            <!-- job title -->
+                                            <div class="form-group">
+                                                <label class="capitalize small-font-size">Job title </label>
+                                                <input class="form-control" name="title" placeholder="Enter your job title" value="">
+                                            </div>
+
+                                            <!-- job field -->
+                                            <div class="form-group">
+                                                <label class="capitalize small-font-size">field </label>
+                                                <select name="job_field" class="form-control">
+                                                    <?php foreach($jobFields as $field): ?>
+                                                    <option value="<?php echo ($field->name); ?>">
+                                                        <?php echo ucwords($field->name); ?>
+                                                    </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+
+                                            <!-- candidate qualification -->
+                                            <div class="form-group">
+                                                <label class="capitalize small-font-size">candidate qualification </label>
+                                                <select name="qualification" class="form-control">
+                                                    <?php foreach($jobQualification as $name): ?>
+                                                    <option value="<?php echo $name->qualification; ?>">
+                                                        <?php echo ucwords($name->qualification); ?>
+                                                    </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+
+                                            <!-- candidate experience -->
+                                            <div class="form-group">
+                                                <label class="capitalize small-font-size">Candidate experience </label>
+                                                <select name="job_experience" class="form-control">
+                                                    <?php $n = 0; foreach($jobExperience as $experience): ?>
+                                                    <option value="<?php echo $experience->years; ?>">
+
+                                                        <?php if($n>0) {echo $experience->years . "years";}
+                                                        else{ echo $experience->years; } $n++;
+                                                        ?>
+
+                                                    </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+
+                                            <!-- job deadline -->
+                                            <div class="form-group">
+                                                <label class="capitalize small-font-size">Job deadline </label>
+                                                <div class="row">
+
+                                                    <!-- deadline day -->
+                                                    <div class="col-sm-4">
+                                                        <select name="d" class="form-control">
+
+                                                            <?php for($i = 1; $i<=31; $i++): if($i > $day): if($i<=9): ?>
+                                                            <option value="<?php echo $i; ?>">0
+                                                                <?php echo $i; ?>
+                                                            </option>
+
+                                                            <?php else : ?>
+                                                            <option value="<?php echo $i; ?>">
+                                                                <?php echo $i; ?>
+                                                            </option>
+                                                            <?php endif; endif; endfor; ?> ?>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <!-- deadline month -->
+                                                    <div class="col-sm-4">
+                                                        <select name="m" class="form-control">
+
+                                                            <?php for($i = 1; $i<=12; $i++): if($i >= $month): if($i<=9): ?>
+                                                            <option value="<?php echo $i; ?>">0
+                                                                <?php echo $i; ?>
+                                                            </option>
+
+                                                            <?php else : ?>
+                                                            <option value="<?php echo $i; ?>">
+                                                                <?php echo $i; ?>
+                                                            </option>
+                                                            <?php endif; endif; endfor; ?> ?>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <!-- deadline year -->
+                                                    <div class="col-sm-4">
+                                                        <select name="y" class="form-control">
+
+                                                            <?php for($i = $year; $i<=($year+1); $i++): if($i >= $year): if($i<=9): ?>
+                                                            <option value="<?php echo $i; ?>">0
+                                                                <?php echo $i; ?>
+                                                            </option>
+
+                                                            <?php else : ?>
+                                                            <option value="<?php echo $i; ?>">
+                                                                <?php echo $i; ?>
+                                                            </option>
+                                                            <?php endif; endif; endfor; ?> ?>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+
+                                            <!-- job type -->
+                                            <div class="form-group">
+                                                <label class="capitalize small-font-size">Job Type </label>
+                                                <select name="job_type" class="form-control">
+                                                    <?php foreach($jobType as $type): ?>
+                                                    <option value="<?php echo $type->type; ?>">
+                                                        <?php echo ucwords($type->type); ?>
+                                                    </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+
+                                            <!-- job location -->
+                                            <div class="form-group">
+                                                <label class="capitalize small-font-size">Job Location </label>
+                                                <select name="location" class="form-control">
+                                                    <?php foreach($states as $state): ?>
+                                                    <option value="<?php echo $state->name; ?>">
+                                                        <?php echo ucwords($state->name); ?>
+                                                    </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+
+                                            <!-- salary range -->
+                                            <div class="form-group">
+                                                <label class="capitalize small-font-size">salary range </label>
+                                                <select name="salary_range" class="form-control">
+                                                    <?php foreach($salaryRange as $range): ?>
+                                                    <option value="<?php echo $range->salary_range; ?>">
+                                                        <?php echo formatSalaryRange($range->salary_range); ?>
+                                                    </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+
+                                            <!-- keywords -->
+                                            <div class="form-group">
+                                                <label class="capitalize small-font-size">job keywords </label>
+                                                <input type="text" class="form-control" name="keywords" placeholder="seperate each keyword with a comma(,)">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <hr>
+
+                                    <!-- job description -->
+                                    <div classs="">
+                                        <p class="headfont brandtxt-color capitalize">job description</p>
+                                        <div class="form-group">
+                                            <p class="small-font-size">
+                                                <span class="txt-bold brandtxt-color">NB: </span>Describe the nature of the job in details.
+                                                <br> Remember to list out
+                                                <span class="txt-bold uppercase">responsibities of candidates and job requirements. </span>
+                                            </p>
+                                            <textarea name="description" id="" class="form-control m-mid-bottom-breather ckeditor"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="m-mid-top-breather sm-container">
+                                        <input class="btn sec-btn form-control" type="submit" name="submit" value="Confirm and Post Job">
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- sidebar -->
                 <div class="sidebar col-sm-3">
 
@@ -64,7 +264,9 @@ $day = date('d', $time);  $month = date('m', $time);  $year = date('Y', $time);
                                     <label class="capitalize">field</label>
                                     <select name="job_field" class="form-control">
                                         <?php foreach($jobFields as $field): ?>
-                                        <option value="<?php echo $field->name; ?>"><?php echo $field->name; ?></option>
+                                        <option value="<?php echo $field->name; ?>">
+                                            <?php echo $field->name; ?>
+                                        </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -79,199 +281,6 @@ $day = date('d', $time);  $month = date('m', $time);  $year = date('Y', $time);
 
                 </div>
                 <!-- end .sidebar -->
-
-                <!-- mainbar -->
-                <div class="col-sm-9 mainbar">
-
-                    <div class="jobs">
-                        <div class="light-bx-shadow">
-                            <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
-                                <p class="headfont uppercase no-margin">create a job posting</p>
-                            </div>
-                            <div class="p-mid-bottom-breather p-mid-side-breather">
-
-                                <form method="post" action="../control/employer/job.php">
-                                    <input type="hidden" name="type" value="post">
-                                    <p class="headfont brandtxt-color capitalize">job prerequisites</p>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-
-                                            <!-- job title -->
-                                            <div class="form-group">
-                                                <label class="capitalize small-font-size">Job title </label>
-                                                <input class="form-control" name="title" placeholder="Enter your job title" value="<?php if(isset($_POST['title'])) { echo $_POST['title']; } else {echo "";}?>">
-                                            </div>
-
-                                            <!-- job field -->
-                                            <div class="form-group">
-                                                <label class="capitalize small-font-size">field </label>
-                                                <select name="job_field" class="form-control">
-                                                    <?php foreach($jobFields as $field): ?>
-                                                    <option value="<?php echo ($field->name); ?>"> <?php echo ucwords($field->name); ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-
-                                            <!-- candidate qualification -->
-                                            <div class="form-group">
-                                                <label class="capitalize small-font-size">candidate qualification </label>
-                                                <select name="qualification" class="form-control">
-                                                    <?php foreach($jobQualification as $name): ?>
-                                                    <option value="<?php echo $name->qualification; ?>"> <?php echo ucwords($name->qualification); ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-
-                                            <!-- candidate experience -->
-                                            <div class="form-group">
-                                                <label class="capitalize small-font-size">Candidate experience </label>
-                                                <select name="job_experience" class="form-control">
-                                                    <?php $n = 0; foreach($jobExperience as $experience): ?>
-                                                    <option value="<?php echo $experience->years; ?>"> 
-
-                                                        <?php if($n>0) {echo $experience->years . "years";}
-                                                        else{ echo $experience->years; } $n++;
-                                                        ?>
-
-                                                    </option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-
-                                            <!-- job deadline -->
-                                            <div class="form-group">
-                                                <label class="capitalize small-font-size">Job deadline </label>
-                                                <div class="row">
-
-                                                    <!-- deadline day -->
-                                                    <div class="col-sm-4">
-                                                        <select name="d" class="form-control">
-
-                                                            <?php for($i = 1; $i<=31; $i++): if($i > $day): if($i<=9): ?>
-                                                            <option value="<?php echo $i; ?>">0<?php echo $i; ?></option>
-
-                                                            <?php else : ?>
-                                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                                                            <?php endif; endif; endfor; ?> ?>
-
-                                                        </select>
-                                                    </div>
-
-                                                    <!-- deadline month -->
-                                                    <div class="col-sm-4">
-                                                        <select name="m" class="form-control">
-
-                                                            <?php for($i = 1; $i<=12; $i++): if($i >= $month): if($i<=9): ?>
-                                                            <option value="<?php echo $i; ?>">0<?php echo $i; ?></option>
-
-                                                            <?php else : ?>
-                                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                                                            <?php endif; endif; endfor; ?> ?>
-
-                                                        </select>
-                                                    </div>
-
-                                                    <!-- deadline year -->
-                                                    <div class="col-sm-4">
-                                                        <select name="y" class="form-control">
-
-                                                            <?php for($i = $year; $i<=($year+1); $i++): if($i >= $year): if($i<=9): ?>
-                                                            <option value="<?php echo $i; ?>">0<?php echo $i; ?></option>
-
-                                                            <?php else : ?>
-                                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                                                            <?php endif; endif; endfor; ?> ?>
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-6">
-
-                                            <!-- job type -->
-                                            <div class="form-group">
-                                                <label class="capitalize small-font-size">Job Type </label>
-                                                <select name="job_type" class="form-control">
-                                                    <?php foreach($jobType as $type): ?>
-                                                    <option value="<?php echo $type->type; ?>"> <?php echo ucwords($type->type); ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-
-                                            <!-- job location -->
-                                            <div class="form-group">
-                                                <label class="capitalize small-font-size">Job Location </label>
-                                                <select name="location" class="form-control">
-                                                    <?php foreach($states as $state): ?>
-                                                    <option value="<?php echo $state->name; ?>"> <?php echo ucwords($state->name); ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-
-                                            <!-- salary range -->
-                                            <div class="form-group">
-                                                <label class="capitalize small-font-size">salary range </label>
-                                                <select name="salary_range" class="form-control">
-                                                    <?php foreach($salaryRange as $range): ?>
-                                                    <option value="<?php echo $range->salary_range; ?>"> <?php echo formatSalaryRange($range->salary_range); ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-
-                                            <!-- keywords -->
-                                            <div class="form-group">
-                                                <label class="capitalize small-font-size">job keywords </label>
-                                                <input type="text" class="form-control" name="keywords" placeholder="seperate each keyword with a comma(,)">
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <hr>
-
-                                    <!-- job description -->
-                                    <div classs="">
-                                        <p class="headfont brandtxt-color capitalize">job description</p>
-                                        <div class="form-group">
-                                            <p class="small-font-size">Describe the nature of the job in details</p>
-                                            <textarea name="description" id="" class="form-control m-mid-bottom-breather" rows="10"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <!-- job requirements -->
-                                    <div classs="">
-                                        <p class="headfont brandtxt-color capitalize">job requirements</p>
-                                        <div class="form-group">
-                                            <p class="small-font-size"><span class="txt-bold brandtxt-color">NB: </span>List as many requirements as
-                                                you want. Start each requirement in a <span class="txt-bold uppercase">new line</span></p>
-                                            <textarea name="requirements" id="" class="form-control m-mid-bottom-breather" rows="10"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <!-- job responsibilities -->
-                                    <div classs="">
-                                        <p class="headfont brandtxt-color capitalize">job responsibilities</p>
-                                        <div class="form-group">
-                                            <p class="small-font-size"><span class="txt-bold brandtxt-color">NB: </span>List as many candidate responsibilities
-                                                as you want. Start each responsibility in a <span class="txt-bold uppercase">new line</span></p>
-                                            <textarea name="responsibilities" id="" class="form-control m-mid-bottom-breather" rows="10"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="m-mid-top-breather sm-container">
-                                        <input class="btn sec-btn form-control" type="submit" name="submit" value="Confirm and Post Job">
-                                    </div>
-
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
             </div>
             <!-- end .featured-jobs-->

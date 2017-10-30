@@ -14,20 +14,15 @@ class Jobs extends DatabaseObject {
     public $keywords;
     public $job_experience;
     public $description;
-    public $responsibilities;
-    public $requirements;
     public $qualification;
-
-    public $employer;
-    public $job_level;
-    
+    public $appicants;    
 
     public function create() {
         global $database;
 
         $sql  = "INSERT INTO " . self::$table_name . " ( ";
         $sql .= "employer_id, title, job_field, job_type, location, salary_range, deadline, ";
-        $sql .= "keywords, job_experience, description, responsibilities, requirements, qualification ";
+        $sql .= "keywords, job_experience, description, qualification ";
         $sql .= ") VALUES ('";
         $sql .= $database->escapeValue($this->employer_id) . "', '";
         $sql .= $database->escapeValue($this->title) . "', '";
@@ -39,8 +34,6 @@ class Jobs extends DatabaseObject {
         $sql .= $database->escapeValue($this->keywords) . "', '";
         $sql .= $database->escapeValue($this->job_experience) . "', '";
         $sql .= $database->escapeValue($this->description) . "', '";
-        $sql .= $database->escapeValue($this->responsibilities) . "', '";
-        $sql .= $database->escapeValue($this->requirements) . "', '";
         $sql .= $database->escapeValue($this->qualification) . "')";
 
         // echo $sql; exit;
@@ -52,6 +45,20 @@ class Jobs extends DatabaseObject {
         }
     }
 
+    public function delete() {
+        global $database;
+
+        $sql  = "DELETE from " . self::$table_name;
+        $sql .= " WHERE id = " . $database->escapeValue($this->id);
+        $sql .= " LIMIT 1";
+
+        if($database->query($sql)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 
     public function update() {
         global $database;
@@ -114,7 +121,7 @@ class Jobs extends DatabaseObject {
 
     }
 
-    public static function featuredJobs() {
+    public static function newJobs() {
         $sql = "SELECT * FROM " . self::$table_name . " ORDER BY id DESC LIMIT 5 ";
 
         $jobObjects = self::findBySQLQuery($sql);

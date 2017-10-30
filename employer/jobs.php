@@ -1,11 +1,21 @@
-<?php $thisPage = "dashboard"; $seperator="../"; 
+<?php $thisPage = "jobs"; $seperator="../"; 
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
 if (!$session->isEmployerLoggedIn()) {redirect_to("{$seperator}login.php"); } 
- 
 $employer = Employer::findDetails($session->employerID);
-$jobsPosted = Jobs::findAllUnderParent($employer->id, "employer_id", $order = true);
+
+// $_GET['id'] must be set
+if(!isset($_GET['id']) || empty($_GET['id'])) { redirect_to("dashboard.php"); }
+
+$job = Jobs::findDetails(trim($_GET['id']));
+
+//check if job is from employer
+if($job->employer_id !== $employer->id) { redirect_to("dashboard.php"); }
+
+// find applicants for job
+$applicants = Applicants::findAllUnderParent($job->id, "job_id");
+if(!empty($applicants)) { $applicantsNumber = count($applicants); };
 
 ?>
 
@@ -19,6 +29,7 @@ $jobsPosted = Jobs::findAllUnderParent($employer->id, "employer_id", $order = tr
         <div class="container">
 
             <div class="row">
+
                 <!-- sidebar -->
                 <div class="sidebar col-sm-4">
 
@@ -53,19 +64,21 @@ $jobsPosted = Jobs::findAllUnderParent($employer->id, "employer_id", $order = tr
                         </div>
 
                         <div class="p-mid-side-breather p-light-breather">
-                            <form method="post" action="create-job.php">
+                            <form method="post" action="../control/employer/create-job.php">
                                 <div class="form-group">
                                     <label class="capitalize">job title</label>
-                                    <input type="text" name="title" class="form-control" placeholder="Enter Your Job Title">
+                                    <input type="text" name="job_title" class="form-control" placeholder="Enter Your Job Title">
                                 </div>
 
                                 <div class="form-group">
                                     <label class="capitalize">field</label>
                                     <select name="job_field" class="form-control">
                                         <?php foreach($jobFields as $field): ?>
-                                        <option value="<?php echo $field->name; ?>"><?php echo $field->name; ?></option>
+                                        <option value="<?php echo $field->name; ?>">
+                                            <?php echo $field->name; ?>
+                                        </option>
                                         <?php endforeach; ?>
-                                        </select>
+                                    </select>
                                 </div>
                                 <input type="submit" value="Start" class="btn sec-btn heavy-font-size form-control">
                             </form>
@@ -77,67 +90,44 @@ $jobsPosted = Jobs::findAllUnderParent($employer->id, "employer_id", $order = tr
                     </div>
 
                 </div>
+                <!-- end .sidebar -->
 
                 <!-- mainbar -->
-                <div class="col-sm-8 mainbar">
-
-                    <div class="jobs m-mid-bottom-breather">
-                        <div class="light-bx-shadow">
-                            <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
-                                <p class="headfont uppercase no-margin">your job postings</p>
-                            </div>
-                            <div class="p-light-bottom-breather p-mid-side-breather">
-
-                                <?php echo inline_message(); ?>
-
-                                <?php if(!$jobsPosted): ?>
-                                <p>You don't have any job postings yet. <a href="create-job.php">Click Here</a> to create one</p>
-
-                                <?php else: ?>
-
-                                <?php echo jobPosted($jobsPosted); ?>
-                                
-                                <?php endif; ?>
-                            </div>
-
+                <div class="jobs m-mid-top-breather col-sm-8">
+                    <div class="light-bx-shadow m-mid-bottom-breather">
+                        <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
+                            <p class="headfont uppercase no-margin text-center">job title: <?php echo $job->title; ?></p>
                         </div>
 
-                    </div> <!-- end jobs-->
-                    
-                    <!-- orders -->
-                    <div class="orders m-mid-bottom-breather">
-                        <div class="light-bx-shadow">
-                            <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
-                                <p class="headfont uppercase no-margin">my orders</p>
-                            </div>
-                            <div class="p-light-bottom-breather p-mid-side-breather">
-                                <p>You don't have any order.</p>
-                            </div>
-
+                        <?php if(!$applicants): ?>
+                        <div class="text-center">
+                            <p class="lead capitalize"> No application has been received for this job</p>
                         </div>
 
-                    </div> <!-- end orders-->
-
-                    <!-- settings -->
-                    <div class="orders m-mid-bottom-breather">
-                        <div class="light-bx-shadow">
-                            <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
-                                <p class="headfont uppercase no-margin">settings</p>
-                            </div>
-                            <div class="p-light-bottom-breather p-mid-side-breather">
-                                <p></p>
-                            </div>
-
+                        <?php else: ?>
+                        <div class="text-center">
+                            <p class="lead capitalize">
+                                <?php echo $applicantsNumber; ?> 
+                                <?php if($applicantsNumber > 1) { echo "applications"; } else { echo "application"; } ?>
+                                received</p>
                         </div>
+                    </div>
 
-                    </div> <!-- end orders-->
+                    <?php foreach($applicants as $applicant):  
+                    $candidate = User::findDetails($applicant->user_id); 
+                    ?> 
+
+                    <?php endforeach; endif; ?>
 
                 </div>
-                <!-- end .mainbar -->
+
 
             </div>
-            <!-- end .sidebar -->
+            <!-- end .featured-jobs-->
+
         </div>
+        <!-- end .mainbar -->
+
     </div>
 
 </div>
