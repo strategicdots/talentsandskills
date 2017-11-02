@@ -5,7 +5,7 @@ include_once("{$seperator}includes/initialize.php");
 if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 
 /* candidate details */
-$user = User::findDetails($session->candidateID);
+$candidate = Candidate::findDetails($session->candidateID);
 
 /* check ID of job */
 if(!$_GET && !isset($_GET['id'])) { redirect_to("job-search.php"); }
@@ -38,7 +38,7 @@ if(isset($_POST['submit'])) {
                     if($resume->updateDB($session->candidateID)) {
                           $application = new Application();
 
-                          $application->user_id = $user->id;
+                          $application->user_id = $candidate->id;
                           $application->job_id = $job->id;
                           $application->motivation_letter = htmlentities(trim($_POST['editor']));
 
@@ -105,7 +105,7 @@ if(isset($_POST['submit'])) {
 
                                                 <div class="p-mid-side-breather small-font-size m-light-top-breather">
 
-                                                      <?php if(!$user->cv_path): ?>
+                                                      <?php if(!$candidate->cv_path): ?>
                                                       <p class="no-margin txt-bold">You haven't uploaded a resume to your account</p>
                                                       <p class="">Upload from your computer now.</p>
                                                       <input type="file" name="cv">

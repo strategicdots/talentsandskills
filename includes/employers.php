@@ -1,18 +1,13 @@
 <?php require_once('initialize.php');
 
-class Employer extends DatabaseObject {
+class Employer extends User {
     protected static $table_name="users";
-    public $id;
-    public $company_name;
-    public $about_company;
-    public $firstname;
-    public $lastname;
-    public $phone;
-    public $email;
-    public $job_field;
-    public $avatar_url;
-    public $password;
 
+    public $company_name; 
+    public $about_company;
+    public $job_field;
+    public $employer;
+    
     public function create() {
         global $database;
         $hashedPassword = password_encrypt($this->password);
@@ -30,6 +25,28 @@ class Employer extends DatabaseObject {
         $sql_query .= $hashedPassword . "')";
 
         if($database->query($sql_query)) {
+            $this->id = $database->insertID();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function testCreate() {
+        global $database;
+        $hashed_password = password_encrypt($this->password);
+
+        $sql  = "INSERT INTO " . self::$table_name . " ( ";
+        $sql .= "company_name, job_field, phone, email, employer, password ";
+        $sql .= ") VALUES ('";
+        $sql .= $database->escapeValue($this->company_name) . "', '";
+        $sql .= $database->escapeValue($this->job_field) . "', '";
+        $sql .= $database->escapeValue($this->phone) . "', '";
+        $sql .= $database->escapeValue($this->email) . "', '";
+        $sql .= $database->escapeValue($this->employer) . "', '";
+        $sql .= $hashed_password . "')";
+
+        if($database->query($sql)) {
             $this->id = $database->insertID();
             return true;
         } else {

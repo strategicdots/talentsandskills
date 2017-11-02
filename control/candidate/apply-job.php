@@ -20,7 +20,7 @@ if(isset($_POST['submit'])) {
                     if($resume->updateDB($session->candidateID)) {
                           $application = new Application();
 
-                          $application->user_id = $user->id;
+                          $application->user_id = $candidate->id;
                           $application->job_id = $job->id;
                           $application->motivation_letter = trim($_POST['editor']);
 

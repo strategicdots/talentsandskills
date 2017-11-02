@@ -47,17 +47,17 @@ switch($_POST['update_type']) {
         }
 
         // else continue
-        $user = User::findDetails($session->candidateID);
+        $candidate = Candidate::findDetails($session->candidateID);
 
-        $user->phone         = trim($_POST['phone']); 
-        $user->email         = trim($_POST['email']); 
-        $user->employer      = trim($_POST['employer']); 
-        $user->address       = trim($_POST['address']); 
-        $user->personal_statement       = trim($_POST['personal_statement']); 
-        $user->location      = trim($_POST['location']); 
-        $user->dob           = trim($_POST['dob_d']) . "/" . trim($_POST['dob_m']) . "/" . trim($_POST['dob_y']); 
+        $candidate->phone         = trim($_POST['phone']); 
+        $candidate->email         = trim($_POST['email']); 
+        $candidate->employer      = trim($_POST['employer']); 
+        $candidate->address       = trim($_POST['address']); 
+        $candidate->personal_statement       = trim($_POST['personal_statement']); 
+        $candidate->location      = trim($_POST['location']); 
+        $candidate->dob           = trim($_POST['dob_d']) . "/" . trim($_POST['dob_m']) . "/" . trim($_POST['dob_y']); 
 
-        if($user->update()) {
+        if($candidate->update()) {
             $session->message("personal details updated successfully");
             redirect_to("{$seperator}candidate/my-profile.php");
 

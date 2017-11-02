@@ -42,15 +42,6 @@ class FormValidation {
         }
     }
 
-    public function isUnique($value, $table, $column) {
-        global $database;
-        $escaped_value = $database->escape_value($value);
-        $sql = "SELECT COUNT(*) as count FROM {$table} WHERE {$column} = '{$escaped_value}'";
-        /* $result = mysqli_query($open_conn, $sql);
-        if($result <= 0) {
-            return true;*/
-    }
-
     public function formErrors($errors = []) {
         $output = "";
         if (!empty($errors)) {

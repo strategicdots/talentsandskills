@@ -4,13 +4,13 @@ include_once("{$seperator}includes/initialize.php");
 /* check user status */
 if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
  
-$user               = User::findDetails($session->candidateID);
-$desiredJob         = DesiredJob::findAllUnderParent($user->id, "user_id");
-$schools            = School::findAllUnderParent($user->id, "user_id");
-$skills             = Skills::findAllUnderParent($user->id, "user_id");
-$memberships        = Membership::findAllUnderParent($user->id, "user_id");
-$employmentHistory  = EmploymentHistory::findAllUnderParent($user->id, "user_id");
-$interests          = Interest::findAllUnderParent($user->id, "user_id");
+$candidate          = Candidate::findDetails($session->candidateID);
+$desiredJob         = DesiredJob::findAllUnderParent($candidate->id, "user_id");
+$schools            = School::findAllUnderParent($candidate->id, "user_id");
+$skills             = Skills::findAllUnderParent($candidate->id, "user_id");
+$memberships        = Membership::findAllUnderParent($candidate->id, "user_id");
+$employmentHistory  = EmploymentHistory::findAllUnderParent($candidate->id, "user_id");
+$interests          = Interest::findAllUnderParent($candidate->id, "user_id");
 ?>
 
 <!-- header -->
@@ -25,7 +25,7 @@ $interests          = Interest::findAllUnderParent($user->id, "user_id");
 
                 <!-- sidebar -->
                 <div class="sidebar col-sm-4">
-                    <?php echo candidateSidebar($user); ?>
+                    <?php echo candidateSidebar($candidate); ?>
                 </div>
 
                 <!-- mainbar -->
@@ -61,7 +61,7 @@ $interests          = Interest::findAllUnderParent($user->id, "user_id");
                     </div> -->
                     <!-- end .biodata -->
 
-                    <?php if(empty($user->cv_path)) : ?>
+                    <?php if(empty($candidate->cv_path)) : ?>
                     <div class="m-mid-bottom-breather">
                         <div class="light-bx-shadow">
                             <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
@@ -135,7 +135,7 @@ $interests          = Interest::findAllUnderParent($user->id, "user_id");
                                             <p class="mid-font-size capitalize no-margin txt-bold">Email</p>
                                             <p class="small-font-size">
                                                 <?php 
-                                                    if(isset($user->email)) {echo $user->email; } 
+                                                    if(isset($candidate->email)) {echo $candidate->email; } 
                                                     else { echo "You don't have any email in our records"; }
                                                 ?>
                                             </p>
@@ -147,7 +147,7 @@ $interests          = Interest::findAllUnderParent($user->id, "user_id");
                                             <p class="mid-font-size capitalize no-margin txt-bold">Phone Number</p>
                                             <p class="small-font-size">
                                                 <?php 
-                                            if(isset($user->phone)) {echo $user->phone; } 
+                                            if(isset($candidate->phone)) {echo $candidate->phone; } 
                                             else { echo "You don't have any phone number in our records"; }
                                         ?>
                                             </p>
@@ -160,7 +160,7 @@ $interests          = Interest::findAllUnderParent($user->id, "user_id");
                                             <p class="mid-font-size capitalize no-margin txt-bold">Date of Birth</p>
                                             <p class="small-font-size">
                                                 <?php 
-                                            if(isset($user->dob)) {echo $user->dob; } 
+                                            if(isset($candidate->dob)) {echo $candidate->dob; } 
                                             else { echo "You haven't updated your date of birth"; }
                                         ?>
                                             </p>
@@ -175,7 +175,7 @@ $interests          = Interest::findAllUnderParent($user->id, "user_id");
                                             <p class="mid-font-size capitalize no-margin txt-bold">Gender</p>
                                             <p class="small-font-size">
                                                 <?php 
-                                                    if(isset($user->gender)) {echo $user->gender; } 
+                                                    if(isset($candidate->gender)) {echo $candidate->gender; } 
                                                     else { echo "You haven't updated your gender status"; }
                                                 ?>
                                             </p>
@@ -187,7 +187,7 @@ $interests          = Interest::findAllUnderParent($user->id, "user_id");
                                             <p class="mid-font-size capitalize no-margin txt-bold">Location</p>
                                             <p class="small-font-size">
                                                 <?php 
-                                                    if(isset($user->location)) {echo $user->location; } 
+                                                    if(isset($candidate->location)) {echo $candidate->location; } 
                                                     else { echo "You haven't updated your current location"; }
                                                 ?>
                                             </p>

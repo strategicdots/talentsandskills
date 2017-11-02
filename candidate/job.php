@@ -55,33 +55,14 @@ if($job->deadline > strtotime("now")) {
                         </div>
                         <?php endif; ?>
 
-                        <?php if(!empty($job->description)): ?>
                         <!-- job description -->
+                        <?php if(!empty($job->description)): ?>
                         <div class="m-mid-top-breather">
                             <p class="lead no-margin txt-bold capitalize">job description</p>
-                            <p>
-                                <?php echo nl2br($job->description); ?> </p>
+                                <?php echo nl2br(htmlspecialchars_decode($job->description)); ?> 
                         </div>
                         <?php endif; ?>
-
-                        <?php if(!empty($job->requirements)): ?>
-                        <!-- job requirements -->
-                        <div class="m-mid-top-breather">
-                            <p class="lead no-margin txt-bold capitalize">requirements</p>
-                            <p>
-                                <?php echo nl2br($job->requirements); ?> </p>
-                        </div>
-                        <?php endif; ?>
-
-                        <?php if(!empty($job->responsibilities)): ?>
-                        <!-- job responsibilities -->
-                        <div class="m-mid-top-breather">
-                            <p class="lead no-margin txt-bold capitalize">responsibilities</p>
-                            <p>
-                                <?php echo nl2br($job->responsibilities); ?> </p>
-                        </div>
-                        <?php endif; ?>
-
+                        
                         <!-- apply btn -->
                         <div class="m-mid-breather">
                             <a href="apply-job.php?id=<?php echo $job->id;?>" class="btn main-btn capitalize">apply for this job</a>

@@ -4,13 +4,13 @@ include_once("{$seperator}includes/initialize.php");
 /* check user status */
 if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 
-$user               = User::findDetails($session->candidateID);
-$desiredJob         = DesiredJob::findAllUnderParent($user->id, "user_id");
-$schools            = School::findAllUnderParent($user->id, "user_id");
-$skills             = Skills::findAllUnderParent($user->id, "user_id");
-$memberships        = Membership::findAllUnderParent($user->id, "user_id");
-$employmentHistory  = EmploymentHistory::findAllUnderParent($user->id, "user_id");
-$interests          = Interest::findAllUnderParent($user->id, "user_id");
+$candidate          = Candidate::findDetails($session->candidateID);
+$desiredJob         = DesiredJob::findAllUnderParent($candidate->id, "user_id");
+$schools            = School::findAllUnderParent($candidate->id, "user_id");
+$skills             = Skills::findAllUnderParent($candidate->id, "user_id");
+$memberships        = Membership::findAllUnderParent($candidate->id, "user_id");
+$employmentHistory  = EmploymentHistory::findAllUnderParent($candidate->id, "user_id");
+$interests          = Interest::findAllUnderParent($candidate->id, "user_id");
 
 // header
 include_once("{$seperator}layout/dashboard-header.php"); ?>
@@ -25,7 +25,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                 <!-- sidebar -->
                 <div class="sidebar col-sm-4">
-                    <?php echo candidateSidebar($user); ?>
+                    <?php echo candidateSidebar($candidate); ?>
                 </div>
                 
                 <!-- mainbar -->
@@ -40,10 +40,10 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                             <div class="p-light-bottom-breather p-mid-side-breather">
                                 <div class=" m-light-bottom-breather">
-                                    <?php if(!is_null($user->personal_statement)): ?>
+                                    <?php if(!is_null($candidate->personal_statement)): ?>
                                     <p class="capitalize">
                                         <span class="txt-bold">Personal Statement:</span>
-                                        <?php echo $user->personal_statement; ?> </p>
+                                        <?php echo $candidate->personal_statement; ?> </p>
 
                                     <?php else: ?>
                                     <p class="capitalize">You don't have any personal statement.
@@ -57,7 +57,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                             <p class="mid-font-size capitalize no-margin txt-bold">Email</p>
                                             <p class="small-font-size">
                                                 <?php 
-                                                    if(isset($user->email)) {echo $user->email; } 
+                                                    if(isset($candidate->email)) {echo $candidate->email; } 
                                                     else { echo "You haven't updated your email address"; }
                                                 ?>
                                             </p>
@@ -69,7 +69,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                             <p class="mid-font-size capitalize no-margin txt-bold">Phone Number</p>
                                             <p class="small-font-size">
                                                 <?php 
-                                                    if(isset($user->phone)) {echo $user->phone; } 
+                                                    if(isset($candidate->phone)) {echo $candidate->phone; } 
                                                     else { echo "You don't have any phone number in our records"; }
                                                 ?> 
                                             </p>
@@ -82,7 +82,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                             <p class="mid-font-size capitalize no-margin txt-bold">Date of Birth</p>
                                             <p class="small-font-size">
                                                 <?php 
-                                                if(isset($user->dob)) {echo $user->dob; } 
+                                                if(isset($candidate->dob)) {echo $candidate->dob; } 
                                                 else { echo "You haven't updated your date of birth"; }
                                                 ?>
                                             </p>
@@ -97,7 +97,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                             <p class="mid-font-size capitalize no-margin txt-bold">Gender</p>
                                             <p class="small-font-size">
                                                 <?php 
-                                                    if(isset($user->gender)) {echo $user->gender; } 
+                                                    if(isset($candidate->gender)) {echo $candidate->gender; } 
                                                     else { echo "You haven't updated your gender status"; }
                                                 ?>
                                             </p>
@@ -109,7 +109,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                             <p class="mid-font-size capitalize no-margin txt-bold">Location</p>
                                             <p class="small-font-size">
                                                 <?php 
-                                                    if(isset($user->location)) {echo $user->location; } 
+                                                    if(isset($candidate->location)) {echo $candidate->location; } 
                                                     else { echo "You haven't updated your current location"; }
                                                 ?>
                                             </p>

@@ -141,9 +141,16 @@ $day = date('d', $time);  $month = date('m', $time);  $year = date('Y', $time);
 
                                                         </select>
                                                     </div>
+                                                    <div class="form-group">
+                                                    <div class='input-group date' id='datetimepicker1'>
+                                                        <input type='text' class="form-control" />
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
                                                 </div>
 
-
+                                                </div>
 
                                             </div>
                                         </div>

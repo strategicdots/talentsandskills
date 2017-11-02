@@ -3,7 +3,7 @@ include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
  if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
- $user = User::findDetails($session->candidateID);
+ $candidate = Candidate::findDetails($session->candidateID);
 
 // process form data 
 if(isset($_POST['submit'])) {
@@ -42,12 +42,12 @@ if(isset($_POST['submit'])) {
   
 }
   
-$desiredJob         = DesiredJob::findAllUnderParent($user->id, "user_id");
-$schools            = School::findAllUnderParent($user->id, "user_id");
-$skills             = Skills::findAllUnderParent($user->id, "user_id");
-$memberships        = Membership::findAllUnderParent($user->id, "user_id");
-$employmentHistory  = EmploymentHistory::findAllUnderParent($user->id, "user_id");
-$interests          = Interest::findAllUnderParent($user->id, "user_id");
+$desiredJob         = DesiredJob::findAllUnderParent($candidate->id, "user_id");
+$schools            = School::findAllUnderParent($candidate->id, "user_id");
+$skills             = Skills::findAllUnderParent($candidate->id, "user_id");
+$memberships        = Membership::findAllUnderParent($candidate->id, "user_id");
+$employmentHistory  = EmploymentHistory::findAllUnderParent($candidate->id, "user_id");
+$interests          = Interest::findAllUnderParent($candidate->id, "user_id");
 ?>
 
 <!-- header -->
@@ -62,7 +62,7 @@ $interests          = Interest::findAllUnderParent($user->id, "user_id");
 
                         <!-- sidebar -->
                         <div class="sidebar col-sm-4">
-                              <?php echo candidateSidebar($user); ?>
+                              <?php echo candidateSidebar($candidate); ?>
                         </div>
                         <!-- mainbar -->
                         <div class="col-sm-8 mainbar">

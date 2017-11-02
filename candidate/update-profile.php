@@ -5,13 +5,13 @@ if(!isset($_GET['type'])) {redirect_to("my-profile.php"); }
 /* check user status */
 if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 
-$user               = User::findDetails($session->candidateID);
-$desiredJob         = DesiredJob::findAllUnderParent($user->id, "user_id");
-$schools            = School::findAllUnderParent($user->id, "user_id");
-$skills             = Skills::findAllUnderParent($user->id, "user_id");
-$memberships        = Membership::findAllUnderParent($user->id, "user_id");
-$employmentHistory  = EmploymentHistory::findAllUnderParent($user->id, "user_id");
-$interests          = Interest::findAllUnderParent($user->id, "user_id");
+$candidate          = Candidate::findDetails($session->candidateID);
+$desiredJob         = DesiredJob::findAllUnderParent($candidate->id, "user_id");
+$schools            = School::findAllUnderParent($candidate->id, "user_id");
+$skills             = Skills::findAllUnderParent($candidate->id, "user_id");
+$memberships        = Membership::findAllUnderParent($candidate->id, "user_id");
+$employmentHistory  = EmploymentHistory::findAllUnderParent($candidate->id, "user_id");
+$interests          = Interest::findAllUnderParent($candidate->id, "user_id");
 
 // header
 include_once("{$seperator}layout/dashboard-header.php"); ?>
@@ -26,7 +26,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                 <!-- sidebar -->
                 <div class="sidebar col-sm-4">
-                    <?php echo candidateSidebar($user); ?>
+                    <?php echo candidateSidebar($candidate); ?>
                 </div>
 
                 <!-- mainbar -->
@@ -42,7 +42,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                             <div class="p-light-bottom-breather p-mid-side-breather">
                                 <?php echo inline_errors(); ?>
-                                <?php echo pDForm($user); ?>
+                                <?php echo pDForm($candidate); ?>
                             </div>
 
                         </div>

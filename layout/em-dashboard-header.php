@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="<?php echo $seperator; ?>css/bootstrap.min.css">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo $seperator; ?>css/main.css">
+    <?php if($thisPage == "create-job"): ?> 
+    <link rel="stylesheet" href="<?php echo $seperator; ?>css/datetimepicker.css">
+    <?php endif; ?>
 </head>
 
 <body class="">

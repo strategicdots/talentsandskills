@@ -4,13 +4,13 @@ include_once("{$seperator}includes/initialize.php");
 /* check user status */
 if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 
-$user               = User::findDetails($session->candidateID);
-$desiredJob         = DesiredJob::findAllUnderParent($user->id, "user_id");
-$schools            = School::findAllUnderParent($user->id, "user_id");
-$skills             = Skills::findAllUnderParent($user->id, "user_id");
-$memberships        = Membership::findAllUnderParent($user->id, "user_id");
-$employmentHistory  = EmploymentHistory::findAllUnderParent($user->id, "user_id");
-$interests          = Interest::findAllUnderParent($user->id, "user_id");
+$candidate          = Candidate::findDetails($session->candidateID);
+$desiredJob         = DesiredJob::findAllUnderParent($candidate->id, "user_id");
+$schools            = School::findAllUnderParent($candidate->id, "user_id");
+$skills             = Skills::findAllUnderParent($candidate->id, "user_id");
+$memberships        = Membership::findAllUnderParent($candidate->id, "user_id");
+$employmentHistory  = EmploymentHistory::findAllUnderParent($candidate->id, "user_id");
+$interests          = Interest::findAllUnderParent($candidate->id, "user_id");
 
 // header
 include_once("{$seperator}layout/dashboard-header.php"); ?>
@@ -25,7 +25,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                 <!-- sidebar -->
                 <div class="sidebar col-sm-4">
-                    <?php echo candidateSidebar($user); ?>
+                    <?php echo candidateSidebar($candidate); ?>
                 </div>
 
                 <!-- mainbar -->
@@ -77,7 +77,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                             <div class="m-light-bottom-breather">
                                                 <p class=" capitalize no-margin txt-bold">Email</p>
                                                 <p class="mid-font-size capitalize">
-                                                    <?php echo $user->email; ?>
+                                                    <?php echo $candidate->email; ?>
                                                     <br>
                                                     <a href="" class="" id="">change email</a>
                                                 </p>
@@ -101,8 +101,8 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                             <div class="m-light-bottom-breather">
                                                 <p class="capitalize no-margin txt-bold m-vlight-bottom-breather">profile avatar </p>
                                                 <p class="mid-font-size capitalize">
-                                                    <?php if($user->avatar_url): ?>
-                                                    <img src="<?php echo $user->avatar_url; ?>" class="img-responsive" style="width: 100px;">
+                                                    <?php if($candidate->avatar_url): ?>
+                                                    <img src="<?php echo $candidate->avatar_url; ?>" class="img-responsive" style="width: 100px;">
                                                     <?php else: ?>
                                                     <img src="../img/candidate-placeholder.jpg" class="img-responsive" style="width: 100px;">
                                                     <?php endif; ?>

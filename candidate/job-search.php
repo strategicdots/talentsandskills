@@ -4,8 +4,8 @@ include_once("{$seperator}includes/initialize.php");
 /* check user status */
 if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 
-// find user
-$user = User::findDetails($session->candidateID);
+// find candidate
+$candidate = User::findDetails($session->candidateID);
 
 if(!$_GET){ // put search display
  }
@@ -77,7 +77,8 @@ $jobs = Jobs::topSearch($keyword, $location);
 
                 <!-- sidebar -->
                 <div class="sidebar col-sm-4">
-                    <?php echo candidateSidebar($user); ?>
+                    <!-- job search filter  -->
+                    <?php echo jobSearchFilter(); ?>
                 </div>
 
                 <!-- jobs section -->
@@ -125,9 +126,7 @@ $jobs = Jobs::topSearch($keyword, $location);
                                             <?php echo formatSalaryRange($job->salary_range); ?> / per month</p>
                                     </div>
                                     <div class="">
-                                        <p class="mid-font-size">
-                                            <?php echo trimContent($job->description, 40); ?>
-                                        </p>
+                                        <?php echo trimContent(htmlspecialchars_decode($job->description, 40)); ?>
                                     </div>
                                     <div class="m-vlight-breather">
                                         <a href="job.php?id=<?php echo $job->id; ?>" class="btn main-btn btn-lg capitalize">apply</a>
