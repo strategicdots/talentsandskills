@@ -120,3 +120,16 @@ class Session {
 
 $session = new Session();
 $message = $session->message();
+
+# SESSION TIMEOUT FUNCTION
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
+    // last request was more than 30 minutes ago
+    session_unset();     // unset $_SESSION variable for the run-time 
+    session_destroy();   // destroy session data in storage
+    redirect_to("../login.php"); //redirect to login page for new login activity
+
+} else { 
+    
+    $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
+
+}

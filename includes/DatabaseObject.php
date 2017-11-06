@@ -5,18 +5,55 @@ class DatabaseObject {
     protected static $table_name;
 
     // Common Database Objects
+
+    private function hasAttribute ($attribute) {
+        $object_vars = get_object_vars($this);
+
+        return array_key_exists($attribute, $object_vars);
+    }
+
+    protected function attributes() {
+        // return an array of attribute keys and their values:
+        return get_object_vars($this);
+    }
+
+    protected function sanitizedAttributes() {
+        global $database;
+        $cleanAttributes = [];
+        foreach ($this->attributes() as $key => $value) {
+            $cleanAttributes[$key] = $database->escapeValue($value);
+        }
+        return $clean_attributes;
+    }
+
+    public function updateValue($value, $column, $needHash = false) {
+        global $database;
+        
+        if($needHash) {
+            $value = passwordEncrypt($value);            
+        }
+        
+        $sql  = "UPDATE " . static::$table_name . " SET ";
+        $sql .= $database->escapeValue($column) . "= '";
+        $sql .= $database->escapeValue($value) . "' ";
+        $sql .= "WHERE id=" . $database->escapeValue($this->id);
+        
+        return($database->query($sql) ? true : false);        
+        
+    }
+
     public static function findAll() {
         return static::findBySQLQuery("SELECT * FROM " . static::$table_name);
     }
 
-    public function delete() {
+    public static function delete($id) {
         global $database;
 
-        $sql = "DELETE FROM " .$this->table_name . " ";
-        $sql .= "WHERE id=" . $database->escape_value($this->id);
+        $sql = "DELETE FROM " . static::$table_name . " ";
+        $sql .= "WHERE id=" . $database->escapeValue($id);
         $sql .= " LIMIT 1";
         $database->query($sql);
-        if(($database->affected_rows() == 1)) {
+        if(($database->affectedRows() == 1)) {
             return true;
         } else {
             return false;
@@ -69,26 +106,6 @@ class DatabaseObject {
         } else {
             return null;
         }
-    }
-
-    private function hasAttribute ($attribute) {
-        $object_vars = get_object_vars($this);
-
-        return array_key_exists($attribute, $object_vars);
-    }
-
-    protected function attributes() {
-        // return an array of attribute keys and their values:
-        return get_object_vars($this);
-    }
-
-    protected function sanitizedAttributes() {
-        global $database;
-        $cleanAttributes = [];
-        foreach ($this->attributes() as $key => $value) {
-            $cleanAttributes[$key] = $database->escapeValue($value);
-        }
-        return $clean_attributes;
     }
 
     public static function findDetails($id) {

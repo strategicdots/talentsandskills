@@ -4,14 +4,14 @@ class Candidate extends User {
     protected static $table_name="users";
     public $gender;
     public $dob;
-    public $candidate;
+    public $candidate = "1";
     public $personal_statement;
     public $cv_path;
 
 
     public function create() {
         global $database;
-        $hashed_password = password_encrypt($this->password);
+        $hashedPassword = passwordEncrypt($this->password);
 
         $sql_query = "INSERT INTO " . self::$table_name . " ( ";
         $sql_query .= "firstname, lastname, gender, phone, email, address, location, dob, employer, personal_statement, password ";
@@ -26,7 +26,7 @@ class Candidate extends User {
         $sql_query .= $database->escape_value($this->dob) . "', '";
         $sql_query .= $database->escape_value($this->employer) . "', '";
         $sql_query .= $database->escape_value($this->personal_statement) . "', '";
-        $sql_query .= $hashed_password . "')";
+        $sql_query .= $hashedPassword . "')";
 
         if($database->query($sql_query)) {
             $this->id = $database->insert_id();
@@ -38,7 +38,7 @@ class Candidate extends User {
 
     public function testCreate() {
         global $database;
-        $hashed_password = password_encrypt($this->password);
+        $hashedPassword = passwordEncrypt($this->password);
 
         $sql  = "INSERT INTO " . self::$table_name . " ( ";
         $sql .= "firstname, lastname, phone, email, candidate, password ";
@@ -48,7 +48,7 @@ class Candidate extends User {
         $sql .= $database->escapeValue($this->phone) . "', '";
         $sql .= $database->escapeValue($this->email) . "', '";
         $sql .= $database->escapeValue($this->candidate) . "', '";
-        $sql .= $hashed_password . "')";
+        $sql .= $hashedPassword . "')";
 
         if($database->query($sql)) {
             $this->id = $database->insertID();
@@ -64,16 +64,16 @@ class Candidate extends User {
         $sql  = "UPDATE users SET ";
         $sql .= "email='" . $database->escapeValue($this->email) . "', ";
         $sql .= "phone='" . $database->escapeValue($this->phone) . "', ";
-        $sql .= "employer='" . $database->escapeValue($this->employer) . "', ";
         $sql .= "address='" . $database->escapeValue(nl2br($this->address)) . "', ";
         $sql .= "personal_statement='" . $database->escapeValue(nl2br($this->personal_statement)) . "', ";
         $sql .= "location='" . $database->escapeValue($this->location) . "', ";
+        $sql .= "gender='" . $database->escapeValue($this->gender) . "', ";
         $sql .= "dob='" . $database->escapeValue($this->dob) . "' ";
         $sql .= "WHERE id=" . $database->escapeValue($this->id);
 
         if($database->query($sql) && ($database->affectedRows() == 1)) {
             return true;
-        } else {
+        } else {            
             return false;
         }
     }

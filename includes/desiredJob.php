@@ -15,18 +15,18 @@ class DesiredJob extends DatabaseObject {
     public function create() {
         global $database;
 
-        $sql_query = "INSERT INTO " . self::$table_name . " ( ";
-        $sql_query .= "user_id, job_title, availability, salary_range, location, field ";
-        $sql_query .= ") VALUES ('";
-        $sql_query .= $database->escape_value($this->user_id) . "', '";
-        $sql_query .= $database->escape_value($this->job_title) . "', '";
-        $sql_query .= $database->escape_value($this->availability) . "', '";
-        $sql_query .= $database->escape_value($this->salary_range) . "', '";
-        $sql_query .= $database->escape_value($this->location) . "', '";
-        $sql_query .= $database->escape_value($this->field) . "')";
+        $sql = "INSERT INTO " . self::$table_name . " ( ";
+        $sql .= "user_id, job_title, job_type, salary_range, location, job_field ";
+        $sql .= ") VALUES ('";
+        $sql .= $database->escapeValue($this->user_id) . "', '";
+        $sql .= $database->escapeValue($this->job_title) . "', '";
+        $sql .= $database->escapeValue($this->job_type) . "', '";
+        $sql .= $database->escapeValue($this->salary_range) . "', '";
+        $sql .= $database->escapeValue($this->location) . "', '";
+        $sql .= $database->escapeValue($this->job_field) . "')";
 
-        if($database->query($sql_query)) {
-            $this->id = $database->insert_id();
+        if($database->query($sql)) {
+            $this->id = $database->insertID();
             return true;
         } else {
             return false;

@@ -12,6 +12,8 @@ class User extends DatabaseObject {
     public $address;
     public $location;
     public $avatar_url;
+    public $candidate;
+    public $employer;
     
     public function fullName() {
         if(isset($this->firstname) && isset($this->lastname)) {
@@ -35,43 +37,24 @@ class User extends DatabaseObject {
             
     }
 
-    public static function findDetails($id) {
-        global $database;
-
-
-        $sql = "SELECT * FROM " . self::$table_name . " users WHERE ";
-        $sql .= "id = '{$database->escapeValue($id)}' ";
-        $sql .= " LIMIT 1";
-
-        $result_array = $database->fetchArray($database->query($sql));
-
-        $object_array = self::instantiate($result_array);
-
-        if($object_array) {
-            return $object_array;
-        } else {
-            return null;
-        }
-    }
-
     public static function findDetailsByEmail($email) {
+        
         global $database;
 
         $sql  = "SELECT * FROM " . self::$table_name;
         $sql .= " WHERE email = '{$database->escapeValue($email)}' ";
         $sql .= " LIMIT 1";
 
-        $result_array = $database->fetchArray($database->query($sql));
+        $result = $database->fetchArray($database->query($sql));
 
-        $object_array = self::instantiate($result_array);
+        $object = self::instantiate($result);
 
-        if($object_array) {
-            return $object_array;
+        if($object) {
+            return $object;
         } else {
             return null;
         }
 
     }
-
 
 }

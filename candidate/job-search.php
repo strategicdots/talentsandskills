@@ -5,13 +5,19 @@ include_once("{$seperator}includes/initialize.php");
 if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 
 // find candidate
-$candidate = User::findDetails($session->candidateID);
+$candidate = Candidate::findDetails($session->candidateID);
 
-if(!$_GET){ // put search display
- }
+// initializing location and keyword
+$location = "";
+$keyword = "";
 
-$location = trim($_GET['location']);
-$keyword  = trim($_GET['keyword']);
+
+if(isset($_GET['location']) || isset($_GET['keyword'])) {
+    
+    if(isset($_GET['location'])) { $location = trim($_GET['location']); }
+    if(isset($_GET['keyword'])) { $keyword  = trim($_GET['keyword']); }
+
+}
 
 $jobs = Jobs::topSearch($keyword, $location);
 
@@ -74,6 +80,9 @@ $jobs = Jobs::topSearch($keyword, $location);
 
         <div class="container m-heavy-top-breather">
             <div class="row">
+
+                <?php if(isset($_GET['location']) || isset($_GET['keyword'])): 
+                // SECTION FOR JOB LISTINGS FROM GET VARIABLES ?>
 
                 <!-- sidebar -->
                 <div class="sidebar col-sm-4">
@@ -138,6 +147,44 @@ $jobs = Jobs::topSearch($keyword, $location);
                     <?php endforeach; endif; ?>
 
                 </div>
+
+                <?php else : 
+                // NO GET VARIABLE SUPPLIED, USER COMING DIRECTLY TO PAGE ?>
+
+                <!-- sidebar -->
+                <div class="sidebar col-sm-4">
+                    <?php echo candidateSidebar($candidate); ?>
+                </div>
+
+
+                <!-- mainbar -->
+                <div class="col-sm-8 mainbar">
+                <div class="jobs m-mid-bottom-breather">
+                        <div class="light-bx-shadow">
+                            <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
+                                <p class="headfont uppercase no-margin">recent jobs on talents and skills </p>
+                            </div>
+                            <?php $newJobs = Jobs::newJobs(); ?>
+                            <div class="p-light-bottom-breather p-mid-side-breather">
+                                <ul class="no-list-style no-left-padding">
+                                    <?php foreach($newJobs as $job): ?>
+                                    <li>
+                                        <a href="job.php?id=<?php echo $job->id; ?>">
+                                            <?php echo ucwords($job->title); ?>
+                                        </a>
+                                    </li>
+
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div> <!-- end .new jobs-->
+                    
+                </div>
+
+                <?php endif; ?>
 
             </div>
 

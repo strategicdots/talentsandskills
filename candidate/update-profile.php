@@ -46,12 +46,10 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                             </div>
 
                         </div>
-                    </div>
-                    <!-- end personal details -->
+                    </div> <!-- end personal details -->
 
                     <!-- career summary-->
                     <?php break; case "career_summary" : ?>
-
                     <div class="">
                         <div class="light-bx-shadow">
                             <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
@@ -68,7 +66,6 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                     <!-- education -->
                     <?php break; case "education" : ?>
-
                     <div class="">
                         <div class="light-bx-shadow">
                             <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
@@ -76,6 +73,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                             </div>
 
                             <div class="p-light-bottom-breather p-mid-side-breather">
+                            <?php echo inline_errors(); ?>
 
                                 <!--  add new entry -->
                                 <?php if(isset($_GET['action']) && ($_GET['action']) == "add") : ?>
@@ -102,14 +100,21 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                 <p class="headfont uppercase no-margin">Professional skills</p>
                             </div>
 
-                            <div class="p-light-bottom-breather p-mid-side-breather" id="">
+                            <div class="p-light-bottom-breather p-mid-side-breather">
+                            <?php echo inline_errors(); ?>
+
+                                <!--  add new entry -->
+                                <?php if(isset($_GET['action']) && ($_GET['action']) == "add") : ?>
+                                <?php echo  skillForm($skills = null, $newEntry = true); ?>
+
+                                <!-- update entry -->
+                                <?php else: ?>
                                 <?php echo skillForm($skills); ?>
-                            </div>
+                            </div> <?php endif; ?>
 
                         </div>
 
-                    </div>
-                    <!-- end skills -->
+                    </div> <!-- end skills -->
 
                     <!-- professional memberships -->
                     <?php break; case "memberships" : ?>
@@ -121,13 +126,21 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                             </div>
 
                             <div class="p-light-bottom-breather p-mid-side-breather" id="">
+                                <?php echo inline_errors(); ?>
+
+                                <!--  add new entry -->
+                                <?php if(isset($_GET['action']) && ($_GET['action']) == "add") : ?>
+                                <?php echo  memForm($memberships = null, $newEntry = true); ?>
+
+                                <!-- update entry -->
+                                <?php else: ?>
                                 <?php echo memForm($memberships); ?>
-                            </div>
+                            </div> <?php endif; ?>
+                            
 
                         </div>
 
-                    </div>
-                    <!-- end professional memberships -->
+                    </div> <!-- end professional memberships -->
 
                     <!-- employment history -->
                     <?php break; case "employment_history" : ?>
@@ -144,8 +157,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                         </div>
 
-                    </div>
-                    <!-- end employment history -->
+                    </div> <!-- end employment history -->
 
                     <!-- interests -->
                     <?php break; case "interests" : ?>

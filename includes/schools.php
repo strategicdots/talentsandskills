@@ -26,7 +26,7 @@ class School extends DatabaseObject {
         $sql_query .= $database->escapeValue($this->year) . "')";
 
         if($database->query($sql_query)) {
-            // $this->id = $database->insert_id();
+             $this->id = $database->insertID();
             return true;
         } else {
             return false;

@@ -19,7 +19,6 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 <div class="inner-top my-profile">
     <div class=" p-heavy-breather">
         <div class="container">
-            <?php echo inline_message(); ?>
 
             <div class="row">
 
@@ -42,62 +41,83 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                             <div class="p-light-bottom-breather p-heavy-side-breather">
 
                                 <div class=" m-light-bottom-breather">
-                                    <!--<p class="capitalize txt-bold">change your account settings</p>-->
+                                <?php echo inline_errors();?>
+                                <?php echo inline_message(); ?>
+
 
                                     <div class="row">
+                                        <!-- password -->
                                         <div class="col-sm-6">
-                                            <!-- password -->
                                             <div class="m-light-bottom-breather">
                                                 <p class="capitalize no-margin txt-bold">Password</p>
-                                                <p class="mid-font-size capitalize">
-                                                    <a href="" class="" id="">change password</a>
+                                                <p class="mid-font-size">
+                                                    <a href="" class="" id="chng-pwd">Change Password</a>
                                                 </p>
-                                                <div class="hide-el">
-                                                    <form action="" method="post">
+
+                                                <!-- password form -->
+                                                <div class="hide-el" id="pswd-div">
+                                                    <form action="../control/candidate/settings.php" method="post" class="sm">
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">Enter your old password</label>
-                                                            <input class="form-control" type="password" name="old_password" placeholder="Enter your old password">
+                                                            <input class="form-control" type="password" name="password" placeholder="Enter your old password">
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">Enter your new password</label>
-                                                            <input class="form-control" type="password" name="password" placeholder="Enter your new password">
+                                                            <input class="form-control" type="password" name="new_password" placeholder="Enter your new password">
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">confirm your new password</label>
                                                             <input class="form-control" type="password" name="confirm_password" placeholder="Confirm your new password">
                                                         </div>
-                                                        <input type="submit" value="submit" class="btn sec-btn form-control">
+                                                        <div class="row">
+                                                            <div class="col-sm-8">
+                                                                <input type="submit" name="submit" value="submit" class="capitalize btn sec-btn form-control">
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <a href="" class="btn main-btn capitalize form-control" id="cx-pswd">cancel</a>
+                                                            </div>
+                                                        </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
 
+                                        <!-- email -->
                                         <div class="col-sm-6">
-                                            <!-- email -->
                                             <div class="m-light-bottom-breather">
                                                 <p class=" capitalize no-margin txt-bold">Email</p>
-                                                <p class="mid-font-size capitalize">
+                                                <p class="mid-font-size">
                                                     <?php echo $candidate->email; ?>
                                                     <br>
-                                                    <a href="" class="" id="">change email</a>
+                                                    <a href="" class="" id="chng-email">Change Email</a>
                                                 </p>
-                                                <div class="hide-el">
-                                                    <form method="post" action="">
+
+                                                <!-- email form -->
+                                                <div class="hide-el" id="email-div">
+                                                    <form method="post" action="../control/candidate/settings.php" class="sm">
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">enter your new email</label>
                                                             <input class="form-control" type="email" name="email" placeholder="enter your new email">
                                                         </div>
-                                                        <input type="submit" value="submit" class="btn sec-btn form-control">
-
+                                                        <div class="row">
+                                                            <div class="col-sm-8">
+                                                                <input type="submit" name="submit" value="submit" class="btn sec-btn form-control capitalize">
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <a href="" class="form-control capitalize btn main-btn" id="cx-email">cancel</a>
+                                                            </div>
+                                                        </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
+                                    
                                     </div>
 
                                     <div class="row">
+                                        
+                                        <!-- avatar -->
                                         <div class="col-sm-6">
-                                            <!-- avatar -->
                                             <div class="m-light-bottom-breather">
                                                 <p class="capitalize no-margin txt-bold m-vlight-bottom-breather">profile avatar </p>
                                                 <p class="mid-font-size capitalize">
@@ -106,23 +126,37 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                                     <?php else: ?>
                                                     <img src="../img/candidate-placeholder.jpg" class="img-responsive" style="width: 100px;">
                                                     <?php endif; ?>
-                                                    <a href="" class="" id="">change avatar </a>
+                                                    <a href="" class="" id="chng-avtr">change avatar </a>
                                                 </p>
 
-                                                <div class="hide-el">
-                                                    <form method="post" action="" enctype="multipart/form-data">
+                                                <!-- avatar form -->
+                                                <div class="hide-el" id="avtr-div">
+                                                    <form method="post" class="sm" action="../control/candidate/settings.php" enctype="multipart/form-data">
                                                         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo maxFileSize(); ?>">
+
+                                                        <?php if(!empty($candidate->cv_path)): ?>
+                                                        <input type="hidden" name="type" value="1">
+                                                        <?php endif; ?>
 
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">browse to select a new avatar </label>
-                                                            <input class="" type="file" name="upload">
+                                                            <input class="" type="file" name="avatar">
                                                         </div>
-                                                        <input type="submit" value="submit" class="btn sec-btn form-control">
+                                                        <div class="row">
+                                                            <div class="col-sm-8">
+                                                                <input type="submit" name="submit" value="submit" class="btn sec-btn form-control capitalize">
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <a href="" class="form-control capitalize btn main-btn" id="cx-avtr">cancel</a>
+                                                            </div>
+                                                        </div>
 
                                                     </form>
                                                 </div>
+
                                             </div>
                                         </div>
+                                    
                                     </div>
                                 </div>
 

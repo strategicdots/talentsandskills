@@ -10,21 +10,21 @@ class Employer extends User {
     
     public function create() {
         global $database;
-        $hashedPassword = password_encrypt($this->password);
+        $hashedPassword = passwordEncrypt($this->password);
 
-        $sql_query = "INSERT INTO " . self::$table_name . " ( ";
-        $sql_query .= "company_name, about_company, firstname, lastname, phone, email, job_field, password ";
-        $sql_query .= ") VALUES ('";
-        $sql_query .= $database->escapeValue($this->company_name) . "', '";
-        $sql_query .= $database->escapeValue($this->about_company) . "', '";
-        $sql_query .= $database->escapeValue($this->firstname) . "', '";
-        $sql_query .= $database->escapeValue($this->lastname) . "', '";
-        $sql_query .= $database->escapeValue($this->phone) . "', '";
-        $sql_query .= $database->escapeValue($this->email) . "', '";
-        $sql_query .= $database->escapeValue($this->job_field) . "', '";
-        $sql_query .= $hashedPassword . "')";
+        $sql = "INSERT INTO " . self::$table_name . " ( ";
+        $sql .= "company_name, about_company, firstname, lastname, phone, email, job_field, password ";
+        $sql .= ") VALUES ('";
+        $sql .= $database->escapeValue($this->company_name) . "', '";
+        $sql .= $database->escapeValue($this->about_company) . "', '";
+        $sql .= $database->escapeValue($this->firstname) . "', '";
+        $sql .= $database->escapeValue($this->lastname) . "', '";
+        $sql .= $database->escapeValue($this->phone) . "', '";
+        $sql .= $database->escapeValue($this->email) . "', '";
+        $sql .= $database->escapeValue($this->job_field) . "', '";
+        $sql .= $hashedPassword . "')";
 
-        if($database->query($sql_query)) {
+        if($database->query($sql)) {
             $this->id = $database->insertID();
             return true;
         } else {
@@ -34,7 +34,7 @@ class Employer extends User {
 
     public function testCreate() {
         global $database;
-        $hashed_password = password_encrypt($this->password);
+        $hashedPassword = passwordEncrypt($this->password);
 
         $sql  = "INSERT INTO " . self::$table_name . " ( ";
         $sql .= "company_name, job_field, phone, email, employer, password ";
@@ -44,7 +44,7 @@ class Employer extends User {
         $sql .= $database->escapeValue($this->phone) . "', '";
         $sql .= $database->escapeValue($this->email) . "', '";
         $sql .= $database->escapeValue($this->employer) . "', '";
-        $sql .= $hashed_password . "')";
+        $sql .= $hashedPassword . "')";
 
         if($database->query($sql)) {
             $this->id = $database->insertID();

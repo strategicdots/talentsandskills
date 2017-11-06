@@ -1,20 +1,14 @@
 <?php require_once('initialize.php');
 
-function cvFormat($type) { 
-    if($type == "application/pdf" ||
-       $type == "application/msword" ||
-       $type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-       $type == "application/vnd.openxmlformats-officedocument.wordprocessingml.template" ||
-       $type == "application/vnd.ms-word.document.macroEnabled.12" ||
-       $type == "application/vnd.ms-word.template.macroEnabled.12" )    
-    { return true; } 
-
-    else { return false; }
+function imgFormat($type) { 
+      if($type == "image/jpeg" || $type == "image/png")  { 
+          return true; 
+      } else { return false; }
 }
 
-class Resume extends FileUpload {
+class Avatar extends FileUpload {
     protected static $table_name = "users";
-    public static $parentDir = SITE_ROOT.DS."uploads";
+    public static $parentDir = SITE_ROOT.DS."uploads/avatar";
 
    
     public function upload() {
@@ -22,14 +16,14 @@ class Resume extends FileUpload {
 
         if(empty($this->filename) || empty($this->temp_path)) {
              
-             $this->errors[] = "The file location was not available.";
+             $this->errors[] = "Avatar location was not available.";
                 return false;
             }
 
-        if(!cvFormat($this->type)) {
+        if(!imgFormat($this->type)) {
             
                 $this->errors[]  = "The file uploaded is not in the right format. <br>"; 
-                $this->errors[] .= "Please make sure the document is in .pdf, .doc or .docx";
+                $this->errors[] .= "Please upload either .png, .jpg format";
                 return false;
             }
             

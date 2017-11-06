@@ -38,7 +38,11 @@ function inline_errors() {
     return $output;
 }
 
-function password_encrypt($password) {
+function includeLayoutTemplate($template="") {
+	include(SITE_ROOT.DS.'layouts'.DS.$template);
+}
+
+function passwordEncrypt($password) {
     $options = [
         'cost' => 11,
         'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
@@ -71,6 +75,13 @@ function formatField($field) {
     return str_replace(" ", "-", (str_replace("/ ", "",$field)));
 }
 
+function break2NewLine($text) {
+ 
+    $text = str_replace("<br />", "\n", $text);
+
+    return $text;
+}
+
 function pDForm($user = null) {
     global $states; 
 
@@ -84,15 +95,21 @@ function pDForm($user = null) {
     $output .= "<input type=\"hidden\" value=\"pd\" name=\"update_type\">";
     $output .= "<p class=\"capitalize small-font-size txt-bold\">fill in the details</p>";
     $output .= "<div class=\"row\">";
+
+    // first column
     $output .= "<div class=\"col-sm-6\">";
+
+    // input: EMAIL
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">email</label>";
     $output .= "<input type=\"text\" class=\"form-control\" value=\"{$user->email}\" name=\"email\" placeholder=\"your email\"></div>";
 
-
+    // input: PHONE
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">phone</label>";
     $output .= "<input type=\"tel\" class=\"form-control\" name=\"phone\" value=\"{$user->phone}\" placeholder=\"your phone number\"></div>";
+    
+    // input: LOCATION
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">Choose your location </label>";
     $output .= "<select class=\"form-control\" id=\"location\" name=\"location\">";
@@ -109,12 +126,16 @@ function pDForm($user = null) {
         $output .= $state->name . "</option>";
     }
     $output .= "</select></div>";
+
+    // input: DOB
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">Date of Birth</label>";
     $output .= "<div class=\"row\">";
+
+    // day
     $output .= "<div class=\"col-sm-4\">";
     $output .= "<select name=\"dob_d\" class=\"form-control\" id=\"dob_d\">";
-    $output .= "<option selected>DD</option>";
+    $output .= "<option>DD</option>";
 
     for($i = 1; $i<=31; $i++) {
         if($i<=9) { 
@@ -125,7 +146,7 @@ function pDForm($user = null) {
             }
         } else {
             if(!empty($dob_d) && $dob_d == $i) {
-                $output .= "<option value= \"{$i}\" selected>0{$i}</option>";
+                $output .= "<option value= \"{$i}\" selected>{$i}</option>";
             } else { 
                 $output .= "<option value= \"{$i}\">{$i}</option>"; 
             }
@@ -133,9 +154,11 @@ function pDForm($user = null) {
     } 
 
     $output .= "</select></div>";
+
+    // month
     $output .= "<div class=\"col-sm-4\">";
     $output .= "<select name=\"dob_m\" class=\"form-control\" id=\"dob_m\">";
-    $output .= "<option selected>MM</option>";
+    $output .= "<option>MM</option>";
 
     for($i = 1; $i<=12; $i++) {
         if($i<=9) {
@@ -147,7 +170,7 @@ function pDForm($user = null) {
         } else {
 
             if(!empty($dob_m) && $dob_m == $i) {
-                $output .= "<option value= \"{$i}\" selected>0{$i}</option>";
+                $output .= "<option value= \"{$i}\" selected>{$i}</option>";
             } else { 
                 $output .= "<option value= \"{$i}\">{$i}</option>"; 
             }
@@ -155,9 +178,12 @@ function pDForm($user = null) {
 
     } 
 
-    $output .= "</select></div><div class=\"col-sm-4\">";
+    $output .= "</select></div>";
+
+    // year
+    $output .= "<div class=\"col-sm-4\">";
     $output .= "<select name=\"dob_y\" class=\"form-control\" id=\"dob_y\">";
-    $output .= "<option selected>YYYY</option>";
+    $output .= "<option>YYYY</option>";
     for($i = 1900; $i<=2017; $i++) {
         if(!empty($dob_y) && $dob_y == $i) {
             $output .= "<option value= \"{$i}\" selected>{$i}</option>";
@@ -165,13 +191,33 @@ function pDForm($user = null) {
             $output .= "<option value= \"{$i}\">{$i}</option>"; 
         }
     }                                 
-    $output .= "</select></div></div></div></div>";
+    $output .= "</select></div></div></div>";
 
+    // input: GENDER
+    $output .= "<div class=\"form-group\">";
+    $output .= "<label class=\"txt-bold small-font-size capitalize\">Gender</label>";
+    $output .= "<select name=\"gender\" class=\"form-control\">";
 
+    if($user->gender == "M") {
+        $output .= "<option value=\"M\" selected>Male</option>";   
+    } else {
+        $output .= "<option value=\"M\">Male</option>";        
+    }
+
+    if($user->gender == "F") {
+        $output .= "<option value=\"F\" selected>Female</option>";   
+    } else {
+        $output .= "<option value=\"F\">Female</option>";        
+    }
+    $output .= "</select></div></div>";
+
+    // second column
     $output .= "<div class=\"col-sm-6\">";
+
+    // input: PERSONAL STATEMENT
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">personal statement</label>";
-    $output .= "<textarea class=\"form-control\" name=\"personal_statement\" rows=\"6\">";
+    $output .= "<textarea class=\"form-control\" name=\"personal_statement\" rows=\"7\">";
     if(!empty($user->personal_statement)) {
         $output .= $user->personal_statement;
     } else {
@@ -179,21 +225,26 @@ function pDForm($user = null) {
     }
     $output .= "</textarea></div>";
 
+    // input: ADDRESS
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">address</label>";
-    $output .= "<textarea class=\"form-control\" name=\"address\" rows=\"4\">";
+    $output .= "<textarea class=\"form-control\" name=\"address\" rows=\"7\">";
     if(!empty($user->address)) {
-        $output .= $user->address;
+        $output .= break2NewLine($user->address);
     } else {
         $output .= "current address";
     }
     $output .= "</textarea></div>";
 
     $output .= "</div></div>";
+
+    // input: SUBMIT BUTTON
     $output .= "<div class=\"sm-container m-vlight-breather\">";
     $output .= "<div class=\"row\">";
     $output .= "<div class=\"col-sm-8\">";
     $output .= "<input type=\"submit\" value=\"Confirm Changes\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
+    
+    // input: CANCEL BUTTON
     $output .= "<div class=\"col-sm-4\">";
     $output .= "<a href=\"my-profile.php\" class=\"form-control capitalize btn main-btn\" >cancel</a>";
     $output .= "</div></div></div></form>";
@@ -328,6 +379,7 @@ function CSForm($desiredJob = null) {
 function eduForm($schools = null, $newEntry = false) {
     $n = 0;
     $output = "";
+    global $jobQualification;
 
     if(!$newEntry) { 
 
@@ -339,7 +391,11 @@ function eduForm($schools = null, $newEntry = false) {
                 $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\">";
                 $output .= ++$n;
                 $output .= "</span></p>";
+
+                // first column
                 $output .= "<div class=\"col-sm-6\">";
+
+                // input: COURSE
                 $output .= "<div class=\"form-group\">";
                 $output .= "<label class=\"txt-bold small-font-size capitalize\">course</label>";
                 $output .= "<input type=\"text\" class=\"form-control\" value=\"";
@@ -351,17 +407,34 @@ function eduForm($schools = null, $newEntry = false) {
                 } 
 
                 $output .= "\" name=\"course\" placeholder=\"enter your course title\"></div>";
+
+                // input: DEGREE
                 $output .= "<div class=\"form-group\">";
-                $output .= "<label class=\"txt-bold small-font-size capitalize\">degree</label>";
-                $output .= "<input type=\"text\" class=\"form-control\" value=\"";
+                $output .= "<label class=\"txt-bold small-font-size capitalize\">Degree</label>";
+                $output .= "<select class=\"form-control\" name=\"degree\">";
 
-                if(isset($school->degree)) {
-                    $output  .= $school->degree; 
-                } else {
-                    $output  .= ""; 
-                } 
+                foreach($jobQualification as $qualification) {
+                    
+                    $output .= "<option value=\"";
+                    if(isset($school->degree) && $school->degree == $qualification->qualification) {
+                        $output .= formatField($school->degree);
+                        $output .= "\">";
+                        $output .= $school->degree; 
+                    
+                    } else { 
+                    
+                        $output .= formatField($qualification->qualification);
+                        $output .= "\">";
+                        $output .= $qualification->qualification;
+                    }
+                    
+                    $output .= "</option>";                    
+                }
 
-                $output .= "\" name=\"degree\" placeholder=\"enter your degree\"></div>";
+                $output .= "</select></div>";
+                
+
+                // input: SCHOOL NAME
                 $output .= "<div class=\"form-group\">";
                 $output .= "<label class=\"txt-bold small-font-size capitalize\">school</label>";
                 $output .= "<input type=\"text\" class=\"form-control\" value=\"";
@@ -373,7 +446,11 @@ function eduForm($schools = null, $newEntry = false) {
                 } 
 
                 $output .= "\" name=\"school\" placeholder=\"enter your school\"> </div></div>";
+
+                // 2nd column
                 $output .= "<div class=\"col-sm-6\">";
+
+                // input: SCHOOL LOCATION
                 $output .= "<div class=\"form-group\">";
                 $output .= "<label class=\"txt-bold small-font-size capitalize\"> location</label>";
                 $output .= "<input type=\"text\" class=\"form-control\" value=\"";
@@ -385,6 +462,8 @@ function eduForm($schools = null, $newEntry = false) {
                 } 
 
                 $output .= "\" name=\"location\" placeholder=\"example: Nigeria\"></div>";
+
+                // input: GRADE
                 $output .= "<div class=\"form-group\">";
                 $output .= "<label class=\"txt-bold small-font-size capitalize\">grade</label>";
                 $output .= "<input type=\"text\" class=\"form-control\" value=\"";
@@ -396,16 +475,24 @@ function eduForm($schools = null, $newEntry = false) {
                 } 
 
                 $output .= "\" name=\"grade\" placeholder=\"example: 2nd Class Upper(2.1)\"></div>";
+
+                // input: YEAR
                 $output .= "<div class=\"form-group\">";
                 $output .= "<label class=\"txt-bold small-font-size capitalize\">year</label>";
                 $output  .= inputYear("year", $school->year);
                 $output .= "</div></div></div>";
+
+                // SUBMIT & CANCEL BTNS 
                 $output .= "<div class=\"m-vlight-breather\">";
                 $output .= "<div class=\"row\">";
+
+                // input: SUBMIT BTN
                 $output .= "<div class=\"col-sm-8\">";
                 $output .= "<input type=\"submit\" value=\"Update entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
+                
+                // input: CANCEL BTN
                 $output .= "<div class=\"col-sm-4\">";
-                $output .= "<a href=\"del.php?id=";
+                $output .= "<a href=\"delete.php?type=edu&id=";
                 $output  .= $school->id;
                 $output .= "\" class=\"form-control capitalize btn main-btn\">delete entry</a>";
                 $output .= "</div></div></div></form>";
@@ -416,73 +503,83 @@ function eduForm($schools = null, $newEntry = false) {
         $output .= "<hr><div class=\"m-light-breather\">";
         $output .= "<a href=\"?type=education&action=add\" class=\"form-control btn main-btn capitalize\">+ add a new entry</a></div>";
 
-    } else {
+    
+    } else { // this is a new entry
 
         $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
         $output .= "<input type=\"hidden\" value=\"edu\" name=\"update_type\">";
         $output .= "<input type=\"hidden\" value=\"add\" name=\"action\">";
         $output .= "<div class=\"row\">";
 
-        // 1st col
+        // 1st column
         $output .= "<div class=\"col-sm-6\">";
 
-        // input: course
+        // input: COURSE
         $output .= "<div class=\"form-group\">";
         $output .= "<label class=\"txt-bold small-font-size capitalize\">course</label>";
         $output .= "<input type=\"text\" class=\"form-control\" value=\"";
         $output .= "\" name=\"course\" placeholder=\"enter the course title\"></div>";
 
-        // input: degree
+        // input: DEGREE
         $output .= "<div class=\"form-group\">";
         $output .= "<label class=\"txt-bold small-font-size capitalize\">degree</label>";
-        $output .= "<input type=\"text\" class=\"form-control\" value=\"";
-        $output .= "\" name=\"degree\" placeholder=\"enter your degree\"></div>";
+        $output .= "<select class=\"form-control\" name=\"degree\">";
 
-        // input: school
+        foreach($jobQualification as $qualification) {
+            $output .= "<option value=\"";
+            $output .= formatField($qualification->qualification);
+            $output .= "\">";
+            $output .= $qualification->qualification;
+            $output .= "</option>";                    
+        }
+        $output .= "</select></div>";
+        
+
+        // input: SCHOOL
         $output .= "<div class=\"form-group\">";
         $output .= "<label class=\"txt-bold small-font-size capitalize\">school</label>";
         $output .= "<input type=\"text\" class=\"form-control\" value=\"";
         $output .= "\" name=\"school\" placeholder=\"enter the school\"> </div>";
 
-        // end 1st col
+        // end 1st column
         $output .= "</div>";
 
-        // 2nd col
+        // 2nd column
         $output .= "<div class=\"col-sm-6\">";
 
-        // input: location
+        // input: LOCATION
         $output .= "<div class=\"form-group\">";
         $output .= "<label class=\"txt-bold small-font-size capitalize\"> location</label>";
         $output .= "<input type=\"text\" class=\"form-control\" value=\""; 
         $output .= "\" name=\"location\" placeholder=\"example: Nigeria\"></div>";
 
-        // input: grade
+        // input: GRADE
         $output .= "<div class=\"form-group\">";
         $output .= "<label class=\"txt-bold small-font-size capitalize\">grade</label>";
         $output .= "<input type=\"text\" class=\"form-control\" value=\""; 
         $output .= "\" name=\"grade\" placeholder=\"example: 2nd Class Upper(2.1)\"></div>";
 
-        // input: year
+        // input: YEAR
         $output .= "<div class=\"form-group\">";
         $output .= "<label class=\"txt-bold small-font-size capitalize\">year</label>";
         $output  .= inputYear("year");
         $output .= "</div>";
 
-        // end 2nd col
+        // end 2nd column
         $output .= "</div>";
 
         // end row
         $output .= "</div>";
 
-        // submit & cancel buttons
+        // inputs: SUBMIT & CANCEL BUTTONS
         $output .= "<div class=\"m-vlight-breather\">";
         $output .= "<div class=\"row\">";
 
-        // submit btn
+        // input: SUBMIT BTN
         $output .= "<div class=\"col-sm-8\">";
         $output .= "<input type=\"submit\" value=\"Add entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
 
-        // cancel btn
+        // input: CANCEL BTN
         $output .= "<div class=\"col-sm-4\">";
         $output .= "<a href=\"my-profile.php\"";
         $output .= "class=\"form-control capitalize btn main-btn\">cancel</a>";
@@ -495,85 +592,184 @@ function eduForm($schools = null, $newEntry = false) {
     return $output;
 }
 
-function skillForm($skills = null) {
+function skillForm($skills = null, $newEntry = false) {
     $n = 0;
     $output = "";
-    if(isset($skills)) {
-        foreach($skills as $skill){
-            $output .= "<form method=\"post\" action=\"\" class=\"sm p-light-bottom-breather\">";
-            $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\">"; 
-            $output .=  ++$n; 
-            $output .= "</span></p><div class=\"form-group\">";
-            $output .= "<label>Skill: </label>";
-            $output .= "<input class=\"form-control\" type=\"text\" name=\"skill_name\" value=\""; 
-            if(isset($skill->skill_name)) {
-                $output .=  $skill->skill_name;
-            } else {
-                $output .=  ""; 
-            } 
-            $output .= "\" placeholder=\"Enter a skill name\">";
-            $output .= "</div><div class=\"row\">";
-            $output .= "<div class=\"col-sm-6\">";
-            $output .= "<div class=\"form-group\">";
-            $output .= "<input type=\"submit\" value=\"Update entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\">";
-            $output .= "</div></div><div class=\"col-sm-6\">";
-            $output .= "<div class=\"form-group\">";
-            $output .= "<a href=\"del.php?id="; 
-            $output .=  $skill->id; 
-            $output .= "\" class=\"form-control btn main-btn capitalize\">delete entry</a>";
-            $output .= "</div></div></div></form>";
-        }
-    } else {
-        $output .= "<p>You don't have any professional skill yet. Click on the button below to add one</p>";
-    }
+    $x = count($skills);
 
-    $output .= "<hr><div class=\"m-light-breather\">";
-    $output .= "<a href=\"?type=skills&action=add\" class=\"form-control btn main-btn capitalize\">+ add a new entry</a></div>";
+    if(!$newEntry) {
+        if(isset($skills)) {
+            foreach($skills as $skill) {
+                $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+                
+                // input: HIDDEN TYPE FIELD
+                $output .= "<input type=\"hidden\" name=\"update_type\" value=\"sk\">";
+                
+                $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\">"; 
+                $output .=  ++$n; 
+                $output .= "</span></p>";
+
+                // input: SKILL NAME
+                $output .= "<div class=\"form-group\">";
+                $output .= "<label>Skill: </label>";
+                $output .= "<input class=\"form-control\" type=\"text\" name=\"skill_name\" value=\""; 
+                if(isset($skill->skill_name)) {
+                    $output .=  $skill->skill_name;
+                } else {
+                    $output .=  ""; 
+                } 
+                $output .= "\" placeholder=\"Enter a skill name\">";
+
+                // UPDATE AND DELETE BTNS
+                $output .= "</div><div class=\"row\">";
+                $output .= "<div class=\"col-sm-6\">";
+                
+                // input: UPDATE
+                $output .= "<div class=\"form-group\">";
+                $output .= "<input type=\"submit\" value=\"Update entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\">";
+                $output .= "</div></div>";
+
+                // input: DELETE
+                $output .= "<div class=\"col-sm-6\">";
+                $output .= "<div class=\"form-group\">";
+                $output .= "<a href=\"delete.php?type=skill&id="; 
+                $output .=  $skill->id; 
+                $output .= "\" class=\"form-control btn main-btn capitalize\">delete entry</a>";
+                $output .= "</div></div></div></form>";
+            
+            }
+
+        } else {
+            $output .= "<p>You don't have any professional skill yet. Click on the button below to add one</p>";
+        
+        }
+
+        $output .= "<hr><div class=\"m-light-breather\">";
+        $output .= "<a href=\"?type=skills&action=add\" class=\"form-control btn main-btn capitalize\">+ add a new entry</a></div>";
+
+
+    } else { // this is a new entry
+
+        $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+        
+        // input: HIDDEN TYPE and ACTION FIELD
+        $output .= "<input type=\"hidden\" name=\"update_type\" value=\"sk\">";
+        $output .= "<input type=\"hidden\" value=\"add\" name=\"action\">";
+        
+
+        $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\">"; 
+       // $output .=  $x+1; 
+        $output .= "</span></p>";
+
+        // input: SKILL NAME
+        $output .= "<div class=\"form-group\">";
+        $output .= "<label>Skill: </label>";
+        $output .= "<input class=\"form-control\" type=\"text\" name=\"skill_name\" value=\"";  
+        $output .= "\" placeholder=\"Enter a skill name\">";
+        $output .= "</div>"; 
+
+        // input: SUBMIT BTN
+        $output .= "<input type=\"submit\" value=\"Add entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\">";
+
+        $output .= "</form>";
+    }
 
     return $output;
 }
 
-function memForm($memberships = null) {
+function memForm($memberships = null, $newEntry = false) {
     $n = 0;
     $output = "";
-    if(isset($memberships)) { 
-        foreach($memberships as $membership) {  
-            $output .= "<form method=\"post\" action=\"\" class=\"sm p-light-bottom-breather\">";
-            $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\">"; 
-            $output .=  ++$n; 
-            $output .= "</span></p><div class=\"row\">";
-            $output .= "<div class=\"col-sm-6\">";
-            $output .= "<div class=\"form-group\">";
-            $output .= "<label>Organization: </label>";
-            $output .= "<input class=\"form-control\" type=\"text\" name=\"organization\" value=\""; 
-            if(isset($membership->organization)) {
-                $output .=  $membership->organization;
-            } else {$output .=  ""; 
-                   } 
-            $output .= "\" placeholder=\"Enter the organization of your membership\">";
-            $output .= "</div></div><div class=\"col-sm-6\">";
-            $output .= "<div class=\"form-group\">";
-            $output .= "<label class=\"txt-bold small-font-size capitalize\">year</label>";
-            $output .=  inputYear("year", $membership->year); 
+    
+    if(!$newEntry) { 
+        
+        if(isset($memberships)) { 
+            
+            foreach($memberships as $membership) {  
+                $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+                
+                // input: HIDDEN TYPE FIELD
+                $output .= "<input type=\"hidden\" name=\"update_type\" value=\"mem\">";
 
-            $output .= "</div></div></div>";
+                $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\">"; 
+                $output .=  ++$n; 
+                $output .= "</span></p>";
+                
+                $output .= "<div class=\"row\">";
+                $output .= "<div class=\"col-sm-6\">";
 
-            $output .= "<div class=\"m-vlight-breather\">";
-            $output .= "<div class=\"row\">";
-            $output .= "<div class=\"col-sm-8\">";
-            $output .= "<input type=\"submit\" value=\"Update entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
-            $output .= "<div class=\"col-sm-4\">";
-            $output .= "<a href=\"del.php?id= $output .=  $membership->id; \" class=\"form-control capitalize btn main-btn\">delete entry</a>";
-            $output .= "</div></div></div></form>";
+                // input: ORGANIZATION
+                $output .= "<div class=\"form-group\">";
+                $output .= "<label>Organization: </label>";
+                $output .= "<input class=\"form-control\" type=\"text\" name=\"organization\" value=\""; 
+                
+                if(isset($membership->organization)) {
+                    $output .=  $membership->organization;
+                } else {$output .=  ""; } 
+            
+                $output .= "\" placeholder=\"Enter the organization of your membership\">";
+                $output .= "</div></div><div class=\"col-sm-6\">";
+
+                // input: YEAR
+                $output .= "<div class=\"form-group\">";
+                $output .= "<label class=\"txt-bold small-font-size capitalize\">year</label>";
+                $output .=  inputYear("year", $membership->year); 
+
+                $output .= "</div></div></div>";
+
+                $output .= "<div class=\"m-vlight-breather\">";
+
+                // SUBMIT & CANCEL BTNS
+                $output .= "<div class=\"row\">";
+                $output .= "<div class=\"col-sm-8\">";
+                $output .= "<input type=\"submit\" value=\"Update entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
+                $output .= "<div class=\"col-sm-4\">";
+                $output .= "<a href=\"delete.php?type=membership&id=";
+                $output .=  $membership->id; 
+                $output .= "\" class=\"form-control capitalize btn main-btn\">delete entry</a>";
+                $output .= "</div></div></div></form>";
+            }
+
+        } else {
+        
+            $output .= "<p>You are not a member of any organization yet. Click on the button below to add one</p>";
         }
 
-    }else {
-        $output .= "<p>You are not a member of any organization yet. Click on the button below to add one</p>";
+        $output .= "<hr><div class=\"m-light-breather\">";
+        $output .= "<a href=\"?type=memberships&action=add\" class=\"form-control btn main-btn capitalize\">+ add a new entry</a></div>";
+
+
+    } else { // new entry
+
+        $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+        
+        // input: HIDDEN TYPE and ACTION FIELD
+        $output .= "<input type=\"hidden\" name=\"update_type\" value=\"mem\">";
+        $output .= "<input type=\"hidden\" value=\"add\" name=\"action\">";
+
+        $output .= "<div class=\"row m-light-top-breather\">";
+        $output .= "<div class=\"col-sm-6\">";
+
+        // input: ORGANIZATION
+        $output .= "<div class=\"form-group\">";
+        $output .= "<label class=\"capitalize\">Organization: </label>";
+        $output .= "<input class=\"form-control\" type=\"text\" name=\"organization\" value=\""; 
+        $output .= "\" placeholder=\"Enter the organization of your membership\">";
+        $output .= "</div></div><div class=\"col-sm-6\">";
+
+        // input: YEAR
+        $output .= "<div class=\"form-group\">";
+        $output .= "<label class=\"capitalize\">year</label>";
+        $output .=  inputYear("year"); 
+        $output .= "</div></div></div>";
+        $output .= "<div class=\"m-vlight-breather\">";
+
+        // input: ADD ENTRY
+        $output .= "<input type=\"submit\" value=\"add entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
+        $output .= "</form>";
+            
     }
-
-    $output .= "<hr><div class=\"m-light-breather\">";
-    $output .= "<a href=\"?type=skills&action=add\" class=\"form-control btn main-btn capitalize\">+ add a new entry</a></div>";
-
+    
     return $output; 
 }
 
@@ -635,7 +831,7 @@ function EHForm($employmentHistory = null) {
             $output .= "<div class=\"col-sm-8\">";
             $output .= "<input type=\"submit\" value=\"Update entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
             $output .= "<div class=\"col-sm-4\">";
-            $output .= "<a href=\"del.php?id="; 
+            $output .= "<a href=\"delete.php?id="; 
             $output .=  $membership->id; 
             $output .= "\" class=\"form-control capitalize btn main-btn\">delete entry</a>";
             $output .= "</div></div></div></form>";
@@ -737,18 +933,6 @@ function maxFileSize() {
     // IMB = 1048576
     $file_size = 1048576 * 1.5;
     return $file_size;
-}
-
-function cvFormat($type) { 
-    if($type == "application/pdf" ||
-       $type == "application/msword" ||
-       $type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-       $type == "application/vnd.openxmlformats-officedocument.wordprocessingml.template" ||
-       $type == "application/vnd.ms-word.document.macroEnabled.12" ||
-       $type == "application/vnd.ms-word.template.macroEnabled.12" )    
-    { return true; } 
-
-    else { return false; }
 }
 
 function filePath($dir=NULL, $filename) {

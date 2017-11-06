@@ -45,21 +45,6 @@ class Jobs extends DatabaseObject {
         }
     }
 
-    public function delete() {
-        global $database;
-
-        $sql  = "DELETE from " . self::$table_name;
-        $sql .= " WHERE id = " . $database->escapeValue($this->id);
-        $sql .= " LIMIT 1";
-
-        if($database->query($sql)) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
     public function update() {
         global $database;
 
@@ -133,8 +118,5 @@ class Jobs extends DatabaseObject {
         }
 
     }
-
-
-
 
 }

@@ -162,10 +162,10 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                         </div>
 
                                         <div class="m-vlight-top-breather">
-                                            <p class="mid-font-size capitalize no-margin txt-bold">avaliability</p>
+                                            <p class="mid-font-size capitalize no-margin txt-bold">job avaliability</p>
                                             <p class="small-font-size">
                                                 <?php 
-                                                    if(isset($desiredJob[0]->job_type)) {echo $desiredJob[0]->job_type; } 
+                                                    if(isset($desiredJob[0]->job_type)) {echo ucwords($desiredJob[0]->job_type); } 
                                                     else { echo "Nothing is on this field"; }
                                                 ?>
                                             </p>

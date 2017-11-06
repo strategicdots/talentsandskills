@@ -31,36 +31,7 @@ $interests          = Interest::findAllUnderParent($candidate->id, "user_id");
                 <!-- mainbar -->
                 <div class="col-sm-8 mainbar">
                     <?php echo inline_message(); ?>
-                    <!-- <div class=" biodata p-heavy-side-breather light-bx-shadow white-bg p-heavy-breather">
-                        <div class="row"> -->
-                    <!-- <div class="col-sm-2 bioimage">
-                                <img class="img-center img-circle" src="../img/candidate-placeholder.jpg" alt="">
-                            </div> -->
-
-                    <!-- <div class="col-sm-10 bio-details">
-                                <div class="row">
-                                    <div class="col-sm-7">
-                                        <h1 class="bio-name">Yusuf Rafiu</h1>
-                                        <h3 class="discpln secheadfont">PHP Developer
-                                            <span class="">|</span> Lagos</h3>
-                                    </div>
-                                    <div class="col-sm-5">
-                                    </div>
-                                </div>
-
-                                <p class="no-margin small-font-size secheadfont capitalize">profile strength: 65%</p>
-                                <progress max="100" value="65" class="no-margin">
-
-                                    <div class="progress-bar">
-                                        <span style="width: 65%; height: inherit;"></span>
-                                    </div>
-                                </progress>
-
-                            </div> -->
-                    <!-- </div>
-                    </div> -->
-                    <!-- end .biodata -->
-
+                    
                     <?php if(empty($candidate->cv_path)) : ?>
                     <div class="m-mid-bottom-breather">
                         <div class="light-bx-shadow">
@@ -102,14 +73,14 @@ $interests          = Interest::findAllUnderParent($candidate->id, "user_id");
                     <div class="jobs m-mid-bottom-breather">
                         <div class="light-bx-shadow">
                             <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
-                                <p class="headfont uppercase no-margin">new jobs on talents and skills </p>
+                                <p class="headfont uppercase no-margin">recent jobs on talents and skills </p>
                             </div>
                             <?php $newJobs = Jobs::newJobs(); ?>
                             <div class="p-light-bottom-breather p-mid-side-breather">
                                 <ul class="no-list-style no-left-padding">
                                     <?php foreach($newJobs as $job): ?>
                                     <li>
-                                        <a href="">
+                                        <a href="job.php?id=<?php echo $job->id; ?>">
                                             <?php echo ucwords($job->title); ?>
                                         </a>
                                     </li>
@@ -120,8 +91,7 @@ $interests          = Interest::findAllUnderParent($candidate->id, "user_id");
 
                         </div>
 
-                    </div>
-                    <!-- end .new jobs-->
+                    </div> <!-- end .new jobs-->
 
                     <div class="blog m-mid-top-breather">
                         <div class="light-bx-shadow">

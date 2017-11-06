@@ -88,7 +88,6 @@ if($_POST['submit']) {
             $candidate->firstname     = trim($_POST['firstname']); 
             $candidate->lastname      = trim($_POST['lastname']); 
             $candidate->password      = trim($_POST['password']); 
-            $candidate->candidate     = "1";
             
             if($candidate->testCreate()) {
                 // account created successfully, redirect to dashboard

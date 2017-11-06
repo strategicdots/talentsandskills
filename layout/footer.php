@@ -69,10 +69,14 @@
 <script type="text/javascript" src="<?php echo $seperator; ?>js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="<?php echo $seperator; ?>js/bootstrap.min.js"></script>
 <?php if($thisPage == "my-profile"): ?> 
-<script type="text/javascript" src="<?php echo $seperator;?>$seperatorjs/profile.js"></script>
-<?php endif; ?>
-<?php if($thisPage == "apply-job" || $thisPage == "create-job"): ?>
+<script type="text/javascript" src="<?php echo $seperator;?>js/profile.js"></script>
+
+<?php elseif($thisPage == "apply-job" || $thisPage == "create-job"): ?>
 <script type="text/javascript" src="<?php echo $seperator;?>ckeditor/ckeditor.js"></script>
+
+<?php elseif($thisPage == "settings"): ?>
+<script type="text/javascript" src="<?php echo $seperator;?>js/settings.js"></script>
+
 <?php endif; ?>
 <?php // if($thisPage == "create-job"): ?>
 
