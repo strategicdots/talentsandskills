@@ -19,63 +19,10 @@ $jobsPosted = Jobs::findAllUnderParent($employer->id, "employer_id", $order = tr
         <div class="container">
 
             <div class="row">
+                
                 <!-- sidebar -->
                 <div class="sidebar col-sm-4">
-
-                    <!-- company profile -->
-                    <div class="light-bx-shadow m-mid-bottom-breather">
-                        <div class="p-vlight-breather sec-bg p-mid-side-breather">
-                            <p class="headfont uppercase no-margin text-center">company profile</p>
-                        </div>
-
-                        <div class="p-mid-side-breather p-light-breather">
-                            <?php if(!is_null($employer->avatar_url)) : ?>
-                            <img class="img-center" src="<?php echo $employer->avatar_url; ?>" alt="">
-
-                            <?php else : ?>
-                            <img class="img-center" src="../img/candidate-placeholder.jpg" alt="">
-                            <?php endif; ?>
-
-                            <p class="lead headfont text-center no-margin">
-                                <?php echo $employer->company_name; ?>
-                            </p>
-                            <p class="secheadfont capitalize">
-                                <?php echo $employer->job_field; ?> firm</p>
-
-                        </div>
-
-                    </div>
-
-                    <!-- create a job posting -->
-                    <div class="light-bx-shadow m-mid-bottom-breather">
-                        <div class="p-vlight-breather sec-bg p-mid-side-breather">
-                            <p class="headfont uppercase no-margin text-center">create a job posting</p>
-                        </div>
-
-                        <div class="p-mid-side-breather p-light-breather">
-                            <form method="post" action="create-job.php">
-                                <div class="form-group">
-                                    <label class="capitalize">job title</label>
-                                    <input type="text" name="title" class="form-control" placeholder="Enter Your Job Title">
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="capitalize">field</label>
-                                    <select name="job_field" class="form-control">
-                                        <?php foreach($jobFields as $field): ?>
-                                        <option value="<?php echo $field->name; ?>"><?php echo $field->name; ?></option>
-                                        <?php endforeach; ?>
-                                        </select>
-                                </div>
-                                <input type="submit" value="Start" class="btn sec-btn heavy-font-size form-control">
-                            </form>
-
-
-                        </div>
-
-
-                    </div>
-
+                   <?php echo employerSidebar($employer); ?>
                 </div>
 
                 <!-- mainbar -->

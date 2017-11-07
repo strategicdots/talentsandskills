@@ -15,7 +15,7 @@ $deadline = "";
 if($job->deadline > strtotime("now")) {
     $timestamp = strtotime($job->deadline);
     $deadline = date('D jS  F\, Y', $timestamp);
-} else { $deadline = "job closed"; }
+} else { $deadline = "application is closed"; }
 ?>
 
 <!-- header -->
