@@ -207,8 +207,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                         </div>
 
-                    </div>
-                    <!-- end career summary -->
+                    </div><!-- end career summary -->
 
                     <!-- education -->
                     <div class="m-mid-top-breather edu">
@@ -294,8 +293,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                         </div>
 
-                    </div>
-                    <!-- end education -->
+                    </div><!-- end education -->
 
                     <!-- skills -->
                     <div class="m-mid-top-breather">
@@ -324,8 +322,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
 
 
-                    </div>
-                    <!-- end skills -->
+                    </div><!-- end skills -->
 
                     <!-- professional memberships -->
                     <div class="m-mid-top-breather">
@@ -362,8 +359,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
 
 
-                    </div>
-                    <!-- end professional memberships -->
+                    </div><!-- end professional memberships -->
 
                     <!-- employment history -->
                     <div class="m-mid-top-breather">
@@ -381,7 +377,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                             <p class="mid-font-size capitalize no-margin txt-bold">employer</p>
                                             <p class="small-font-size capitalize">
                                                 <?php 
-                                                    if(isset($employmentHistory->employer)) {echo $employmentHistory->employer; } 
+                                                    if(isset($employment->employer)) {echo $employment->employer; } 
                                                     else { echo "Nothing is on this field"; }
                                                 ?>
                                             </p>
@@ -393,7 +389,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                             <p class="mid-font-size capitalize no-margin txt-bold">job title</p>
                                             <p class="small-font-size capitalize">
                                                 <?php 
-                                                    if(isset($employmentHistory->job_title)) {echo $employmentHistory->job_title; } 
+                                                    if(isset($employment->job_title)) {echo $employment->job_title; } 
                                                     else { echo "Nothing is on this field"; }
                                                 ?>
                                             </p>
@@ -405,7 +401,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                             <p class="mid-font-size capitalize no-margin txt-bold">time span</p>
                                             <p class="small-font-size capitalize">
                                                 <?php 
-                                                    if(isset($employmentHistory->time_span)) {echo $employmentHistory->time_span; } 
+                                                    if(isset($employment->time_span)) {echo $employment->time_span; } 
                                                     else { echo "Nothing is on this field"; }
                                                 ?>
                                             </p>
@@ -417,9 +413,8 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                     <div class="col-sm-12">
                                         <p class="mid-font-size capitalize no-margin txt-bold">Responsibilities</p>
                                         <p class="small-font-size capitalize">
-                                            <?php echo $employment->responsibilities; ?>
                                                 <?php 
-                                                    if(isset($employmentHistory->responsibilities)) {echo $employmentHistory->responsibilities; } 
+                                                    if(isset($employment->responsibilities)) {echo $employment->responsibilities; } 
                                                     else { echo "Nothing is on this field"; }
                                                 ?>
                                         </p>

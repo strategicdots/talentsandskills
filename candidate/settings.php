@@ -134,8 +134,8 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                                     <form method="post" class="sm" action="../control/candidate/settings.php" enctype="multipart/form-data">
                                                         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo maxFileSize(); ?>">
 
-                                                        <?php if(!empty($candidate->cv_path)): ?>
-                                                        <input type="hidden" name="type" value="1">
+                                                        <?php if(!empty($candidate->avatar_url)): ?>
+                                                        <input type="hidden" name="type" value="update">
                                                         <?php endif; ?>
 
                                                         <div class="form-group">

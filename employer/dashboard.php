@@ -4,7 +4,7 @@ include_once("{$seperator}includes/initialize.php");
 /* check user status */
 if (!$session->isEmployerLoggedIn()) {redirect_to("{$seperator}login.php"); } 
  
-$employer = Employer::findDetails($session->employerID);
+$employer   = Employer::findDetails($session->employerID);
 $jobsPosted = Jobs::findAllUnderParent($employer->id, "employer_id", $order = true);
 
 ?>

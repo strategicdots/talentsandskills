@@ -39,7 +39,7 @@ function inline_errors() {
 }
 
 function includeLayoutTemplate($template="") {
-	include(SITE_ROOT.DS.'layouts'.DS.$template);
+    include(SITE_ROOT.DS.'layouts'.DS.$template);
 }
 
 function passwordEncrypt($password) {
@@ -76,17 +76,373 @@ function formatField($field) {
 }
 
 function break2NewLine($text) {
- 
+
     $text = str_replace("<br />", "\n", $text);
 
     return $text;
 }
 
-function pDForm($user = null) {
+function openDiv($attr= null) {
+    $output = "<div " . $attr . ">";
+
+    return $output;
+}
+
+function closeDiv($n = 1) {
+    $output = "";
+
+    for($i=0; $i=$n; $i++) {
+        $output .= "</div>";
+    }
+
+    return $output;
+}
+
+function trimContent($content, $count = 10) { // count is the number of words required before content is trimmed
+    preg_match("/(?:[^\s,\.;\?\!]+(?:[\s,\.;\?\!]+|$)){0,$count}/", $content, $matches);
+    return $matches[0];
+}
+
+function maxCVSize() {
+    // IMB = 1048576
+    $file_size = 1048576 * 0.5;
+    return $file_size;
+}
+
+function maxFileSize() {
+    // IMB = 1048576
+    $file_size = 1048576 * 1.5;
+    return $file_size;
+}
+
+function filePath($dir=NULL, $filename) {
+
+    return $dir . "/" . $filename;
+}
+
+function inputYear($inputName, $selectedYear = null) {
+    $output = "<select name=\"{$inputName}\" class=\"form-control\">";
+
+    for($i = 1900; $i<=2017; $i++) { 
+        if(!empty($selectedYear) && $selectedYear == $i) {
+            $output .= "<option value=\"{$i}\" selected>{$i}</option>";
+        } else { 
+            $output .= "<option value=\"{$i}\">{$i}</option>"; 
+        }
+    }
+
+    $output .= "</select>";
+
+    return $output;
+}
+
+function formatSalaryRange($range) {
+    return str_replace("#", "&#x20A6;", $range);
+}
+
+// CANDIDATE VIEW FUNCTIONS
+function candidateSidebar($user) {
+    global $states;
+
+    $output = "";
+
+    //about me 
+    $output .= "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
+    $output .= "<div class=\"p-vlight-breather sec-bg p-mid-side-breather\">";
+    $output .= "<p class=\"headfont uppercase no-margin text-center\">about me</p></div>";
+    $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
+
+    $output .= "<div class=\"row m-mid-bottom-breather\">";
+
+    $output .= "<div class=\"col-sm-4 bioimage\">";
+    $output .= "<img class=\"img-center img-circle img-responsive\" src=\"../img/candidate-placeholder.jpg\" alt=\"\">";
+    $output .= "</div>";
+
+    $output .= "<div class=\"col-sm-8 bio-details\">";
+    $output .= "<p class=\"headfont lead no-margin\">";
+    $output .= $user->fullName() . "</p>"; 
+
+    $output .= "<p class=\"mid-font-size\">";
+    $output .= $user->email . "</p>"; 
+
+    $output .= "<p class=\"mid-font-size no-margin\"><span class=\"txt-bold\">Mobile:</span>";
+    $output .= $user->phone . "</p>"; 
+
+    $output .= "<p class=\"mid-font-size\"><span class=\"txt-bold\">D.O.B: </span>";
+    $output .= $user->dob ."</p>"; 
+
+    $output .= "</div></div>";
+
+    // progress-bar
+    $output .= "<p class=\"no-margin small-font-size secheadfont capitalize\">profile strength: ";
+    $output .= profileBar($user) . "%";
+    $output .= "</p>";
+    $output .= "<progress max=\"100\" value=\"";
+    $output .= profileBar($user);
+    $output .= "\" class=\" m-vlight-bottom-breather\">";
+
+    // Browsers that support HTML5 progress element will ignore the html inside `progress` element. 
+    // Whereas older browsers will ignore the `progress` element and instead render the html inside it.
+    $output .= "<div class=\"progress-bar\">";
+    $output .= "<span style=\"width:";
+    $output .= profileBar($user);
+    $output .= " ; height: inherit;\"></span> </div>";
+    $output .= "</progress>";
+    // end .progress-bar
+
+    $output .= "</div></div>";
+
+    // sidebar form
+    $output .= "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
+
+    $output .= sideSearch($states) ."</div>"; 
+
+    // shortlisted jobs
+    /* 
+    $output .= "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
+    $output .= "<div class=\"p-vlight-breather sec-bg p-mid-side-breather\">";
+    $output .= "<p class=\"headfont uppercase no-margin text-center\">shortlisted jobs</p>";
+    $output .= "</div>";
+    $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
+    $output .= "<p class=\"\">You haven't shortlisted any jobs</p>";
+    $output .= "</div></div>"; */
+
+    // applied jobs
+    $output .= "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
+    $output .= "<div class=\"p-vlight-breather sec-bg p-mid-side-breather\">";
+    $output .= "<p class=\"headfont uppercase no-margin text-center\">applied jobs</p>";
+    $output .= "</div>";
+    $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
+    $output .= "<p class=\"\">You haven't applied for any job</p>";
+    $output .= "</div></div>";
+
+    return $output;
+}
+
+function sideSearch($states) {
+    global $states;
+
+    $output  = "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
+    $output .= "<div class=\"p-vlight-breather sec-bg p-mid-side-breather\">";
+    $output .= "<p class=\"headfont uppercase no-margin text-center\">browse jobs</p>";
+    $output .= "</div>";
+    $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
+    $output .= "<form method=\"get\" action=\"job-search.php\">";
+    $output .= "<div class=\"form-group\">";
+    $output .= "<input type=\"text\" name=\"keyword\" class=\"form-control\" placeholder=\"job title, skills or company\">";
+    $output .= "</div>";
+    $output .= "<div class=\"form-group\">";
+    $output .= "<select class=\"form-control\" name=\"location\">";
+    $output .= "<option>location</option>";
+    foreach($states as $state){  
+        $output .= "<option value=\"" . $state->name . "\">" . $state->name . "</option>";
+    }
+    $output .= "</select>";
+    $output .= "</div>";
+    $output .= "<div class=\"form-group\">";
+    $output .= "<input type=\"submit\" value=\"find jobs\" class=\"form-control btn sec-btn uppercase\">";
+    $output .= "</div>";
+    $output .= "</form>";
+    $output .= "</div>";
+    $output .= "</div>"; 
+
+    return $output;
+}
+
+function jobSearchFilter() {
+    global $jobExperience;
+    global $salaryRange;
+    global $jobType;
+    global $states;
+
+    $output  = "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
+    $output .= "<div class=\"p-vlight-breather sec-bg p-mid-side-breather\">";
+    $output .= "<p class=\"headfont uppercase no-margin text-center\">filter search results</p>";
+    $output .= "</div>";
+
+    $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
+    $output .= "<div class=\"panel-group capitalize\" id=\"accordion\">";
+    $output .= "<form id='search_filter' method=\"post\" action=\"#\">";
+
+    // experience 
+    $output .= "<div class=\"panel panel-default\">";
+    $output .= "<div class=\"panel-heading\" data-toggle=\"collapse\" data-parent=\"#accordion\" data-target=\"#accordion-1\">";
+    $output .= "<p class=\"panel-title\">";
+    $output .= "<span class=\"glyphicon glyphicon-chevron-down pull-right\"></span>";
+    $output .= "<a class=\"accordion-toggle\">Experience</a>";
+    $output .= "</p></div>";
+    $output .= "<div id=\"accordion-1\" class=\"panel-collapse collapse\">";
+
+    $output .= "<div class=\"panel-body\">";
+    foreach($jobExperience as $exp) { 
+        $output .= "<div class=\"p-mid-side-breather\">";
+        $output .= "<label class=\"radio\">";
+        $output .= "<input type=\"radio\" name=\"job_experience\" id=\"\" value=\""; 
+        $output .= $exp->years; 
+        $output .= "\">";
+        $output .= $exp->years; 
+        if($exp->id != 1) { 
+            $output .= " years"; 
+        } 
+        $output .= "</label></div>";
+    } 
+    $output .= "</div></div></div>";
+
+    //  salary range 
+    $output .= "<div class=\"panel panel-default\">";
+    $output .= "<div class=\"panel-heading\" data-toggle=\"collapse\" data-parent=\"#accordion\" data-target=\"#accordion-3\">";
+    $output .= "<p class=\"panel-title\">";
+    $output .= "<span class=\"glyphicon glyphicon-chevron-down pull-right\"></span>";
+    $output .= "<a class=\"accordion-toggle\">salary range</a>";
+    $output .= "</p></div>";
+    $output .= "<div id=\"accordion-3\" class=\"panel-collapse collapse\">";
+    $output .= "<div class=\"panel-body\">";
+    foreach($salaryRange as $range){ 
+        $output .= "<div class=\"p-mid-side-breather\">";
+        $output .= "<label class=\"radio\">";
+        $output .= "<input type=\"radio\" name=\"salary_range\" value=\"";
+        $output .= $range->salary_range; 
+        $output .= "\">";
+        $output .= formatSalaryRange($range->salary_range); 
+        $output .= "</label></div>";
+    }
+    $output .= "</div></div></div>";
+
+    // work type 
+    $output .= "<div class=\"panel panel-default\">";
+    $output .= "<div class=\"panel-heading\" data-toggle=\"collapse\" data-parent=\"#accordion\" data-target=\"#accordion-4\">";
+    $output .= "<p class=\"panel-title\">";
+    $output .= "<span class=\"glyphicon glyphicon-chevron-down pull-right\"></span>";
+    $output .= "<a class=\"accordion-toggle\">work type</a>";
+    $output .= "</p></div>";
+    $output .= "<div id=\"accordion-4\" class=\"panel-collapse collapse\">";
+    $output .= "<div class=\"panel-body\">";
+    foreach($jobType as $type){ 
+        $output .= "<div class=\"p-mid-side-breather\">";
+        $output .= "<label class=\"radio\">";
+        $output .= "<input type=\"radio\" name=\"job_type\" value=\""; 
+        $output .= $type->type; 
+        $output .= "\">";
+        $output .= $type->type;  
+        $output .= "</label></div>";
+    } 
+
+    $output .= "</div></div></div>";
+
+    // location 
+    $output .= "<div class=\"panel panel-default\">";
+    $output .= "<div class=\"panel-heading\" data-toggle=\"collapse\" data-parent=\"#accordion\" data-target=\"#accordion-5\">";
+    $output .= "<p class=\"panel-title\">";
+    $output .= "<span class=\"glyphicon glyphicon-chevron-down pull-right\"></span>";
+    $output .= "<a class=\"accordion-toggle\">location</a>";
+    $output .= "</p></div>";
+    $output .= "<div id=\"accordion-5\" class=\"panel-collapse collapse\">";
+    $output .= "<div class=\"panel-body\">";
+    $output .= "<div class=\"\" id=\"top-states\">";
+    $output .= "<div class=\"p-mid-side-breather\">";
+    $output .= "<label class=\"radio\">";
+    $output .= "<input type=\"radio\" name=\"location\" value=\"\">";
+    $output .= "</label></div></div>";
+
+    $i=0; foreach($states as $state) { 
+        $output .= "<div class=\"p-mid-side-breather\">";
+        $output .= "<label class=\"radio\">";
+        $output .= "<input type=\"radio\" name=\"location\" id=\"\" value=\""; 
+        $output .= $state->name; 
+        $output .= "\">";
+        $output .= $state->name; $i++; 
+        $output .= "</label></div>";
+    }
+    $output .= "</div></div></div>";
+    $output .= "<input type=\"submit\" name=\"submit\" value=\"filter\" class=\"btn sec-btn form-control uppercase\">";
+    $output .= "</form></div></div></div>";
+
+    return $output;
+}
+
+function topJobSearch($states) {
+
+    $output  = "<div class=\"container\">";
+    $output .= "<div class=\"white-bg p-mid-breather lg-br\">";
+    $output .= "<div class=\"mid-container \">";
+    $output .= "<form class=\"\" action=\"job-search.php\" method=\"get\">";
+    $output .= "<div class=\"row\">";
+    $output .= "<div class=\"col-sm-5\">";
+    $output .= "<input type=\"text\" name=\"keyword\" class=\"form-control capitalize\" placeholder=\"job title, skills or company\">";
+    $output .= "</div>";
+    $output .= "<div class=\"col-sm-5\">";
+    $output .= "<select class=\"form-control\" name=\"location\">";
+    foreach($states as $state){  
+        $output .= "<option value=\"" . $state->name . "\">" . $state->name . "</option>";
+    }
+    $output .= "</select>";
+    $output .= "</div>";
+    $output .= "<div class=\"col-sm-2\">";
+    $output .= "<input type=\"submit\" class=\"btn main-btn capitalize form-control\" name=\"submit\" value=\"find jobs\">";
+    $output .= "</div></div></form></div></div></div>";
+
+    return $output;
+}
+
+function profileBar($user) {
+    $bar = 0;
+    $schools = School::findAllUnderParent($user->id, "user_id");
+    $skills  = Skills::findAllUnderParent($user->id, "user_id");
+    $members = Membership::findAllUnderParent($user->id, "user_id");
+    $employments  = EmploymentHistory::findAllUnderParent($user->id, "user_id");
+    $desiredJob   = DesiredJob::findAllUnderParent($user->id, "user_id");  
+
+    // check for CV/Resume
+    if(isset($user->cv_path)) {
+        $bar += 20;
+    }
+
+    // check for profile picture
+    if(isset($user->avatar_url)) {
+        $bar += 10;
+    }
+
+    // check for personal statement
+    if(isset($user->personal_statement)) {
+        $bar += 10;
+    }
+
+    // check for education
+    if(count($schools) == 1) {
+        $bar += 10;
+    } elseif(count($schools) > 1) {
+        $bar += 15;
+    }
+
+    // check for professional skills
+    if(count($skills) >= 1) {
+        $bar += 10;
+    }
+
+    // check for professional memberships
+    if(count($members) >= 1) {
+        $bar += 10;
+    }
+
+    // check for employment history
+    if(count($employments) >= 1) {
+        $bar += 10;
+    }
+
+    // check for desired job section
+    if(count($desiredJob) >= 1) {
+        $bar += 5;
+    }
+
+    return $bar;
+
+}
+
+function pDForm($candidate = null) {
     global $states; 
 
-    if(isset($user->dob)) { 
-        $dobArray = explode('/', $user->dob);
+    if(isset($candidate->dob)) { 
+        $dobArray = explode('/', $candidate->dob);
         $dob_d = $dobArray[0];
         $dob_m = $dobArray[1];
         $dob_y = $dobArray[2];
@@ -102,13 +458,13 @@ function pDForm($user = null) {
     // input: EMAIL
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">email</label>";
-    $output .= "<input type=\"text\" class=\"form-control\" value=\"{$user->email}\" name=\"email\" placeholder=\"your email\"></div>";
+    $output .= "<input type=\"text\" class=\"form-control\" value=\"{$candidate->email}\" name=\"email\" placeholder=\"your email\"></div>";
 
     // input: PHONE
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">phone</label>";
-    $output .= "<input type=\"tel\" class=\"form-control\" name=\"phone\" value=\"{$user->phone}\" placeholder=\"your phone number\"></div>";
-    
+    $output .= "<input type=\"tel\" class=\"form-control\" name=\"phone\" value=\"{$candidate->phone}\" placeholder=\"your phone number\"></div>";
+
     // input: LOCATION
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">Choose your location </label>";
@@ -117,7 +473,7 @@ function pDForm($user = null) {
     foreach($states as $state) {
         $output .= "<option value=\"";
         $output .= $state->name . "\""; 
-        if($state == $user->location) {
+        if($state == $candidate->location) {
             $output .= " selected>"; 
         } else {
             $output .= " >";
@@ -198,13 +554,13 @@ function pDForm($user = null) {
     $output .= "<label class=\"txt-bold small-font-size capitalize\">Gender</label>";
     $output .= "<select name=\"gender\" class=\"form-control\">";
 
-    if($user->gender == "M") {
+    if($candidate->gender == "M") {
         $output .= "<option value=\"M\" selected>Male</option>";   
     } else {
         $output .= "<option value=\"M\">Male</option>";        
     }
 
-    if($user->gender == "F") {
+    if($candidate->gender == "F") {
         $output .= "<option value=\"F\" selected>Female</option>";   
     } else {
         $output .= "<option value=\"F\">Female</option>";        
@@ -218,8 +574,8 @@ function pDForm($user = null) {
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">personal statement</label>";
     $output .= "<textarea class=\"form-control\" name=\"personal_statement\" rows=\"7\">";
-    if(!empty($user->personal_statement)) {
-        $output .= $user->personal_statement;
+    if(!empty($candidate->personal_statement)) {
+        $output .= $candidate->personal_statement;
     } else {
         $output .= "Enter your personal statement here";
     }
@@ -229,8 +585,8 @@ function pDForm($user = null) {
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">address</label>";
     $output .= "<textarea class=\"form-control\" name=\"address\" rows=\"7\">";
-    if(!empty($user->address)) {
-        $output .= break2NewLine($user->address);
+    if(!empty($candidate->address)) {
+        $output .= break2NewLine($candidate->address);
     } else {
         $output .= "current address";
     }
@@ -243,7 +599,7 @@ function pDForm($user = null) {
     $output .= "<div class=\"row\">";
     $output .= "<div class=\"col-sm-8\">";
     $output .= "<input type=\"submit\" value=\"Confirm Changes\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
-    
+
     // input: CANCEL BUTTON
     $output .= "<div class=\"col-sm-4\">";
     $output .= "<a href=\"my-profile.php\" class=\"form-control capitalize btn main-btn\" >cancel</a>";
@@ -385,7 +741,7 @@ function eduForm($schools = null, $newEntry = false) {
 
         if(isset($schools)) {
             foreach($schools as $school) { 
-                $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+                $output .= "<form method=\"post\" action=\"../control/user/profile.php\" class=\"sm p-light-bottom-breather\">";
                 $output .= "<input type=\"hidden\" value=\"edu\" name=\"update_type\">";
                 $output .= "<div class=\"row\">";
                 $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\">";
@@ -414,25 +770,25 @@ function eduForm($schools = null, $newEntry = false) {
                 $output .= "<select class=\"form-control\" name=\"degree\">";
 
                 foreach($jobQualification as $qualification) {
-                    
+
                     $output .= "<option value=\"";
                     if(isset($school->degree) && $school->degree == $qualification->qualification) {
                         $output .= formatField($school->degree);
                         $output .= "\">";
                         $output .= $school->degree; 
-                    
+
                     } else { 
-                    
+
                         $output .= formatField($qualification->qualification);
                         $output .= "\">";
                         $output .= $qualification->qualification;
                     }
-                    
+
                     $output .= "</option>";                    
                 }
 
                 $output .= "</select></div>";
-                
+
 
                 // input: SCHOOL NAME
                 $output .= "<div class=\"form-group\">";
@@ -489,7 +845,7 @@ function eduForm($schools = null, $newEntry = false) {
                 // input: SUBMIT BTN
                 $output .= "<div class=\"col-sm-8\">";
                 $output .= "<input type=\"submit\" value=\"Update entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
-                
+
                 // input: CANCEL BTN
                 $output .= "<div class=\"col-sm-4\">";
                 $output .= "<a href=\"delete.php?type=edu&id=";
@@ -503,7 +859,7 @@ function eduForm($schools = null, $newEntry = false) {
         $output .= "<hr><div class=\"m-light-breather\">";
         $output .= "<a href=\"?type=education&action=add\" class=\"form-control btn main-btn capitalize\">+ add a new entry</a></div>";
 
-    
+
     } else { // this is a new entry
 
         $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
@@ -533,7 +889,7 @@ function eduForm($schools = null, $newEntry = false) {
             $output .= "</option>";                    
         }
         $output .= "</select></div>";
-        
+
 
         // input: SCHOOL
         $output .= "<div class=\"form-group\">";
@@ -601,10 +957,10 @@ function skillForm($skills = null, $newEntry = false) {
         if(isset($skills)) {
             foreach($skills as $skill) {
                 $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
-                
+
                 // input: HIDDEN TYPE FIELD
                 $output .= "<input type=\"hidden\" name=\"update_type\" value=\"sk\">";
-                
+
                 $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\">"; 
                 $output .=  ++$n; 
                 $output .= "</span></p>";
@@ -623,7 +979,7 @@ function skillForm($skills = null, $newEntry = false) {
                 // UPDATE AND DELETE BTNS
                 $output .= "</div><div class=\"row\">";
                 $output .= "<div class=\"col-sm-6\">";
-                
+
                 // input: UPDATE
                 $output .= "<div class=\"form-group\">";
                 $output .= "<input type=\"submit\" value=\"Update entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\">";
@@ -636,12 +992,12 @@ function skillForm($skills = null, $newEntry = false) {
                 $output .=  $skill->id; 
                 $output .= "\" class=\"form-control btn main-btn capitalize\">delete entry</a>";
                 $output .= "</div></div></div></form>";
-            
+
             }
 
         } else {
             $output .= "<p>You don't have any professional skill yet. Click on the button below to add one</p>";
-        
+
         }
 
         $output .= "<hr><div class=\"m-light-breather\">";
@@ -651,14 +1007,14 @@ function skillForm($skills = null, $newEntry = false) {
     } else { // this is a new entry
 
         $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
-        
+
         // input: HIDDEN TYPE and ACTION FIELD
         $output .= "<input type=\"hidden\" name=\"update_type\" value=\"sk\">";
         $output .= "<input type=\"hidden\" value=\"add\" name=\"action\">";
-        
+
 
         $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\">"; 
-       // $output .=  $x+1; 
+        // $output .=  $x+1; 
         $output .= "</span></p>";
 
         // input: SKILL NAME
@@ -680,21 +1036,21 @@ function skillForm($skills = null, $newEntry = false) {
 function memForm($memberships = null, $newEntry = false) {
     $n = 0;
     $output = "";
-    
+
     if(!$newEntry) { 
-        
+
         if(isset($memberships)) { 
-            
+
             foreach($memberships as $membership) {  
                 $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
-                
+
                 // input: HIDDEN TYPE FIELD
                 $output .= "<input type=\"hidden\" name=\"update_type\" value=\"mem\">";
 
                 $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\">"; 
                 $output .=  ++$n; 
                 $output .= "</span></p>";
-                
+
                 $output .= "<div class=\"row\">";
                 $output .= "<div class=\"col-sm-6\">";
 
@@ -702,11 +1058,11 @@ function memForm($memberships = null, $newEntry = false) {
                 $output .= "<div class=\"form-group\">";
                 $output .= "<label>Organization: </label>";
                 $output .= "<input class=\"form-control\" type=\"text\" name=\"organization\" value=\""; 
-                
+
                 if(isset($membership->organization)) {
                     $output .=  $membership->organization;
                 } else {$output .=  ""; } 
-            
+
                 $output .= "\" placeholder=\"Enter the organization of your membership\">";
                 $output .= "</div></div><div class=\"col-sm-6\">";
 
@@ -731,7 +1087,7 @@ function memForm($memberships = null, $newEntry = false) {
             }
 
         } else {
-        
+
             $output .= "<p>You are not a member of any organization yet. Click on the button below to add one</p>";
         }
 
@@ -742,7 +1098,7 @@ function memForm($memberships = null, $newEntry = false) {
     } else { // new entry
 
         $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
-        
+
         // input: HIDDEN TYPE and ACTION FIELD
         $output .= "<input type=\"hidden\" name=\"update_type\" value=\"mem\">";
         $output .= "<input type=\"hidden\" value=\"add\" name=\"action\">";
@@ -767,80 +1123,162 @@ function memForm($memberships = null, $newEntry = false) {
         // input: ADD ENTRY
         $output .= "<input type=\"submit\" value=\"add entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
         $output .= "</form>";
-            
+
     }
-    
+
     return $output; 
 }
 
-function EHForm($employmentHistory = null) {
+function EHForm($employmentHistory = null, $newEntry = false) {
     $n = 0; 
     $output = "";
-    if(isset($employmentHistory)) { 
-        foreach($employmentHistory as $item) { 
-            $output .= "<form method=\"post\" action=\"\" class=\"sm p-light-bottom-breather\">";
-            $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\"> $output .=  ++$n; </span></p>";
-            $output .= "<div class=\"row\"><div class=\"col-sm-6\">";
-            $output .= "<div class=\"form-group\">";
-            $output .= "<label class=\"txt-bold small-font-size capitalize\">Job title </label>";
-            $output .= "<input class=\"form-control\" type=\"text\" name=\"job_title\" value=\""; 
 
-            if(isset($item->job_title)) {
-                $output .=  $item->job_title;
-            } else {
-                $output .= ""; 
+    if(!$newEntry) { 
+
+        if(isset($employmentHistory)) { 
+
+            foreach($employmentHistory as $item) { 
+                $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+                
+                // input: HIDDEN TYPE FIELD
+                $output .= "<input type=\"hidden\" name=\"update_type\" value=\"empl\">";
+
+                // entry number
+                $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\">";
+                $output .= ++$n; 
+                $output .= "</span></p>";
+
+                // 1st col
+                $output .= "<div class=\"row\">";
+
+                // input: JOB TITLE
+                $output .= "<div class=\"col-sm-6\">";
+                $output .= "<div class=\"form-group\">";
+                $output .= "<label class=\"txt-bold small-font-size capitalize\">Job title </label>";
+                $output .= "<input class=\"form-control\" type=\"text\" name=\"job_title\" value=\""; 
+
+                if(isset($item->job_title)) {
+                    $output .=  $item->job_title;
+                } else {
+                    $output .= ""; 
+                }
+
+                $output .= "\" placeholder=\"Enter your job position\"></div>";
+
+                // input: EMPLOYER
+                $output .= "<div class=\"form-group\">";
+                $output .= "<label class=\"txt-bold small-font-size capitalize\">employer </label>";
+                $output .= "<input class=\"form-control\" type=\"text\" name=\"employer\" value=\"";
+
+                if(isset($item->employer)) {
+                    $output .=  $item->employer;
+                } else {
+                    $output .=  ""; 
+                }
+
+                $output .= "\" placeholder=\"Enter the name of your employer\"></div>";
+
+                // input: DURATION IN ORGANIZATION
+                $output .= "<div class=\"form-group\">";
+                $output .= "<label class=\"txt-bold small-font-size capitalize\">duration in organization </label>";
+                $output .= "<input class=\"form-control\" type=\"text\" name=\"time_span\" value=\""; 
+
+                if(isset($item->time_span)) {
+                    $output .=  $item->time_span;
+                } else {
+                    $output .=  ""; 
+                } 
+
+                $output .= "\" placeholder=\"Example: 2012 - 2014\"></div>";
+
+                // 2nd col
+                $output .= "</div><div class=\"col-sm-6\">";
+
+                // input: RESPONSIBILITIES
+                $output .= "<div class=\"form-group\">";
+                $output .= "<label class=\"txt-bold small-font-size capitalize\">responsibilities</label>";
+                $output .= "<textarea name=\"responsibilities\" class=\"form-control\" rows=\"10\">";  
+
+                if(isset($item->responsibilities)) {
+                    $output .=  $item->responsibilities;
+                } else { 
+                    $output .=  "Describe your responsibilites in the organization"; 
+                }
+
+                $output .= "</textarea></div></div></div>";
+                $output .= "<div class=\"m-vlight-breather\">";
+
+                // SUBMIT & CANCEL BTNS
+                $output .= "<div class=\"row\">";
+                $output .= "<div class=\"col-sm-8\">";
+                $output .= "<input type=\"submit\" value=\"Update entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
+                $output .= "<div class=\"col-sm-4\">";
+                $output .= "<a href=\"delete.php?id="; 
+                $output .=  $item->id; 
+                $output .= "\" class=\"form-control capitalize btn main-btn\">delete entry</a>";
+                $output .= "</div></div></div></form>";
             }
-
-            $output .= "\" placeholder=\"Enter your job position\"></div>";
-            $output .= "<div class=\"form-group\">";
-            $output .= "<label class=\"txt-bold small-font-size capitalize\">employer </label>";
-            $output .= "<input class=\"form-control\" type=\"text\" name=\"employer\" value=\"";
-
-            if(isset($item->employer)) {
-                $output .=  $item->employer;
-            } else {
-                $output .=  ""; 
-            }
-
-            $output .= "\" placeholder=\"Enter the name of your employer\"></div>";
-            $output .= "<div class=\"form-group\">";
-            $output .= "<label class=\"txt-bold small-font-size capitalize\">time in organization </label>";
-            $output .= "<input class=\"form-control\" type=\"text\" name=\"organization\" value=\""; 
-
-            if(isset($item->time_span)) {
-                $output .=  $item->time_span;
-            } else {
-                $output .=  ""; 
-            } 
-
-            $output .= "\" placeholder=\"Example: 2012 - 2014\"></div>";
-            $output .= "</div><div class=\"col-sm-6\">";
-            $output .= "<div class=\"form-group\">";
-            $output .= "<label class=\"txt-bold small-font-size capitalize\">responsibilities</label>";
-            $output .= "<textarea name=\"responsibilities\" class=\"form-control\" rows=\"10\">";  
-
-            if(isset($item->responsibilities)) {
-                $output .=  $item->responsibilities;
-            } else { 
-                $output .=  "Describe your responsibilites in the organization"; 
-            }
-
-            $output .= "</textarea></div></div></div>";
-            $output .= "<div class=\"m-vlight-breather\">";
-            $output .= "<div class=\"row\">";
-            $output .= "<div class=\"col-sm-8\">";
-            $output .= "<input type=\"submit\" value=\"Update entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
-            $output .= "<div class=\"col-sm-4\">";
-            $output .= "<a href=\"delete.php?id="; 
-            $output .=  $membership->id; 
-            $output .= "\" class=\"form-control capitalize btn main-btn\">delete entry</a>";
-            $output .= "</div></div></div></form>";
+        } else {
+            $output .= "<p>You haven't update your employment history. Click on the button below to add one</p>";
         }
+
+        $output .= "<hr><div class=\"m-light-breather\">";
+        $output .= "<a href=\"?type=employment_history&action=add\" class=\"form-control btn main-btn capitalize\">+ add a new entry</a></div>";
+
     } else {
-        $output .= "<p>You haven't update your employment history. Click on the button below to add one</p>";
+
+
+        $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+
+        // input: HIDDEN TYPE and ACTION FIELD
+        $output .= "<input type=\"hidden\" name=\"update_type\" value=\"empl\">";
+        $output .= "<input type=\"hidden\" value=\"add\" name=\"action\">";
+
+        // 1st column starts
+        $output .= "<div class=\"row\"><div class=\"col-sm-6\">";
+
+        // input: JOB TITLE
+        $output .= "<div class=\"form-group\">";
+        $output .= "<label class=\"txt-bold small-font-size capitalize\">Job title </label>";
+        $output .= "<input class=\"form-control\" type=\"text\" name=\"job_title\" value=\""; 
+        $output .= "\" placeholder=\"Enter your job position\"></div>";
+
+        // input: EMPLOYER
+        $output .= "<div class=\"form-group\">";
+        $output .= "<label class=\"txt-bold small-font-size capitalize\">employer </label>";
+        $output .= "<input class=\"form-control\" type=\"text\" name=\"employer\" value=\"";
+        $output .= "\" placeholder=\"Enter the name of your employer\"></div>";
+
+        // input: DURATION
+        $output .= "<div class=\"form-group\">";
+        $output .= "<label class=\"txt-bold small-font-size capitalize\">duration in organization </label>";
+        $output .= "<input class=\"form-control\" type=\"text\" name=\"time_span\" value=\""; 
+        $output .= "\" placeholder=\"Example: 2012 - 2014\"></div>";
+
+        // end: 1st column
+        $output .= "</div>";
+
+        // 2nd column starts
+        $output .= "<div class=\"col-sm-6\">";
+
+        //input: JOB RESPONSIBILITIES
+        $output .= "<div class=\"form-group\">";
+        $output .= "<label class=\"txt-bold small-font-size capitalize\">responsibilities</label>";
+        $output .= "<textarea name=\"responsibilities\" class=\"form-control\" rows=\"10\">";  
+        $output .=  "Describe your responsibilites in the organization"; 
+        $output .= "</textarea></div>";
+
+        // end: 2nd column
+        $output .= "</div></div>";
+
+        // input: SUBMIT
+        $output .= "<div class=\"m-vlight-breather\">";
+        $output .= "<input type=\"submit\" value=\"Update entry\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>"; 
+        
+        // end: FORM
+        $output .= "</form>";
+
     }
-    $output .= "<hr><div class=\"m-light-breather\">";
-    $output .= "<a href=\"?type=skills&action=add\" class=\"form-control btn main-btn capitalize\">+ add a new entry</a></div>";
 
     return $output;
 }
@@ -878,307 +1316,59 @@ function intForm($interests = null) {
 
 }
 
-function openDiv($attr= null) {
-    $output = "<div " . $attr . ">";
+function candidateApplications($applications) {
+    $i = 0;
 
-    return $output;
-}
+    $output  = "";
+    $output  = "<div class=\"table-responsive\"><table><tbody>";
 
-function closeDiv($n = 1) {
-    $output = "";
+    // table head
+    $output .= "<tr class=\"capitalize\">";
+    $output .= "<td>S/N</td>";
+    $output .= "<td>job title</td>";
+    $output .= "<td>current status</td>";
+    $output .= "<td>action</td>";
+    $output .= "</tr>";
 
-    for($i=0; $i=$n; $i++) {
-        $output .= "</div>";
-    }
+    // table data
+    foreach($applications as $application) {
+        $i++;
 
-    return $output;
-}
+        // find job details
+        $job = Jobs::findDetails($application->job_id);
 
-function trimContent($content, $count = 10) { // count is the number of words required before content is trimmed
-    preg_match("/(?:[^\s,\.;\?\!]+(?:[\s,\.;\?\!]+|$)){0,$count}/", $content, $matches);
-    return $matches[0];
-}
+        // start appending output
+        $output .= "<tr>";
 
-function topJobSearch($states) {
+        // serial number
+        $output .= "<td>" . $i . "</td>";
 
-    $output  = "<div class=\"container\">";
-    $output .= "<div class=\"white-bg p-mid-breather lg-br\">";
-    $output .= "<div class=\"mid-container \">";
-    $output .= "<form class=\"\" action=\"job-search.php\" method=\"get\">";
-    $output .= "<div class=\"row\">";
-    $output .= "<div class=\"col-sm-5\">";
-    $output .= "<input type=\"text\" name=\"keyword\" class=\"form-control capitalize\" placeholder=\"job title, skills or company\">";
-    $output .= "</div>";
-    $output .= "<div class=\"col-sm-5\">";
-    $output .= "<select class=\"form-control\" name=\"location\">";
-    foreach($states as $state){  
-        $output .= "<option value=\"" . $state->name . "\">" . $state->name . "</option>";
-    }
-    $output .= "</select>";
-    $output .= "</div>";
-    $output .= "<div class=\"col-sm-2\">";
-    $output .= "<input type=\"submit\" class=\"btn main-btn capitalize form-control\" name=\"submit\" value=\"find jobs\">";
-    $output .= "</div></div></form></div></div></div>";
+        // job title
+        $output .= "<td class=\"capitalize\"><a href=\"job.php?id={$job->id}\">";
+        $output .= $job->title . "</a></td>";
 
-    return $output;
-}
+        // current status
+        if (time() >= $job->deadline) {
+            $output .= "<td class=\"capitalize\"> expired </td>"; 
+        } else {
+            $output .= "<td class=\"capitalize\"> live </td>"; 
 
-function maxCVSize() {
-    // IMB = 1048576
-    $file_size = 1048576 * 0.5;
-    return $file_size;
-}
-
-function maxFileSize() {
-    // IMB = 1048576
-    $file_size = 1048576 * 1.5;
-    return $file_size;
-}
-
-function filePath($dir=NULL, $filename) {
-
-    return $dir . "/" . $filename;
-}
-
-function inputYear($inputName, $selectedYear = null) {
-    $output = "<select name=\"{$inputName}\" class=\"form-control\">";
-
-    for($i = 1900; $i<=2017; $i++) { 
-        if(!empty($selectedYear) && $selectedYear == $i) {
-            $output .= "<option value=\"{$i}\" selected>{$i}</option>";
-        } else { 
-            $output .= "<option value=\"{$i}\">{$i}</option>"; 
         }
+
+        // action
+        $output .= "<td class=\"small-font-size\">";
+        $output .= "<a href=\"delete.php?type=job-applied&id={$application->id}\">Delete</a></td>";
+
     }
-
-    $output .= "</select>";
-
-    return $output;
-}
-
-function formatSalaryRange($range) {
-    return str_replace("#", "&#x20A6;", $range);
-}
-
-// CANDIDATE FUNCTIONS
-function candidateSidebar($user) {
-    global $states;
-    $output = "";
-
-    //about me 
-    $output .= "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
-    $output .= "<div class=\"p-vlight-breather sec-bg p-mid-side-breather\">";
-    $output .= "<p class=\"headfont uppercase no-margin text-center\">about me</p></div>";
-    $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
-
-    $output .= "<div class=\"row m-mid-bottom-breather\">";
-
-    $output .= "<div class=\"col-sm-4 bioimage\">";
-    $output .= "<img class=\"img-center img-circle\" src=\"../img/candidate-placeholder.jpg\" alt=\"\">";
-    $output .= "</div>";
-
-    $output .= "<div class=\"col-sm-8 bio-details\">";
-    $output .= "<p class=\"headfont lead no-margin\">";
-    $output .= $user->fullName() . "</p>"; 
-
-    $output .= "<p class=\"mid-font-size\">";
-    $output .= $user->email . "</p>"; 
-
-    $output .= "<p class=\"mid-font-size no-margin\"><span class=\"txt-bold\">Mobile:</span>";
-    $output .= $user->phone . "</p>"; 
-
-    $output .= "<p class=\"mid-font-size\"><span class=\"txt-bold\">D.O.B: </span>";
-    $output .= $user->dob ."</p>"; 
-
-    $output .= "</div></div>";
-
-    // progress-bar
-    $output .= "<p class=\"no-margin small-font-size secheadfont capitalize\">profile strength: 65%</p>";
-    $output .= "<progress max=\"100\" value=\"65\" class=\" m-vlight-bottom-breather\">";
-
-    // Browsers that support HTML5 progress element will ignore the html inside `progress` element. 
-    // Whereas older browsers will ignore the `progress` element and instead render the html inside it.
-    $output .= "<div class=\"progress-bar\">";
-    $output .= "<span style=\"width: 65%; height: inherit;\"></span> </div>";
-
-    $output .= "</progress>";
-    // end .progress-bar
-
-    $output .= "</div></div>";
-
-    // sidebar form
-    $output .= "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
-
-    $output .= sideSearch($states) ."</div>"; 
-
-    // shortlisted jobs
-    /* 
-    $output .= "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
-    $output .= "<div class=\"p-vlight-breather sec-bg p-mid-side-breather\">";
-    $output .= "<p class=\"headfont uppercase no-margin text-center\">shortlisted jobs</p>";
-    $output .= "</div>";
-    $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
-    $output .= "<p class=\"\">You haven't shortlisted any jobs</p>";
-    $output .= "</div></div>"; */
-
-    // applied jobs
-    $output .= "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
-    $output .= "<div class=\"p-vlight-breather sec-bg p-mid-side-breather\">";
-    $output .= "<p class=\"headfont uppercase no-margin text-center\">applied jobs</p>";
-    $output .= "</div>";
-    $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
-    $output .= "<p class=\"\">You haven't applied for any job</p>";
-    $output .= "</div></div>";
-
-    return $output;
-}
-
-function sideSearch($states) {
-    global $states;
-
-    $output  = "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
-    $output .= "<div class=\"p-vlight-breather sec-bg p-mid-side-breather\">";
-    $output .= "<p class=\"headfont uppercase no-margin text-center\">browse jobs</p>";
-    $output .= "</div>";
-    $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
-    $output .= "<form method=\"get\" action=\"job-search.php\">";
-    $output .= "<div class=\"form-group\">";
-    $output .= "<input type=\"text\" name=\"keyword\" class=\"form-control\" placeholder=\"job title, skills or company\">";
-    $output .= "</div>";
-    $output .= "<div class=\"form-group\">";
-    $output .= "<select class=\"form-control\" name=\"location\">";
-    $output .= "<option>location</option>";
-    foreach($states as $state){  
-        $output .= "<option value=\"" . $state->name . "\">" . $state->name . "</option>";
-    }
-    $output .= "</select>";
-    $output .= "</div>";
-    $output .= "<div class=\"form-group\">";
-    $output .= "<input type=\"submit\" value=\"find jobs\" class=\"form-control btn sec-btn uppercase\">";
-    $output .= "</div>";
-    $output .= "</form>";
-    $output .= "</div>";
-    $output .= "</div>"; 
-
-    return $output;
-}
-
-function jobSearchFilter() {
-    global $jobExperience;
-    global $salaryRange;
-    global $jobType;
-    global $states;
-
-    $output  = "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
-    $output .= "<div class=\"p-vlight-breather sec-bg p-mid-side-breather\">";
-    $output .= "<p class=\"headfont uppercase no-margin text-center\">filter search results</p>";
-    $output .= "</div>";
-    
-    $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
-    $output .= "<div class=\"panel-group capitalize\" id=\"accordion\">";
-    $output .= "<form id='search_filter' method=\"post\" action=\"#\">";
-    
-    // experience 
-    $output .= "<div class=\"panel panel-default\">";
-    $output .= "<div class=\"panel-heading\" data-toggle=\"collapse\" data-parent=\"#accordion\" data-target=\"#accordion-1\">";
-    $output .= "<p class=\"panel-title\">";
-    $output .= "<span class=\"glyphicon glyphicon-chevron-down pull-right\"></span>";
-    $output .= "<a class=\"accordion-toggle\">Experience</a>";
-    $output .= "</p></div>";
-    $output .= "<div id=\"accordion-1\" class=\"panel-collapse collapse\">";
-    
-    $output .= "<div class=\"panel-body\">";
-    foreach($jobExperience as $exp) { 
-        $output .= "<div class=\"p-mid-side-breather\">";
-        $output .= "<label class=\"radio\">";
-        $output .= "<input type=\"radio\" name=\"job_experience\" id=\"\" value=\""; 
-        $output .= $exp->years; 
-        $output .= "\">";
-        $output .= $exp->years; 
-        if($exp->id != 1) { 
-            $output .= " years"; 
-        } 
-        $output .= "</label></div>";
-    } 
-    $output .= "</div></div></div>";
-    
-    //  salary range 
-    $output .= "<div class=\"panel panel-default\">";
-    $output .= "<div class=\"panel-heading\" data-toggle=\"collapse\" data-parent=\"#accordion\" data-target=\"#accordion-3\">";
-    $output .= "<p class=\"panel-title\">";
-    $output .= "<span class=\"glyphicon glyphicon-chevron-down pull-right\"></span>";
-    $output .= "<a class=\"accordion-toggle\">salary range</a>";
-    $output .= "</p></div>";
-    $output .= "<div id=\"accordion-3\" class=\"panel-collapse collapse\">";
-    $output .= "<div class=\"panel-body\">";
-    foreach($salaryRange as $range){ 
-        $output .= "<div class=\"p-mid-side-breather\">";
-        $output .= "<label class=\"radio\">";
-        $output .= "<input type=\"radio\" name=\"salary_range\" value=\"";
-        $output .= $range->salary_range; 
-        $output .= "\">";
-        $output .= formatSalaryRange($range->salary_range); 
-        $output .= "</label></div>";
-    }
-    $output .= "</div></div></div>";
-    
-    // work type 
-    $output .= "<div class=\"panel panel-default\">";
-    $output .= "<div class=\"panel-heading\" data-toggle=\"collapse\" data-parent=\"#accordion\" data-target=\"#accordion-4\">";
-    $output .= "<p class=\"panel-title\">";
-    $output .= "<span class=\"glyphicon glyphicon-chevron-down pull-right\"></span>";
-    $output .= "<a class=\"accordion-toggle\">work type</a>";
-    $output .= "</p></div>";
-    $output .= "<div id=\"accordion-4\" class=\"panel-collapse collapse\">";
-    $output .= "<div class=\"panel-body\">";
-    foreach($jobType as $type){ 
-        $output .= "<div class=\"p-mid-side-breather\">";
-        $output .= "<label class=\"radio\">";
-        $output .= "<input type=\"radio\" name=\"job_type\" value=\""; 
-        $output .= $type->type; 
-        $output .= "\">";
-        $output .= $type->type;  
-        $output .= "</label></div>";
-    } 
-    
-    $output .= "</div></div></div>";
-    
-    // location 
-    $output .= "<div class=\"panel panel-default\">";
-    $output .= "<div class=\"panel-heading\" data-toggle=\"collapse\" data-parent=\"#accordion\" data-target=\"#accordion-5\">";
-    $output .= "<p class=\"panel-title\">";
-    $output .= "<span class=\"glyphicon glyphicon-chevron-down pull-right\"></span>";
-    $output .= "<a class=\"accordion-toggle\">location</a>";
-    $output .= "</p></div>";
-    $output .= "<div id=\"accordion-5\" class=\"panel-collapse collapse\">";
-    $output .= "<div class=\"panel-body\">";
-    $output .= "<div class=\"\" id=\"top-states\">";
-    $output .= "<div class=\"p-mid-side-breather\">";
-    $output .= "<label class=\"radio\">";
-    $output .= "<input type=\"radio\" name=\"location\" value=\"\">";
-    $output .= "</label></div></div>";
-    
-    $i=0; foreach($states as $state) { 
-        $output .= "<div class=\"p-mid-side-breather\">";
-        $output .= "<label class=\"radio\">";
-        $output .= "<input type=\"radio\" name=\"location\" id=\"\" value=\""; 
-        $output .= $state->name; 
-        $output .= "\">";
-        $output .= $state->name; $i++; 
-        $output .= "</label></div>";
-    }
-    $output .= "</div></div></div>";
-    $output .= "<input type=\"submit\" name=\"submit\" value=\"filter\" class=\"btn sec-btn form-control uppercase\">";
-    $output .= "</form></div></div></div>";
+    $output .= "</tbody></table></div>";
 
     return $output;
 }
 
 
-// EMPLOYER FUNCTIONS
+// EMPLOYER VIEW FUNCTIONS
 function jobPosted($jobsPosted) {
     $i = 0;
-    $currentTime = strtotime("now"); // convert current time to unix timestamp
 
     $output  = "";
     $output  = "<div class=\"table-responsive\"><table><tbody>";
@@ -1194,7 +1384,6 @@ function jobPosted($jobsPosted) {
     // table data
     foreach($jobsPosted as $job) {
         $i++;
-        $deadline = strtotime($job->deadline); // convert deadline to unix timestamp      
 
         $output .= "<tr>";
 
@@ -1206,10 +1395,10 @@ function jobPosted($jobsPosted) {
         $output .= $job->title . "</a></td>";
 
         // current status
-        if ($currentTime <= $deadline) {
-            $output .= "<td class=\"capitalize\"> live </td>"; 
-        } else {
+        if (time() >= $job->deadline) {
             $output .= "<td class=\"capitalize\"> expired </td>"; 
+        } else {
+            $output .= "<td class=\"capitalize\"> live </td>"; 
 
         }
 
@@ -1233,15 +1422,15 @@ function employerSidebar($employer) {
 
 
     $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
-    
+
     if(!is_null($employer->avatar_url)) { 
-        
+
         $output .= "<img class=\"img-center\" src=\"";
         $output .= $employer->avatar_url; 
         $output .= "\" alt=\"\">";
 
     } else { 
-        $output .= "<img class=\"img-center\" src=\"../img/candidate-placeholder.jpg\" alt=\"\">";
+        $output .= "<img class=\"img-center img-responsive\" src=\"../img/company.png\" alt=\"\">";
     } 
 
     $output .= "<p class=\"lead headfont text-center no-margin\">";

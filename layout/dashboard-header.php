@@ -31,7 +31,7 @@
                             <li> <a href="dashboard.php" <?php if($thisPage=="dashboard" ) { echo currentPage(); } ?>> dashboard </a></li>
                             <li> <a href="my-profile.php" <?php if($thisPage=="my-profile" ) { echo currentPage(); } ?>> my profile </a></li>
                             <li> <a href="job-search.php" <?php if($thisPage=="search-jobs" || $thisPage=="apply-job") { echo currentPage(); } ?>> search jobs </a> </li>
-                            <li> <a href="" <?php if($thisPage=="subscriptions" ) { echo currentPage(); } ?>> job alerts </a>                                </li>
+                            <li> <a href="my-jobs.php" <?php if($thisPage=="my-jobs" ) { echo currentPage(); } ?>> my jobs </a>                                </li>
                             <li> <a href="settings.php" <?php if($thisPage=="settings" ) { echo currentPage(); } ?>> settings </a>                                </li>
                             <li> <a href="logout.php" class="last"> logout </a> </li>
                         </ul>

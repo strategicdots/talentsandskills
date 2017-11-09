@@ -179,12 +179,10 @@ $interests          = Interest::findAllUnderParent($candidate->id, "user_id");
                     <!-- end .featured-jobs-->
 
 
-                </div>
-                <!-- end .mainbar -->
+                </div> <!-- end .mainbar -->
 
-            </div>
-            <!-- end .sidebar -->
-        </div>
+            </div> <!-- end .row -->
+        </div><!-- end .container -->
     </div>
 
 </div>

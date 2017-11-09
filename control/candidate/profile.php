@@ -3,24 +3,36 @@ include_once("{$seperator}includes/initialize.php");
 
 $candidate = Candidate::findDetails($session->candidateID); 
 
-// if(!isAjaxRequest()) { redirect_to($seperator); }
 if(!$_POST['submit']) {redirect_to("$seperator"); }
 
-switch($_POST['update_type']) {
-        //  PERSONAL DETAILS SECTION
+$referer = $_SERVER['HTTP_REFERER'];
 
+switch($_POST['update_type']) {
+        
+    //  PERSONAL DETAILS SECTION
     case "pd" :
         $type = "personal_details";
         $errors = [];
 
+        $phone              = trim($_POST['phone']); 
+        $email              = trim($_POST['email']); 
+        $address            = trim($_POST['address']); 
+        $location           = trim($_POST['location']); 
+        $day                = trim($_POST['dob_d']); 
+        $month              = trim($_POST['dob_m']); 
+        $year               = trim($_POST['dob_y']); 
+        $personal_statement = trim($_POST['personal_statement']);
+        $gender             = trim($_POST['gender']);
+
+
         $raw_fields                 = [
-            'phone'                 => $_POST['phone'], 
-            'email'                 => $_POST['email'], 
-            'address'               => $_POST['address'], 
-            'location'              => $_POST['location'], 
-            'day'                   => $_POST['dob_d'], 
-            'month'                 => $_POST['dob_m'], 
-            'year'                  => $_POST['dob_y'] 
+            'phone'                 => $phone, 
+            'email'                 => $email, 
+            'address'               => $address, 
+            'location'              => $location, 
+            'day'                   => $day, 
+            'month'                 => $month, 
+            'year'                  => $year 
         ];
 
         // check for presence
@@ -30,18 +42,25 @@ switch($_POST['update_type']) {
             }
         }
 
+        // check if dob is in the right syntax
+        if(!$validation->isDigits($day) || !$validation->isDigits($month) || !$validation->isDigits($year)) {
+            
+            $errors['dob'] = "Please send in your date of birth";            
+        
+        }
+
         // check if email is entered
         if(!isset($errors['email'])) {
         
             // check email and if email is unique
-            if(!$validation->rightEmailSyntax(trim($_POST['email']))) {
+            if(!$validation->rightEmailSyntax($email)) {
                         
                 $errors['email'] = "Email not in the right format";
                 
             // it skips if email sent corresponds to user's email
-            } elseif($candidate->email !== trim($_POST['email'])) { 
+            } elseif($candidate->email !== $email) { 
             
-                if(!User::isUnique(trim($_POST['email']), "email")) { 
+                if(!User::isUnique($email, "email")) { 
                         
                     $errors['email'] = "This email has been registered. Please choose another email";
                    
@@ -54,14 +73,14 @@ switch($_POST['update_type']) {
         if(!isset($errors['phone'])) {
                 
             // check if phone is digits and is unique
-            if(!$validation->isDigits(trim($_POST['phone']))) {
+            if(!$validation->isDigits($phone)) {
                         
                 $errors['phone'] = "Phone number is not in right format";
                     
             
-            } elseif($candidate->phone !== trim($_POST['phone'])) { 
+            } elseif($candidate->phone !== $phone) { 
                 
-                if(!User::isUnique(trim($_POST['phone']), "phone")) { 
+                if(!User::isUnique($phone, "phone")) { 
                         
                     $errors['phone'] = "This phone number has been registered.";
                         
@@ -72,18 +91,18 @@ switch($_POST['update_type']) {
         // if errors are present
         if(!empty($errors)) {
             $session->errors($errors);
-            redirect_to("{$seperator}candidate/update-profile.php?type={$type}");
+            redirect_to($referer);
 
         }
 
         // else continue
-        $candidate->phone                   = trim($_POST['phone']); 
-        $candidate->email                   = trim($_POST['email']); 
-        $candidate->address                 = nl2br(trim($_POST['address'])); 
-        $candidate->personal_statement      = trim($_POST['personal_statement']); 
-        $candidate->location                = trim($_POST['location']); 
-        $candidate->gender                = trim($_POST['gender']); 
-        $candidate->dob                     = trim($_POST['dob_d']) . "/" . trim($_POST['dob_m']) . "/" . trim($_POST['dob_y']); 
+        $candidate->phone                   = $phone; 
+        $candidate->email                   = $email; 
+        $candidate->address                 = nl2br($address); 
+        $candidate->personal_statement      = $personal_statement; 
+        $candidate->location                = $location; 
+        $candidate->gender                  = $gender; 
+        $candidate->dob                     = $day . "/" . $month . "/" . $year; 
 
         if($candidate->update()) {
             $session->message("personal details updated successfully");
@@ -91,7 +110,7 @@ switch($_POST['update_type']) {
 
         } else {
             $session->message("no changes made to details");            
-            redirect_to("{$seperator}candidate/my-profile.php");            
+            redirect_to("{$seperator}candidate/my-profile.php");
             
         }
 
@@ -118,7 +137,7 @@ switch($_POST['update_type']) {
 
         if(!empty($errors)) {
             $session->errors($errors);
-            redirect_to("{$seperator}candidate/update-profile.php?type={$type}");
+            redirect_to($referer);
 
         }
 
@@ -137,12 +156,12 @@ switch($_POST['update_type']) {
             
                 $session->message("career summary updated successfully");
                 redirect_to("{$seperator}candidate/my-profile.php");
-        
+                
             } else {
            
                 $session->message("no changes made to career summary");
-                redirect_to("{$seperator}candidate/my-profile.php");            
-            
+                redirect_to("{$seperator}candidate/my-profile.php");
+                
             }
         
         } else { // new input
@@ -160,12 +179,12 @@ switch($_POST['update_type']) {
                 
                     $session->message("career summary updated successfully");
                     redirect_to("{$seperator}candidate/my-profile.php");
-            
+                    
                 } else {
                
                     $session->message("no changes made to career summary");
-                    redirect_to("{$seperator}candidate/my-profile.php");            
-                
+                    redirect_to("{$seperator}candidate/my-profile.php");
+                    
                 }
 
         }
@@ -196,14 +215,7 @@ switch($_POST['update_type']) {
 
         if(!empty($errors)) {
             $session->errors($errors);
-
-            // new entry
-            if(isset($_POST['action']) && $_POST['action'] == "add") {
-                redirect_to("{$seperator}candidate/update-profile.php?type={$type}&action=add");
-            }
-
-            // update entry
-            redirect_to("{$seperator}candidate/update-profile.php?type={$type}");
+            redirect_to($referer);
         }
 
         // new entry
@@ -255,14 +267,7 @@ switch($_POST['update_type']) {
 
     if(!empty($errors)) {
         $session->errors($errors);
-
-        // new entry
-        if(isset($_POST['action']) && $_POST['action'] == "add") {
-            redirect_to("{$seperator}candidate/update-profile.php?type={$type}&action=add");
-        }
-
-        // update entry
-        redirect_to("{$seperator}candidate/update-profile.php?type={$type}");
+        redirect_to($referer);
     }
 
     // new entry
@@ -314,14 +319,7 @@ switch($_POST['update_type']) {
     
         if(!empty($errors)) {
             $session->errors($errors);
-    
-            // new entry
-            if(isset($_POST['action']) && $_POST['action'] == "add") {
-                redirect_to("{$seperator}candidate/update-profile.php?type={$type}&action=add");
-            }
-    
-            // update entry
-            redirect_to("{$seperator}candidate/update-profile.php?type={$type}");
+            redirect_to($referer);
         }
     
         // new entry
@@ -354,5 +352,70 @@ switch($_POST['update_type']) {
     
         }
     
+        break;
+
+        // EMPLOYMENT HISTORY SECTION
+
+        case "empl" :
+        $type = "employment_history";
+        $errors = [];
+        
+        // var_dump($_POST); exit;
+        $job_title          = trim($_POST['job_title']);
+        $employer           = trim($_POST['employer']);
+        $responsibilities   = trim($_POST['responsibilities']);
+        $time_span          = trim($_POST['time_span']);
+        
+
+        $raw_fields         = [
+            'job_title'             => $job_title, 
+            'employer'              => $employer, 
+            'responsibilities'      => $responsibilities, 
+            'duration'              => $time_span
+        ];
+
+        foreach($raw_fields as $field => $value){
+            if(!$validation->hasPresence($value)) {
+                $errors[$field] = ucwords(str_replace("_", " ", $field)) . " can't be blank";
+            }
+        }
+
+        if(!empty($errors)) {
+            $session->errors($errors);
+            redirect_to($referer);
+        }
+
+        // new entry
+        if(isset($_POST['action']) && $_POST['action'] == "add") {
+            $Ehistory = new EmploymentHistory();
+            $Ehistory->job_title        = $job_title; 
+            $Ehistory->employer         = $employer; 
+            $Ehistory->time_span        = $time_span; 
+            $Ehistory->responsibilities = $responsibilities; 
+            $Ehistory->user_id          = $session->candidateID;
+
+            if($Ehistory->create()) {
+                $session->message("new employment entry added successfully");
+                redirect_to("{$seperator}candidate/my-profile.php");
+            }
+
+
+        } else { // update entry 
+
+            $Ehistory = EmploymentHistory::findAllUnderParent($session->candidateID, "user_id");
+
+            $Ehistory[0]->job_title        = $job_title; 
+            $Ehistory[0]->employer         = $employer; 
+            $Ehistory[0]->time_span        = $time_span; 
+            $Ehistory[0]->responsibilities = $responsibilities; 
+            $Ehistory[0]->user_id          = $session->candidateID;
+
+            if($Ehistory[0]->update()) {
+                $session->message("employment history updated successfully");
+                redirect_to("{$seperator}candidate/my-profile.php");
+            }
+
+        }
+
         break;
 }

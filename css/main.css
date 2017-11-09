@@ -936,7 +936,7 @@ footer li a:hover {
     text-align: center;
 }
 .dashboard tr:nth-child(1) {
-    // background-color: #0000ff !important;
+    background-color: #0000ff !important;
     font-weight: 700 !important;
     color: #fff;
 }

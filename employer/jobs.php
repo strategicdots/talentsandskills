@@ -13,9 +13,9 @@ $job = Jobs::findDetails(trim($_GET['id']));
 //check if job is from employer
 if($job->employer_id !== $employer->id) { redirect_to("dashboard.php"); }
 
-// find applicants for job
-$applicants = Applicants::findAllUnderParent($job->id, "job_id");
-if(!empty($applicants)) { $applicantsNumber = count($applicants); };
+// find application for job
+$application = Application::findAllUnderParent($job->id, "job_id");
+if(!empty($application)) { $applicationNumber = count($application); };
 
 ?>
 
@@ -99,7 +99,7 @@ if(!empty($applicants)) { $applicantsNumber = count($applicants); };
                             <p class="headfont uppercase no-margin text-center">job title: <?php echo $job->title; ?></p>
                         </div>
 
-                        <?php if(!$applicants): ?>
+                        <?php if(!$application): ?>
                         <div class="text-center">
                             <p class="lead capitalize"> No application has been received for this job</p>
                         </div>
@@ -107,13 +107,13 @@ if(!empty($applicants)) { $applicantsNumber = count($applicants); };
                         <?php else: ?>
                         <div class="text-center">
                             <p class="lead capitalize">
-                                <?php echo $applicantsNumber; ?> 
-                                <?php if($applicantsNumber > 1) { echo "applications"; } else { echo "application"; } ?>
+                                <?php echo $applicationNumber; ?> 
+                                <?php if($applicationNumber > 1) { echo "applications"; } else { echo "application"; } ?>
                                 received</p>
                         </div>
                     </div>
 
-                    <?php foreach($applicants as $applicant):  
+                    <?php foreach($application as $applicant):  
                     $candidate = User::findDetails($applicant->user_id); 
                     ?> 
 

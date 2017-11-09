@@ -48,7 +48,7 @@ if(isset($_POST['submit'])) {
             }
 
 
-      } elseif($_POST['password']) {
+      } elseif(isset($_POST['password'])) {
             
             $password         = trim($_POST['password']);
             $new_password     = trim($_POST['new_password']);
@@ -103,44 +103,44 @@ if(isset($_POST['submit'])) {
 
             
                     
-      } elseif($_POST['avatar']) {
+      } elseif(isset($_FILES['avatar'])) {
 
-            $resume = new Resume();
+            $avatar = new Avatar();
               
-            if($resume->attach_file($_FILES['upload'])) {
+            if($avatar->attach_file($_FILES['avatar'])) {
         
-                if($resume->upload()) {
+                if($avatar->upload()) {
         
-                    // unlink old resume
-                    if(!empty($candidate->cv_path) && ($_POST['type'] == "1")) {
+                    // unlink old avatar
+                    if(!empty($candidate->avatar_url) && ($_POST['type'] == "update")) {
                         
-                        unlink($candidate->cv_path);
+                        unlink($candidate->avatar_url);
         
                         // update path in db
-                        if($resume->updateValue($resume->targetPath(), "cv_path")) {
-                            $session->message("CV successfully replaced");
+                        if($avatar->updateValue($avatar->targetPath(), "avatar_url")) {
+                            $session->message("avatar successfully replaced");
                             redirect_to($referer);
                         }
                     
                     } else { 
                     
                         /* save path in db */
-                        if($resume->updateDB($session->candidateID)) {
+                        if($avatar->updateDB($session->candidateID)) {
                             // send confirmation msg and redirect
-                            $session->message("CV uploaded successfully");
+                            $session->message("avatar uploaded successfully");
                             redirect_to($referer);
                         }
                     
                     }
           
                 } else { // problem uploading image
-                    $session->errors($resume->errors);
+                    $session->errors($avatar->errors);
                     redirect_to($referer);
                 }
           
             } else { // output file upload error message
                 
-                $session->errors($resume->errors);
+                $session->errors($avatar->errors);
                 redirect_to($referer); 
             }
       }

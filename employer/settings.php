@@ -49,7 +49,7 @@ include_once("{$seperator}layout/em-dashboard-header.php"); ?>
 
                                                 <!-- password form -->
                                                 <div class="hide-el" id="pswd-div">
-                                                    <form action="../control/candidate/settings.php" method="post" class="sm">
+                                                    <form action="../control/employer/settings.php" method="post" class="sm">
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">Enter your old password</label>
                                                             <input class="form-control" type="password" name="password" placeholder="Enter your old password">
@@ -87,7 +87,7 @@ include_once("{$seperator}layout/em-dashboard-header.php"); ?>
 
                                                 <!-- email form -->
                                                 <div class="hide-el" id="email-div">
-                                                    <form method="post" action="../control/candidate/settings.php" class="sm">
+                                                    <form method="post" action="../control/employer/settings.php" class="sm">
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">enter your new email</label>
                                                             <input class="form-control" type="email" name="email" placeholder="enter your new email">
@@ -117,14 +117,14 @@ include_once("{$seperator}layout/em-dashboard-header.php"); ?>
                                                     <?php if($employer->avatar_url): ?>
                                                     <img src="<?php echo $employer->avatar_url; ?>" class="img-responsive" style="width: 100px;">
                                                     <?php else: ?>
-                                                    <img src="../img/candidate-placeholder.jpg" class="img-responsive" style="width: 100px;">
+                                                    <img src="../img/company.png" class="img-responsive" style="width: 100px;">
                                                     <?php endif; ?>
                                                     <a href="" class="" id="chng-avtr">change avatar </a>
                                                 </p>
 
                                                 <!-- avatar form -->
                                                 <div class="hide-el" id="avtr-div">
-                                                    <form method="post" class="sm" action="../control/candidate/settings.php" enctype="multipart/form-data">
+                                                    <form method="post" class="sm" action="../control/employer/settings.php" enctype="multipart/form-data">
                                                         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo maxFileSize(); ?>">
 
                                                         <?php if(!empty($employer->cv_path)): ?>

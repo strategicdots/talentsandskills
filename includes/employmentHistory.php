@@ -14,21 +14,35 @@ class EmploymentHistory extends DatabaseObject {
     public function create() {
         global $database;
 
-        $sql_query = "INSERT INTO " . self::$table_name . " ( ";
-        $sql_query .= "user_id, job_title, employer, time_span, responsibilities ";
-        $sql_query .= ") VALUES ('";
-        $sql_query .= $database->escape_value($this->user_id) . "', '";
-        $sql_query .= $database->escape_value($this->job_title) . "', '";
-        $sql_query .= $database->escape_value($this->employer) . "', '";
-        $sql_query .= $database->escape_value($this->time_span) . "', '";
-        $sql_query .= $database->escape_value($this->responsibilities) . "')";
+        $sql  = "INSERT INTO " . self::$table_name . " ( ";
+        $sql .= "user_id, job_title, employer, time_span, responsibilities ";
+        $sql .= ") VALUES ('";
+        $sql .= $database->escapeValue($this->user_id) . "', '";
+        $sql .= $database->escapeValue($this->job_title) . "', '";
+        $sql .= $database->escapeValue($this->employer) . "', '";
+        $sql .= $database->escapeValue($this->time_span) . "', '";
+        $sql .= $database->escapeValue($this->responsibilities) . "')";
 
-        if($database->query($sql_query)) {
-            $this->id = $database->insert_id();
+        if($database->query($sql)) {
+            $this->id = $database->insertID();
             return true;
         } else {
             return false;
         }
+    }
+
+    public function update() {
+        global $database;
+
+        $sql  = "UPDATE " . self::$table_name . "SET ";
+        $sql .= "job_title='" . $database->escapeValue($this->job_title) . "', ";
+        $sql .= "employer='" . $database->escapeValue($this->employer) . "', ";
+        $sql .= "time_span='" . $database->escapeValue($this->time_span) . "', ";
+        $sql .= "responsibilities='" . $database->escapeValue($this->responsibilities) . "' ";
+        $sql .= "WHERE user_id=" . $database->escapeValue($this->user_id);
+
+        return ($database->query($sql)) ? true : false;
+        
     }
 
 }

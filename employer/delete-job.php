@@ -10,7 +10,7 @@ $job = Jobs::findDetails($_GET['id']);
 // check if job is from employer
 if($job->employer_id === $employer->id) {
       $jobTitle = $job->title;
-      if($job->delete()) {
+      if($job->delete($job->id)) {
             $session->message("'{$jobTitle}' deleted successfully");
             redirect_to("dashboard.php");
       }

@@ -1,7 +1,7 @@
 <?php require_once('initialize.php');
 
-class Applicants extends DatabaseObject {
-    protected static $table_name="applicants";
+class Application extends DatabaseObject {
+    protected static $table_name="applications";
     public $id;
     public $user_id;
     public $job_id;
