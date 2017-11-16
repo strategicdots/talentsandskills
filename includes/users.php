@@ -3,6 +3,7 @@
 class User extends DatabaseObject {
     protected static $table_name="users";
     public $id;
+    public $unique_id;
     public $identifier;
     public $firstname;
     public $lastname;
@@ -56,5 +57,35 @@ class User extends DatabaseObject {
         }
 
     }
+
+    public static function findDetailsByUniqueID($unique_id) {
+        
+        global $database;
+                
+        $sql  = "SELECT * FROM " . self::$table_name;
+        $sql .= " WHERE unique_id = '{$database->escapeValue($unique_id)}' ";
+        $sql .= " LIMIT 1";
+                
+        return (self::findBySQLQuery($sql));
+            
+    }
+
+    public static function generateUniqueID() {
+        global $database;
+        
+        $sql  = "SELECT (FLOOR(RAND() * 9000000) +1000000) AS random_num ";
+        $sql .= " FROM " . self::$table_name;
+        $sql .= " WHERE 'random_num' NOT IN (SELECT unique_id FROM " . $self::$table_name. ") ";
+        $sql .= " LIMIT 1";
+        
+        $result = $database->fetchArray($database->query($sql));
+        
+        if(!empty($result)) {
+            return $result['random_num'];
+        } else {
+            return null;
+        }
+    }
+
 
 }

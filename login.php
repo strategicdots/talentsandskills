@@ -30,7 +30,7 @@ if($session->isCandidateLoggedIn()) {
 
                 <input type="submit" name="submit" class="btn capitalize main-btn form-control" value="login">
             </div>
-            <p class="lead capitalize text-center m-light-top-breather"><a href="" class="brandtxt-color">forgot your password?</a></p>
+            <p class="lead capitalize text-center m-light-top-breather"><a href="password/reset/" class="brandtxt-color">forgot your password?</a></p>
 
 
         </form>

@@ -1,11 +1,15 @@
 <?php
 class Session {
-
+    
+    // user login & logout activities
     private $candidateLoggedIn=false;
+    private $employerLoggedIn=false;
     public $candidateID;
     public $employerID;
+    
+    // other session settings
     public $message;
-    public $errors;
+    public $errors;    
 
     function __construct() {
         $this->checkMessage();
@@ -14,9 +18,30 @@ class Session {
         $this->checkErrors();
 
         if($this->candidateLoggedIn || $this->employerLoggedIn) {
-            // session_regenerate_id(true);
+            
+            session_regenerate_id(true);
+            $this->checkUserActivity();
         } 
         else {
+
+        }
+    }
+
+
+    public function checkUserActivity() {
+        
+        // SESSION TIMEOUT FUNCTION
+        if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 3600)) {
+        
+        // last request was more than 1 hour ago
+        session_unset();     // unset $_SESSION variable for the run-time 
+        session_destroy();   // destroy session data in storage
+        
+        redirect_to("/talents/login.php"); //redirect to login page for new login activity
+        
+        } else { 
+    
+            $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
 
         }
     }
@@ -90,6 +115,7 @@ class Session {
             $this->message = "";
         }
     }
+    
     public function message($msg="") {
         if(!empty($msg)) {
             $_SESSION['message'] = $msg;
@@ -120,16 +146,3 @@ class Session {
 
 $session = new Session();
 $message = $session->message();
-
-# SESSION TIMEOUT FUNCTION
-if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
-    // last request was more than 30 minutes ago
-    session_unset();     // unset $_SESSION variable for the run-time 
-    session_destroy();   // destroy session data in storage
-    redirect_to("../login.php"); //redirect to login page for new login activity
-
-} else { 
-    
-    $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
-
-}

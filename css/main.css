@@ -725,7 +725,7 @@ margin-top: 5px;
     margin-top: 70px;
 }
 
-.top input[type='text'] {
+.top input[type='text'], .top select {
     width: 42%;
 }
 

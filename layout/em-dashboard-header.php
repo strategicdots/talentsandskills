@@ -22,7 +22,7 @@
             <div class="navbar navbar-default navbar-right navbar-fixed-top">
                 <div class="container">
                     <div class="navbar-header">
-                        <a href="<?php if(empty($seperator)) {echo " . "; } else { echo $seperator; } ?>" class="logo block"><img src="<?php echo $seperator; ?>img/logo.png" alt="Talents and Skills"></a>
+                        <a href="<?php if(empty($seperator)) {echo " . "; } else { echo $seperator; } ?>" class="pull-left logo block"></a>
                         <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>

@@ -119,4 +119,20 @@ class Jobs extends DatabaseObject {
 
     }
 
+    public static function selectedKeywords() {
+        global $database;
+        
+        // this is a custom sql query
+        $sql  = "SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(jobs.keywords, ',', numbers.n), ',', -1) ";
+        $sql .= "keywords FROM (SELECT 1 n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4)";
+        $sql .= " numbers INNER JOIN jobs ON CHAR_LENGTH(jobs.keywords)";
+        $sql .= " -CHAR_LENGTH(REPLACE(jobs.keywords, ',', '')) >= numbers.n-1";
+        $sql .= " ORDER BY RAND() LIMIT 20";
+
+        $keywords = self::findBySQLQuery($sql);
+
+        return $keywords;
+
+
+    }
 }

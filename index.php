@@ -1,5 +1,8 @@
 <?php $thisPage = "home"; $seperator=""; 
-include_once("includes/initialize.php"); ?> 
+include_once("includes/initialize.php"); 
+
+// find some selected keywords
+$keywords = Jobs::selectedKeywords(); // var_dump($keywords); exit;?>
 
 <!-- header -->
 <?php include_once("layout/header.php"); ?>
@@ -9,13 +12,18 @@ include_once("includes/initialize.php"); ?>
     <div class="sm-container text-center">
         <h1 class="sectxt-color"><span>Find your dream job.</span> Right now.</h1>
         <div class="text-center">
-            <form class="p-light-top-breather p-light-bottom-breather" action="" method="post">
+            <form class="p-light-top-breather p-light-bottom-breather" action="job/search.php" method="get">
                 <div class="">
-                    <input type="text" name="keyword" placeholder="job title, skills or company">
-                    <input type="text" name="location" placeholder="location">
+                    <input type="text" name="keyword" placeholder="Job Title, Skills or Company">
+                    <select name="location">
+                    <option selected disabled>Location</option>
+                    <?php foreach($states as $state): ?>
+                    <option value="<?php echo $state->name;?>"><?php echo $state->name; ?></option>
+                    <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="m-light-top-breather">
-                    <input type="submit" class="btn main-btn" name="submit" value="find jobs">
+                    <input type="submit" class="btn main-btn" name="submit" value="Find Jobs">
                 </div>
             </form>
         </div>
@@ -35,13 +43,13 @@ include_once("includes/initialize.php"); ?>
     <div class="container">
         <div class="row">
             <div class="col-sm-3 widget hidden-xs">
-                <div class="light-bx-shadow">
+                <div class="light-bx-shadow text-center">
                     <div class="tp">
-                        <p class="headfont capitalize brandtxt-color text-center">Let employers find you</p>
+                        <p class="headfont capitalize brandtxt-color">Let employers find you</p>
                     </div>
                     <div class="btm mid-font-size p-heavy-left-breather p-light-right-breather">
-                        <p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci.</p>
-                        <a href="" class="btn capitalize inline-block m-light-bottom-breather m-light-top-breather main-btn">upload your CV</a>
+                        <p class=""> Talents and Skills make it possible for employers to view your profile and contact you directly.</p>
+                        <a href="register/" class="btn capitalize inline-block m-light-bottom-breather m-light-top-breather main-btn">upload your CV</a>
                     </div>
                 </div>
             </div>
@@ -50,20 +58,15 @@ include_once("includes/initialize.php"); ?>
                     <div class="p-vlight-breather sec-bg p-mid-side-breather">
                         <p class="headfont capitalize no-margin">Employers are searching for candidates with the following qualities:</p>
                     </div>
-                    <div class="tp">
-                        <a href="" class="inline-block capitalize">java programming language</a>
-                        <a href="" class="inline-block capitalize">procurement officer</a>
-                        <a href="" class="inline-block capitalize">sales</a>
-                        <a href="" class="inline-block capitalize">registered nurse</a>
-                        <a href="" class="inline-block capitalize">information technology</a>
-                        <a href="" class="inline-block capitalize">marketing / advertising</a>
-                        <a href="" class="inline-block capitalize">banking / finance</a>
-                        <a href="" class="inline-block capitalize">customer service</a>
-                        <a href="" class="inline-block capitalize">php (programming language) </a>
-                        <a href="" class="inline-block capitalize">quality assurance</a>
-                        <a href="" class="inline-block capitalize">health care / pharmaceutical</a>
-                        <a href="" class="inline-block capitalize">Teaching / Training</a>
-                        <a href="" class="inline-block capitalize">administration / office support</a>
+                    <div class="tp capitalize">
+                        
+                        <?php foreach($keywords as $keyword) : $keyword = trim($keyword->keywords); ?>
+                        <?php if(!empty($keyword)): ?>
+                            
+                            <a href="job/search.php?keyword=<?php echo urlencode($keyword); ?>" class="inline-block"><?php echo $keyword; ?></a>
+                        
+                        <?php endif; endforeach; ?>
+                    
                     </div>
                 </div>
             </div>
