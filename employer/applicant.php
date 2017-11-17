@@ -26,7 +26,7 @@ $applicant = Application::findAllUnderParent($candidate->id, "user_id");
 $job = Jobs::findDetails($applicant[0]->job_id);
 if(!$job) {redirect_to($referer); }
 
-// 4. check if $job->employer_id == $employer->id
+// 4. check if $job->employer_id == $employer->id, if not redirect to referer
 if($job->employer_id !== $employer->id) { redirect_to($referer); }
 
 
