@@ -495,6 +495,11 @@ DATE:               May 2017
     transition: .3s;
 }
 
+.del-btn {
+    background-color: #ff0000;
+    transition: .3s;
+}
+
 .btn-max {
     width: 100%;
     margin: auto;
@@ -516,6 +521,12 @@ DATE:               May 2017
 .sec-btn:focus,
 .sec-btn:active {
     background-color: #000062;
+}
+
+.del-btn:hover,
+.del-btn:focus,
+.del-btn:active {
+    background-color: #b30000;
 }
 
 .light-bx-shadow {

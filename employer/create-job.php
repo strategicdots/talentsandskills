@@ -8,11 +8,9 @@ $employer = Employer::findDetails($session->employerID);
 // deadline calculation
 $time = strtotime("now"); 
 $day = date('d', $time);  $month = date('m', $time);  $year = date('Y', $time);
-?>
 
-<!-- header -->
-<?php include_once("{$seperator}layout/em-dashboard-header.php"); ?>
-<!--  end header -->
+// header
+include_once("{$seperator}layout/em-dashboard-header.php"); ?>
 
 <!--  main content  -->
 <div class="inner-top dashboard">

@@ -74,7 +74,7 @@
 <?php elseif($thisPage == "apply-job" || $thisPage == "create-job"): ?>
 <script type="text/javascript" src="<?php echo $seperator;?>ckeditor/ckeditor.js"></script>
 
-<?php elseif($thisPage == "settings"): ?>
+<?php elseif($thisPage == "settings" || $thisPage == "employer_profile"): ?>
 <script type="text/javascript" src="<?php echo $seperator;?>js/settings.js"></script>
 
 <?php endif; ?>

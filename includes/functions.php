@@ -136,8 +136,90 @@ function inputYear($inputName, $selectedYear = null) {
     return $output;
 }
 
+function jobFieldsAsInput($userJobField = null) {
+    global $jobFields;
+    $output = "";
+
+    foreach($jobFields as $field) {  
+        
+        if(isset($userJobField) && $field->name == $userJobField) { 
+            
+            $output .= "<option value=\""; 
+            $output .=  $field->name; 
+            $output .= "\" selected>"; 
+            $output .=  ucwords($field->name); 
+            $output .= "</option>";
+        
+        } else { 
+            
+            $output .= "<option value=\""; 
+            $output .=  $field->name; 
+            $output .= "\">"; 
+            $output .=  ucwords($field->name); 
+            $output .= "</option>";
+        
+        }
+        
+    }
+
+    return $output;
+}
+
 function formatSalaryRange($range) {
     return str_replace("#", "&#x20A6;", $range);
+}
+
+function paginationNavigation($pagination, $page) {
+    $output = "";
+    
+    $output .= "<div class=\"pagination\" style=\"clear: both;\">";
+    
+    if($pagination->total_pages() > 1) {
+    
+        if($pagination->has_previous_page()) { 
+            $output .= "<a href=\"?&page=";
+            $output .= $pagination->previous_page();
+            $output .= "\">&laquo; Previous</a> "; 
+        }
+    
+        for($i=1; $i <= $pagination->total_pages(); $i++) {
+            if($i == $page) {
+                $output .= " <span class=\"selected\">{$i}</span> ";
+            } else {
+                $output .= "<a href=\"?&page={$i}\">{$i}</a> "; 
+            }
+        }
+    
+        if($pagination->has_next_page()) { 
+            $output .= "<a href=\"?&page=";    
+            $output .= $pagination->next_page();
+            $output .= "\">Next &raquo;</a> "; 
+        }
+    }
+    
+    $output .= "</div>";
+
+    return $output;
+}
+
+function jobDeadline($deadline = null, $closedString = null) {
+    $output = "";
+    if(is_null($closedString)) {
+        $closedString = "application closed";
+    }
+
+    if($deadline > strtotime("now")) {
+        
+        $timestamp = strtotime($deadline);
+        $output = date('D jS  F\, Y', $timestamp);
+    
+    } else { 
+        $output = $closedString; 
+    
+    }
+
+    return $output;
+    
 }
 
 // CANDIDATE VIEW FUNCTIONS
@@ -629,32 +711,16 @@ function CSForm($desiredJob = null) {
     } 
 
     $output .= "\" name=\"job_title\" placeholder=\"enter your desired job title\"></div>";
+
+    //input: JOB FIELD
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">job field</label>";
     $output .= "<select name=\"job_field\" class=\"form-control\">";
     $output .= "<option value=\"\">choose your field</option>";
-
-    foreach($jobFields as $job_field) {  
-
-        if(isset($desiredJob->job_field) && $job_field->name == $desiredJob->job_field ) { 
-            $output .= "<option value=\""; 
-            $output .=  $job_field->name; 
-            $output .= "\" selected>"; 
-            $output .=  ucwords($job_field->name); 
-            $output .= "</option>";
-
-        } else { 
-            $output .= "<option value=\""; 
-            $output .=  $job_field->name; 
-            $output .= "\">"; 
-            $output .=  ucwords($job_field->name); 
-            $output .= "</option>";
-
-        }
-
-    }
-
+    $output .= jobFieldsAsInput($desiredJob->job_field);
     $output .= "</select></div>";
+
+    // input: JOB TYPE
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">job type</label>";
     $output .= "<select name=\"job_type\" class=\"form-control capitalize\">";
@@ -678,6 +744,8 @@ function CSForm($desiredJob = null) {
 
     $output .= "</select></div></div>";
     $output .= "<div class=\"col-sm-6 m-light-bottom-breather\">";
+
+    // input: PREFERRED SALARY
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">preferred salary</label>";
     $output .= "<select name=\"salary_range\" class=\"form-control capitalize\">";
@@ -701,6 +769,7 @@ function CSForm($desiredJob = null) {
     }
     $output .= "</select></div>";
 
+    // input: LOCATION
     $output .= "<div class=\"form-group\">";
     $output .= "<label class=\"txt-bold small-font-size capitalize\">desired job location</label>";
     $output .= "<select name=\"location\" id=\"\" class=\"form-control\">";
@@ -722,6 +791,8 @@ function CSForm($desiredJob = null) {
         }
     }
     $output .= "</select></div></div><div class=\"sm-container m-vlight-breather\">";
+
+    // input: SUBMIT & CANCEL BTNS
     $output .= "<div class=\"row\">";
     $output .= "<div class=\"col-sm-8\">";
     $output .= "<input type=\"submit\" value=\"Confirm Changes\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
@@ -1367,8 +1438,8 @@ function candidateApplications($applications) {
 
 
 // EMPLOYER VIEW FUNCTIONS
-function jobPosted($jobsPosted) {
-    $i = 0;
+function jobPosted($jobsPosted, $n) {
+    $i = $n;
 
     $output  = "";
     $output  = "<div class=\"table-responsive\"><table><tbody>";
@@ -1377,6 +1448,7 @@ function jobPosted($jobsPosted) {
     $output .= "<tr class=\"capitalize\">";
     $output .= "<td>S/N</td>";
     $output .= "<td>job title</td>";
+    $output .= "<td>applications</td>";
     $output .= "<td>current status</td>";
     $output .= "<td>action</td>";
     $output .= "</tr>";
@@ -1384,6 +1456,10 @@ function jobPosted($jobsPosted) {
     // table data
     foreach($jobsPosted as $job) {
         $i++;
+
+        // job applicants
+        $totalApplicants = count(Application::findAllUnderParent($job->id, "job_id"));
+        if(empty($totalApplicants)) { $totalApplicants = "None"; }
 
         $output .= "<tr>";
 
@@ -1394,6 +1470,9 @@ function jobPosted($jobsPosted) {
         $output .= "<td class=\"capitalize\"><a href=\"jobs.php?id={$job->id}\">";
         $output .= $job->title . "</a></td>";
 
+        // total applicants
+        $output .= "<td>" . $totalApplicants . "</td>";
+
         // current status
         if (time() >= $job->deadline) {
             $output .= "<td class=\"capitalize\"> expired </td>"; 
@@ -1403,7 +1482,7 @@ function jobPosted($jobsPosted) {
         }
 
         // action
-        $output .= "<td class=\"small-font-size\"> <a href=\"\">edit</a><br>";
+        $output .= "<td class=\"small-font-size\"> <a href=\"create-job.php?id={$job->id}\">edit</a><br>";
         $output .= "<a href=\"delete-job.php?id={$job->id}\">delete</a></td>";
 
     }
@@ -1411,6 +1490,56 @@ function jobPosted($jobsPosted) {
 
     return $output;
 }
+
+function jobApplicants($applications, $subscription = null) {
+    $i = 0;
+
+    $output  = "";
+    $output  = "<div class=\"table-responsive\"><table><tbody>";
+
+    // table head
+    $output .= "<tr class=\"capitalize\">";
+    $output .= "<td>S/N</td>";
+    $output .= "<td>name of applicant</td>";
+    $output .= "<td>state of residence</td>";
+    $output .= "</tr>";
+
+    // table data
+    foreach($applications as $application) {
+        $i++;
+
+        // applicant details
+        $applicant = Candidate::findDetails($application->user_id);
+
+        
+        if(empty($subscription) && $i <= 2) { 
+
+            $output .= "<tr>";
+            
+            // serial number
+            $output .= "<td>" . $i . "</td>";
+            
+            // name
+            $output .= "<td class=\"capitalize\"><a href=\"applicant.php?id={$applicant->id}\">";
+            $output .= $applicant->fullName() . "</a></td>";
+
+            // state of residence
+            $output .= "<td>" .$applicant->location . "</td>";
+            $output .= "</tr>";
+
+            // subscribe to get the rest
+
+        } else {
+            $output .= "";            
+        }
+
+    }
+    
+    $output .= "</tbody></table></div>";
+
+    return $output;
+}
+
 
 function employerSidebar($employer) { 
     global $jobFields;

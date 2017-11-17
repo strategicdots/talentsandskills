@@ -33,9 +33,9 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li> <a href="dashboard.php" <?php if($thisPage=="dashboard" ) { echo currentPage(); } ?>> dashboard </a></li>
                             <li> <a href="create-job.php" <?php if($thisPage=="create-job" ) { echo currentPage(); } ?>> post a job </a>                                </li>
-                            <li> <a href="jobs.php" <?php if($thisPage=="jobs" ) { echo currentPage(); } ?>> job posts </a> </li>
-                            <li> <a href="orders.php" <?php if($thisPage=="orders" ) { echo currentPage(); } ?>> my orders </a>                                </li>
-                            <li> <a href="settings.php" <?php if($thisPage=="settings" ) { echo currentPage(); } ?>> settings </a>                                </li>
+                            <li> <a href="jobs.php" <?php if($thisPage=="jobs" ) { echo currentPage(); } ?>> job posts </a>                                </li>
+                            <li> <a href="profile.php" <?php if($thisPage=="employer_profile" ) { echo currentPage(); } ?>> profile </a> </li>
+                            <li> <a href="subscription.php" <?php if($thisPage=="subscription" ) { echo currentPage(); } ?>> my subscription </a>                                </li>
                             <li> <a href="logout.php" class="last"> logout </a> </li>
                         </ul>
                     </div>

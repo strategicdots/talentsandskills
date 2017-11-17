@@ -7,6 +7,7 @@ class Employer extends User {
     public $about_company;
     public $job_field;
     public $employer;
+    public $subscription;
     
     public function create() {
         global $database;
@@ -62,7 +63,7 @@ class Employer extends User {
         $sql .= "phone='" . $database->escapeValue($this->phone) . "', ";
         $sql .= "company_name='" . $database->escapeValue($this->company_name) . "', ";
         $sql .= "about_company='" . $database->escapeValue($this->about_company) . "', ";
-        $sql .= "job_field='" . $database->escapeValue($this->job_field) . "', ";
+        $sql .= "job_field='" . $database->escapeValue($this->job_field) . "' ";
         $sql .= "WHERE id=" . $database->escapeValue($this->id);
 
         if($database->query($sql) && ($database->affectedRows() == 1)) {
@@ -71,23 +72,5 @@ class Employer extends User {
             return false;
         }
     }
-
-    public static function findDetailsByEmail($email) {
-        global $database;
-
-        $sql = "SELECT * FROM users WHERE email = '{$database->escapeValue($email)}' LIMIT 1";
-
-        $result_array = $database->fetchArray($database->query($sql));
-
-        $object_array = self::instantiate($result_array);
-
-        if($object_array) {
-            return $object_array;
-        } else {
-            return null;
-        }
-
-    }
-
 
 }

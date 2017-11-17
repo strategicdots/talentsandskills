@@ -3,37 +3,35 @@ include_once("{$seperator}includes/initialize.php");
 
 $referer = $_SERVER['HTTP_REFERER'];
 
-/* check user status */
-if (!$session->isEmployerLoggedIn()) {redirect_to("{$seperator}login.php"); } 
+/* check employer status */
+if (!$session->isEmployerLoggedIn()) { redirect_to("{$seperator}login.php"); } 
 $employer = Employer::findDetails($session->employerID);
 
 // $_GET['id'] must be set
 if(!isset($_GET['id']) || empty($_GET['id'])) { redirect_to($referer); }
 
-$job = Jobs::findDetails(trim($_GET['id']));
+/***
+ * find applicant and make sure applicant applied for job from employer
+ * if not, redirect to referer 
+*/
 
-//check if job is from employer
+// 1. find candidate and redirect to referer if not found
+$candidate = Candidate::findDetails(trim($_GET['id']));
+if(!$candidate) { redirect_to($referer); }
+
+// 2. find if candidate applied for job, if not redirect to referer
+$applicant = Application::findAllUnderParent($candidate->id, "user_id");
+
+// 3. find job details, if not redirect to referer
+$job = Jobs::findDetails($applicant[0]->job_id);
+if(!$job) {redirect_to($referer); }
+
+// 4. check if $job->employer_id == $employer->id
 if($job->employer_id !== $employer->id) { redirect_to($referer); }
 
-// find application for job
-$applications = Application::findAllUnderParent($job->id, "job_id");
 
-
-if(!empty($applications)) { 
-    
-    $applicationNumber = count($applications); 
-
-} else {
-    
-    $applicationNumber = "None";
-
-}
-
-?>
-
-<!-- header -->
-<?php include_once("{$seperator}layout/em-dashboard-header.php"); ?>
-<!--  end header -->
+// header
+ include_once("{$seperator}layout/em-dashboard-header.php"); ?>
 
 <!--  main content  -->
 <div class="inner-top dashboard">
@@ -52,7 +50,7 @@ if(!empty($applications)) {
                 <div class="jobs col-sm-8">
                     <div class="light-bx-shadow m-mid-bottom-breather">
                         <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
-                            <p class="headfont uppercase no-margin">job description</p>
+                            <p class="headfont uppercase no-margin">applicant summary</p>
                         </div>
 
                         <div class="p-light-bottom-breather p-mid-side-breather">

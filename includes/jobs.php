@@ -107,7 +107,7 @@ class Jobs extends DatabaseObject {
     }
 
     public static function newJobs() {
-        $sql = "SELECT * FROM " . self::$table_name . " ORDER BY id DESC LIMIT 5 ";
+        $sql = "SELECT * FROM " . self::$table_name . " ORDER BY id DESC ";
 
         $jobObjects = self::findBySQLQuery($sql);
 

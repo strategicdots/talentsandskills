@@ -11,11 +11,7 @@ $job = Jobs::findDetails($_GET['id']);
 $employer = Employer::findDetails($job->employer_id); 
 
 // calculating deadline
-$deadline = "";
-if($job->deadline >= strtotime("now")) {
-    $timestamp = strtotime($job->deadline);
-    $deadline = date('D jS  F\, Y', $timestamp);
-} else { $deadline = "application is closed"; }
+$deadline = jobDeadline($job->deadline);
 ?>
 
 <!-- header -->

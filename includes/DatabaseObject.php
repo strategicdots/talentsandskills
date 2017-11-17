@@ -60,13 +60,18 @@ class DatabaseObject {
         }
     }
 
-    public static function findAllUnderParent($parent, $child, $order = false) {
+    public static function findAllUnderParent($parent, $child, $order = false, $pagination = null) {
         $sql  = "SELECT * FROM ";
         $sql .= static::$table_name;
         $sql .= " WHERE " . $child . "=" . $parent;
 
         if($order) {
             $sql .= " ORDER BY id DESC";
+        }
+
+        if($pagination) {
+            $sql .= " LIMIT {$pagination->per_page} ";
+            $sql .= " OFFSET {$pagination->offset()} ";
         }
 
         $result = static::findBySQLQuery($sql);

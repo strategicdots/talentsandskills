@@ -38,6 +38,7 @@ require_once(LIB_PATH.DS."professionalMemberships.php");
 require_once(LIB_PATH.DS."employmentHistory.php");
 require_once(LIB_PATH.DS."interests.php");
 require_once(LIB_PATH.DS."states.php");
+require_once(LIB_PATH.DS."pagination.php");
 
 // JOB RELATED OBJECTS
 require_once(LIB_PATH.DS."jobs.php");
