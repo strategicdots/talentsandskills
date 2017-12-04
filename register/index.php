@@ -12,6 +12,7 @@ include_once("{$seperator}layout/header.php");
         <!-- candidate form -->
         <div class="col-sm-6">
             <div class="heavy-container">
+                <?php echo inline_message(); ?>
                 <h2 class="text-center">I'm a Candidate</h2>
                 <p class="text-center">Get headhunted by leading employers</p>
                 <?php if(!empty($_SESSION['type']) &&($_SESSION['type'] == "1")) { 

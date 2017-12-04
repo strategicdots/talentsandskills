@@ -2,6 +2,12 @@
 
 class UserValidation extends DatabaseObject {
       protected static $table_name = "user_validation";
+
+      public $id;
+      public $user_id;
+      public $selector;
+      public $validator;
+      public $expires;
       
       protected function selector() {
             

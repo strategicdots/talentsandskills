@@ -1,16 +1,16 @@
 <?php require_once("initialize.php");
 
 // local
-defined('DB_SERVER') ? null : define("DB_SERVER", "localhost");
+/* defined('DB_SERVER') ? null : define("DB_SERVER", "localhost");
 defined('DB_USER') ? null : define("DB_USER", "talents");
 defined('DB_PASS') ? null : define("DB_PASS", "SeVAjaDIzAY3x53imoy21ari753o8o");
-defined('DB_NAME') ? null : define("DB_NAME", "talents");
+defined('DB_NAME') ? null : define("DB_NAME", "talents"); */
 
 // live
-// defined('DB_SERVER') ? null : define("DB_SERVER", "rafiuyusufcom.ipagemysql.com");
-// defined('DB_USER') ? null : define("DB_USER", "talents");
-// defined('DB_PASS') ? null : define("DB_PASS", "1UrFkudSOnYbsojG9EInm8M7hRbGu9F80l6sSJ5Go6CKWG");
-// defined('DB_NAME') ? null : define("DB_NAME", "talents_skills");
+defined('DB_SERVER') ? null : define("DB_SERVER", "rafiuyusufcom.ipagemysql.com");
+defined('DB_USER') ? null : define("DB_USER", "talents");
+defined('DB_PASS') ? null : define("DB_PASS", "1UrFkudSOnYbsojG9EInm8M7hRbGu9F80l6sSJ5Go6CKWG");
+defined('DB_NAME') ? null : define("DB_NAME", "talents_skills");
 
 class MySQLDatabase {
 
