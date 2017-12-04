@@ -23,7 +23,7 @@ include_once("{$seperator}layout/header.php");
                 <form action="<?php echo $action; ?>" method="post">
                     <input type="hidden" name="type" value="1">
                     <div class="form-group">
-                        <input type="text" name="firstname" placeholder="Enter your first Name" value="<?php if(!empty($_POST['firstname'])) {echo $_POST['firstname']; }?> " class="form-control" required>
+                        <input type="text" name="firstname" placeholder="Enter your first Name" value="<?php if(!empty($_POST['firstname'])) {echo $_POST['firstname']; }?>" class="form-control" required>
                     </div>
 
                     <div class="form-group">

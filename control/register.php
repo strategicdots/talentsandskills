@@ -4,6 +4,7 @@ include_once("{$seperator}includes/initialize.php");
 $type = "";
 if($_POST['submit']) {
     $errors = [];
+    $referer = $_SERVER['HTTP_REFERER'];
 
     $raw_fields        = [
             'phone'         => $_POST['phone'], 
@@ -75,7 +76,7 @@ if($_POST['submit']) {
             $_SESSION['type'] = "2"; 
       }
 
-      redirect_to("{$seperator}register/");
+      redirect_to($referer);
 
     } else { 
         // else continue
@@ -89,11 +90,22 @@ if($_POST['submit']) {
             $candidate->lastname      = trim($_POST['lastname']); 
             $candidate->password      = trim($_POST['password']); 
             
-            if($candidate->testCreate()) {
-                // account created successfully, redirect to dashboard
-                $session->message("account created successfully");
+            if($candidate->create()) {
+                // account created successfully, set validation
+                $userValidator = new UserValidator();
+                if($userValidator->setValidator(User::findDetails($candidate->id))) {
+
+                    $_SESSION['verification_mail'] = true;
+                    redirect_to($referer);
+                
+                } else {
+                    $session->message("There is a problem");
+                   redirect_to($referer);
+                }
+
+                /* $session->message("account created successfully");
                 $_SESSION['candidateID'] = $candidate->id;
-                 redirect_to("{$seperator}candidate/dashboard.php");
+                 redirect_to("{$seperator}candidate/dashboard.php"); */
             
             }
 
@@ -107,11 +119,18 @@ if($_POST['submit']) {
             $employer->password      = trim($_POST['password']); 
             $employer->employer      = "1";
             
-            if($employer->testCreate()) {
-                // account created successfully, redirect to dashboard
-                $session->message("account created successfully");
-                $_SESSION['employerID'] = $employer->id;
-                 redirect_to("{$seperator}employer/dashboard.php");
+            if($employer->create()) {
+               // account created successfully, set validation
+                $userValidator = new UserValidator();
+                if($userValidator->setValidator(User::findDetails($candidate->id))) {
+
+                    $_SESSION['verification_mail'] = true;
+                    redirect_to($referer);
+                
+                } else {
+                    $session->message("There is a problem");
+                   redirect_to($referer);
+                }
             
             }
         }

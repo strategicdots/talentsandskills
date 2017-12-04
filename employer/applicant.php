@@ -29,9 +29,18 @@ if(!$job) {redirect_to($referer); }
 // 4. check if $job->employer_id == $employer->id, if not redirect to referer
 if($job->employer_id !== $employer->id) { redirect_to($referer); }
 
+// Avatar URL
+$applicantAvatar = "";
+if(empty($candidate->avatar_url)) {
+    $applicantAvatar = SITE_ROOT.DS. "img/candidate-placeholder.jpg"; 
+} else {
+    $applicantAvatar = $candidate->avatar_url; 
+}
+
 
 // header
  include_once("{$seperator}layout/em-dashboard-header.php"); ?>
+
 
 <!--  main content  -->
 <div class="inner-top dashboard">
@@ -58,9 +67,20 @@ if($job->employer_id !== $employer->id) { redirect_to($referer); }
                             <!-- job details -->
                             <div class="row m-vlight-bottom-breather">
                                 <div class="col-sm-3">
-                                    <p class="mid-font-size capitalize no-margin txt-bold"> job title:</p>
+                                    <img src="<?php echo $applicantAvatar; ?>" class="img-responsive">
                                 </div>
                                 <div class="col-sm-9">
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <p class="mid-font-size capitalize no-margin txt-bold">Name of Applicant:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p class="mid-font-size no-margin">
+                                                <?php echo $candidate->fullName(); ?>
+                                            </p>
+                                        </div>
+                                    
+                                    </div>
                                     <p class="mid-font-size no-margin">
                                         <?php echo $job->title; ?>
                                     </p>
@@ -84,7 +104,7 @@ if($job->employer_id !== $employer->id) { redirect_to($referer); }
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="mid-font-size no-margin">
-                                        <?php echo $applicationNumber; ?>
+                                        
                                     </p>
                                 </div>
                             </div>

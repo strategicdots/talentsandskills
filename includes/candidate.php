@@ -13,33 +13,6 @@ class Candidate extends User {
         global $database;
         $hashedPassword = passwordEncrypt($this->password);
 
-        $sql_query = "INSERT INTO " . self::$table_name . " ( ";
-        $sql_query .= "firstname, lastname, gender, phone, email, address, location, dob, employer, personal_statement, password ";
-        $sql_query .= ") VALUES ('";
-        $sql_query .= $database->escape_value($this->firstname) . "', '";
-        $sql_query .= $database->escape_value($this->lastname) . "', '";
-        $sql_query .= $database->escape_value($this->gender) . "', '";
-        $sql_query .= $database->escape_value($this->phone) . "', '";
-        $sql_query .= $database->escape_value($this->email) . "', '";
-        $sql_query .= $database->escape_value($this->address) . "', '";
-        $sql_query .= $database->escape_value($this->location) . "', '";
-        $sql_query .= $database->escape_value($this->dob) . "', '";
-        $sql_query .= $database->escape_value($this->employer) . "', '";
-        $sql_query .= $database->escape_value($this->personal_statement) . "', '";
-        $sql_query .= $hashedPassword . "')";
-
-        if($database->query($sql_query)) {
-            $this->id = $database->insert_id();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function testCreate() {
-        global $database;
-        $hashedPassword = passwordEncrypt($this->password);
-
         $sql  = "INSERT INTO " . self::$table_name . " ( ";
         $sql .= "firstname, lastname, phone, email, candidate, password ";
         $sql .= ") VALUES ('";
@@ -61,7 +34,7 @@ class Candidate extends User {
     public function update() {
         global $database;
 
-        $sql  = "UPDATE users SET ";
+        $sql  = "UPDATE " . self::$table_name . " SET ";
         $sql .= "email='" . $database->escapeValue($this->email) . "', ";
         $sql .= "phone='" . $database->escapeValue($this->phone) . "', ";
         $sql .= "address='" . $database->escapeValue(nl2br($this->address)) . "', ";

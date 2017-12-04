@@ -7,7 +7,7 @@ defined('LIB_PATH') ? null  : define('LIB_PATH', SITE_ROOT.DS.'includes');
 // COMPOSER AUTOLOAD
 require_once(SITE_ROOT.DS."vendor/autoload.php");
 
-// FUNCTIONS AND VALIDATIONS
+// FUNCTIONS AND FORM VALIDATIONS
 require_once("functions.php");
 require_once("validations.php");
 
@@ -26,6 +26,7 @@ require_once(LIB_PATH.DS."avatarUpload.php");
 
 // USER LOGIN OBJECTS
 require_once(LIB_PATH.DS."users.php");
+require_once(LIB_PATH.DS."userValidation.php");
 require_once(LIB_PATH.DS."candidate.php");
 require_once(LIB_PATH.DS."employers.php");
 require_once(LIB_PATH.DS."admin.php");
@@ -50,3 +51,6 @@ require_once(LIB_PATH.DS."jobDescription.php");
 require_once(LIB_PATH.DS."interfaces.php");
 require_once(LIB_PATH.DS."salaryRange.php");
 require_once(LIB_PATH.DS."application.php");
+
+// UTILITY OBJECTS
+require_once(LIB_PATH.DS."mailer.php");
