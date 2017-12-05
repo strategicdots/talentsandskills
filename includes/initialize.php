@@ -52,5 +52,8 @@ require_once(LIB_PATH.DS."interfaces.php");
 require_once(LIB_PATH.DS."salaryRange.php");
 require_once(LIB_PATH.DS."application.php");
 
-// UTILITY OBJECTS
+// PHPMAILER OBJECTS
+require_once(LIB_PATH.DS."phpmailer/class.phpmailer.php");
+require_once(LIB_PATH.DS."phpmailer/class.smtp.php");
+require_once(LIB_PATH.DS."phpmailer/language/phpmailer.lang-en.php");
 require_once(LIB_PATH.DS."mailer.php");

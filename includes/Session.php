@@ -41,7 +41,7 @@ class Session {
         
         } else { 
     
-            $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
+            $_SESSION['LAST_ACTIVITY'] = time(); // update last activity timestamp
 
         }
     }

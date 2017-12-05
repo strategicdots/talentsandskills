@@ -1,6 +1,6 @@
 <?php require_once('initialize.php');
 
-class UserValidation extends DatabaseObject {
+class UserValidator extends DatabaseObject {
       protected static $table_name = "user_validation";
 
       public $id;
@@ -10,25 +10,38 @@ class UserValidation extends DatabaseObject {
       public $expires;
       
       protected function selector() {
+            /**
+             * @string
+             * hexadecimal value, used as a needle to search for validator
+            */
             
             return bin2hex(random_bytes(8));
       
       } 
       
       protected function validator() {
+            /**
+             * @string
+             * binary value, main validator to validate users
+            */
 
             return random_bytes(32);
       
       }
 
       protected function emailLink() {
+            /**
+             * @string
+             * validator has to be converted from bin to hex
+             * to make the url clickable
+            */
             
             $selectorAndValidator = [
                   'selector'  => $this->selector(),
-                  'validator' => $this->validator()
+                  'validator' => bin2hex($this->validator())
             ];
 
-            $link  = "http://www.strategicdots.org/talents/verify.php?";
+            $link  = "http://www.strategicdots.org/talents/verification/verify.php?";
             $link .= http_build_query($selectorAndValidator);
 
             return $link;
@@ -38,7 +51,7 @@ class UserValidation extends DatabaseObject {
       public function emailMessage($fullName, $userEmail) {
             global $mailer;
 
-            $msg  = "<p>Dear ";
+           /*  $msg  = "<p>Dear ";
             $msg .=  $fullName . ","; 
             $msg .= "</p><p>You need to verifiy your account before gaining access to TalentsAndSkills. ";
             $msg .= "Please, click the web address below or copy and paste it into your browser to verify your account:";
@@ -48,7 +61,14 @@ class UserValidation extends DatabaseObject {
             $msg .= $this->emailLink();
             $msg .= "</a>";
             $msg .= "</p><br><p style=\"text-decoration: underline; font-weight: bold;\">Note that this link will expire in ONE HOUR.</p>";
-            $msg .= "<br><p>Thanks,</p> <p>The TalentsAndSkills Team</p>";
+            $msg .= "<br><p>Thanks,</p> <p>The TalentsAndSkills Team</p>"; */
+
+            $msg  = "Dear $fullName," . "\n\n";
+            $msg .= "You need to verify your account before gaining access to TalentsAndSkills. " . "\n\n";
+            $msg .= "Please, click the web address below or copy and paste it into your browser to verify your account:" . "\n\n";
+            $msg .= $this->emailLink() . "\n\n";
+            $msg .= "Note that this link will expire in ONE HOUR." . "\n\n";
+            $msg .= "Thanks, The TalentsAndSkills Team" . "\n\n";
 
             $mailer->AddAddress($userEmail, $fullName);
             $mailer->Subject  = "Please Verify Your Account";
@@ -62,12 +82,18 @@ class UserValidation extends DatabaseObject {
       }
 
       public function setValidator($user) {
+            /**
+             * validator needs to be hashed (SHA512)
+             * and all parameters stored in db
+             */
+
+
             global $database;
 
             $expires = time() + (60 * 60); // current time plus 1 hour
 
             $sql  = "INSERT INTO " . self::$table_name;
-            $sql  = " (selector, validator, expires, user_id) VALUES ('";
+            $sql .= " (selector, validator, expires, user_id) VALUES ('";
             $sql .= $database->escapeValue($this->selector()) . "', '";
             $sql .= $database->escapeValue(hash('SHA512', $this->validator())) . "', '";
             $sql .= $database->escapeValue($expires) . "', '";
@@ -97,11 +123,11 @@ class UserValidation extends DatabaseObject {
 
       }
 
-      public function deleteValidator($user_id) {
+      public function deleteValidator($selector) {
             global $database;
 
             $sql  = "DELETE FROM " . self::$table_name;
-            $sql .= " WHERE user_id=" . $database->escapeValue($user_id);
+            $sql .= " WHERE selector=" . $database->escapeValue($selector);
             $sql .= " LIMIT 1";
 
             $database->query($sql);
@@ -112,20 +138,4 @@ class UserValidation extends DatabaseObject {
             }
       }
 
-      public function validateUser($user_id) {
-            global $database;
-
-            $sql  = "UPDATE users SET ";
-            $sql .= "validator='1' WHERE id = ";
-            $sql .= $database->escapeValue($user_id);
-
-            $database->query($sql);
-            if($database->affectedRows == 1) {
-                  return true;
-            }else {
-                  return false;
-            }
-      }
-
 }
-

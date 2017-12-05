@@ -8,7 +8,6 @@ class Mailer extends PHPMailer {
       public $Password = "T#706vK7Xn";
       public $FromName = "TalentsAndSkills";
       public $From = "Talents@talentsandskills.net";
-      public $IsHTML = true;
       public $CharSet = "text/html; charset=UTF-8;";
       public $WordWrap = 80;
       public $SMTPOptions = [
@@ -18,6 +17,10 @@ class Mailer extends PHPMailer {
             'allow_self_signed' => true
             ]
       ];
+
+      public function __construct() {
+            $this->isHTML();
+      }
    
 }
 

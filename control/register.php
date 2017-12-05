@@ -137,4 +137,7 @@ if($_POST['submit']) {
         
     }
 
+} else {
+    // user come directly to page
+    redirect_to($seperator);
 }

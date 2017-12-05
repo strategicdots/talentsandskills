@@ -15,6 +15,7 @@ class User extends DatabaseObject {
     public $avatar_url;
     public $candidate;
     public $employer;
+    public $validated;
     
     public function fullName() {
         if(isset($this->firstname) && isset($this->lastname)) {
@@ -86,5 +87,26 @@ class User extends DatabaseObject {
             return null;
         }
     }
+
+    public function validateUser($id) {
+        global $database;
+
+        $sql  = "UPDATE " . self::$table_name . " SET ";
+        $sql .= "validated='1' WHERE id = ";
+        $sql .= $database->escapeValue($id);
+
+        $database->query($sql);
+        
+        if($database->affectedRows == 1) {
+            
+            return true;
+        
+        }else {
+                
+            return false;
+        
+        }
+    }
+
 
 }
