@@ -1,4 +1,4 @@
-<?php $thisPage = ""; $seperator="../../"; 
+<?php $thisPage = "password"; $seperator="../../"; 
 include_once("{$seperator}includes/initialize.php"); 
 ?>
 
@@ -8,7 +8,7 @@ include_once("{$seperator}includes/initialize.php");
 <!-- password reset form -->
 <div class="inner-top login">
     <div class="sm-container margin-auto m-mid-breather p-heavy-breather p-heavy-side-breather">
-        <form method="post" action="" class=" p-heavy-side-breather m-mid-breather p-mid-breather white-bg">
+        <form method="post" action="<?php echo $seperator; ?>control/password/token.php" class=" p-heavy-side-breather m-mid-breather p-mid-breather white-bg">
             <h2 class="text-center">Forgot Your Password?</h2>
             <p class="text-center small-font-size">Enter your email address below and we'll get back to you with instructions for resetting your password.</p>
 

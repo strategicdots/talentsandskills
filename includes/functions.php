@@ -11,7 +11,7 @@ function redirect_to( $location = NULL ) {
 function inline_message() {
     global $session;
     if($session->message == true) {
-        $output = "<p style=\"color:red\" class=\"capitalize\">{$session->message}</p>";
+        $output = "<p style=\"color:red\" class=\"\">{$session->message}</p>";
 
         return $output;
 

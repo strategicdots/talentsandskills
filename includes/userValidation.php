@@ -1,7 +1,7 @@
 <?php require_once('initialize.php');
 
 class UserValidator extends DatabaseObject {
-      protected static $table_name = "user_validation";
+      protected static $table_name = "validation";
 
       public $id;
       public $user_id;
@@ -29,11 +29,14 @@ class UserValidator extends DatabaseObject {
       
       }
 
-      protected function emailLink() {
+      protected function emailLink($password) {
             /**
              * @string
              * validator has to be converted from bin to hex
              * to make the url clickable
+             * 
+             * $password arg is for password reset,
+             * $password is false by default
             */
             
             $selectorAndValidator = [
@@ -41,14 +44,23 @@ class UserValidator extends DatabaseObject {
                   'validator' => bin2hex($this->validator())
             ];
 
-            $link  = "http://www.strategicdots.org/talents/verification/verify.php?";
+            if($password) {
+                  
+                  $link  = "http://www.strategicdots.org/talents/password/reset/confirm-token.php?";    
+            
+            } else {
+                  
+                  $link  = "http://www.strategicdots.org/talents/verification/verify.php?";
+
+            }
+            
             $link .= http_build_query($selectorAndValidator);
 
             return $link;
 
       }
 
-      public function emailMessage($fullName, $userEmail) {
+      public function emailMessage($fullName, $userEmail, $password) {
             global $mailer;
 
            /*  $msg  = "<p>Dear ";
@@ -64,9 +76,19 @@ class UserValidator extends DatabaseObject {
             $msg .= "<br><p>Thanks,</p> <p>The TalentsAndSkills Team</p>"; */
 
             $msg  = "Dear $fullName," . "\n\n";
-            $msg .= "You need to verify your account before gaining access to TalentsAndSkills. " . "\n\n";
-            $msg .= "Please, click the web address below or copy and paste it into your browser to verify your account:" . "\n\n";
-            $msg .= $this->emailLink() . "\n\n";
+
+            if($password) {
+
+                  $msg .= "To reset the password for your account, " . "\n\n";
+                  $msg .= "click the web address below or copy and paste it into your browser." . "\n\n";
+
+            } else {
+                  
+                  $msg .= "You need to verify your account before gaining access to TalentsAndSkills. " . "\n\n";
+                  $msg .= "Please, click the web address below or copy and paste it into your browser to verify your account:" . "\n\n";
+            }
+            
+            $msg .= $this->emailLink($password) . "\n\n";
             $msg .= "Note that this link will expire in ONE HOUR." . "\n\n";
             $msg .= "Thanks, The TalentsAndSkills Team" . "\n\n";
 
@@ -81,7 +103,7 @@ class UserValidator extends DatabaseObject {
             }
       }
 
-      public function setValidator($user) {
+      public function setValidator($user, $password = false) {
             /**
              * validator needs to be hashed (SHA512)
              * and all parameters stored in db
@@ -101,7 +123,7 @@ class UserValidator extends DatabaseObject {
 
             if($database->query($sql)) {
 
-                  if($this->emailMessage($user->fullName(), $user->email)) {
+                  if($this->emailMessage($user->fullName(), $user->email, $password)) {
                         return true;
                   } else {
                         return false;

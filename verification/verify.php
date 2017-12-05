@@ -9,8 +9,8 @@ $validatorEntry = $userValidator->findValidatorDetails($_GET['selector']);
 
 if($validatorEntry) { // valid entry,
 
-      // check for token expiry
-      if($validatorEntry->expires < time()) { // token expired, delete all records and resend
+    // check for token expiry
+    if($validatorEntry->expires < time()) { // token expired, delete all records and resend
         
         $_SESSION['expiredToken'] = true;
         $session->message("This link has expired. Fill your email to verify your account");

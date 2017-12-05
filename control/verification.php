@@ -21,9 +21,10 @@ if(isset($_POST['submit'])) {
 
             // send email for verification
             $userValidator = new UserValidator();
-            if($userValidator->setValidator(User::findDetails($candidate->id))) {
+            if($userValidator->setValidator(User::findDetails($user->id))) {
 
-                  $_SESSION['verification_mail'] = true;
+                  $_SESSION['verificationMail'] = true;
+                  $session->message('Please check your mail to validate your account');
                   redirect_to($referer);
                 
             } else {
