@@ -31,8 +31,16 @@ class FormValidation {
     }
     
     public function hasFormatMatching($value, $regex='//') {
-	return preg_match($regex, $value);
-}
+	    return preg_match($regex, $value);
+    }
+
+    public function hasSpecialChars($password) {
+        if($this->hasFormatMatching($password, '/[^A-Za-z0-9]/')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     public function rightEmailSyntax($email) {
         if(preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i", $email)){

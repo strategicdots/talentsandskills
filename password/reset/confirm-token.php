@@ -1,7 +1,7 @@
 <?php $thisPage = "password"; $seperator="../../"; 
 require_once("{$seperator}includes/initialize.php"); 
 
-if(!isset($_GET['selector']) && (!isset($_GET['validator']))) { redirect_to("../login"); } 
+if(!isset($_GET['selector']) && (!isset($_GET['validator']))) { redirect_to("../login.php"); } 
     
 $userValidator  = new UserValidator();
 $validatorEntry = $userValidator->findValidatorDetails($_GET['selector']);

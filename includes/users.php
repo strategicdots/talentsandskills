@@ -108,5 +108,16 @@ class User extends DatabaseObject {
         }
     }
 
+    public static function resetPassword($password, $user_id) {
+        global $database;
+        $hashedPassword = passwordEncrypt($password);  
+        
+        $sql  = "UPDATE ". self::$table_name ." SET password = '";
+        $sql .= $hashedPassword . "' WHERE id = '";
+        $sql .= $database->escapeValue($user_id) . "' LIMIT 1";
+
+        $database->query($sql) ? true : false;
+    }
+
 
 }
