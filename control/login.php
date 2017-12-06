@@ -29,7 +29,19 @@ if(isset($_POST['submit'])) {
         // $employer   = Admin::find_admin_by_email($email);
 
         if(!empty($entry)) { // record found
+
+            // check if entry is not validated
+            if($entry->validated != 1) {
+                
+                $msg  = "Your account hasn't been validated. <br>";
+                $msg .= "Please respond to the validation mail sent to the email you provided. <br>";
+                $msg .= "Or enter your registered email to receive a new one.";
+                $session->message($msg);
+                redirect_to("{$seperator}verification/");
             
+            }
+            
+            // entry is validated
             if($entry->candidate == 1) { // entry is candidate
                 
                 if(password_verify($password, $entry->password)) { // Password Match
