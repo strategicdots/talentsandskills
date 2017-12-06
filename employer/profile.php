@@ -1,4 +1,4 @@
-<?php $thisPage = "employer_profile"; $seperator="../"; 
+<?php $thisPage = "employer_profile"; $seperator="../"; $navbarType = "employer";
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
@@ -8,7 +8,7 @@ $employer = Employer::findDetails($session->employerID);
 // print_r($employer); exit;
 
 // header
-include_once("{$seperator}layout/em-dashboard-header.php"); ?>
+include_once("{$seperator}layout/dashboard-header.php"); ?>
 
 <!--  main content  -->
 <div class="inner-top my-profile">

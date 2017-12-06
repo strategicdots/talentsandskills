@@ -1,4 +1,4 @@
-<?php $thisPage = "settings"; $seperator="../"; 
+<?php $thisPage = "settings"; $seperator="../"; $navbarType = "employer";
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
@@ -6,7 +6,7 @@ if (!$session->isEmployerLoggedIn()) {redirect_to("{$seperator}login.php"); }
 $employer = Employer::findDetails($session->employerID);
 
 // header
-include_once("{$seperator}layout/em-dashboard-header.php"); ?>
+include_once("{$seperator}layout/dashboard-header.php"); ?>
 
 <!--  main content  -->
 <div class="inner-top my-profile">

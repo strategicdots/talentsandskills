@@ -112,12 +112,13 @@ class UserValidator extends DatabaseObject {
 
             global $database;
 
-            $expires = time() + (60 * 60); // current time plus 1 hour
+            $expires_unix = time() + (60 * 60); // current time plus 1 hour
+            $expires      = date("Y-m-d H:i:s", $expires_unix);
 
             $sql  = "INSERT INTO " . self::$table_name;
             $sql .= " (selector, validator, expires, user_id) VALUES ('";
             $sql .= $database->escapeValue($this->selector()) . "', '";
-            $sql .= $database->escapeValue(hash('SHA512', $this->validator())) . "', '";
+            $sql .= $database->escapeValue(hash('sha512', $this->validator())) . "', '";
             $sql .= $database->escapeValue($expires) . "', '";
             $sql .= $database->escapeValue($user->id) . "')";
 
@@ -139,18 +140,21 @@ class UserValidator extends DatabaseObject {
             $sql  = "SELECT * FROM " . self::$table_name; 
             $sql .= " WHERE selector = '{$database->escapeValue($selector)}' LIMIT 1";
         
-            $result = $database->fetchArray($database->query($sql));
-        
-            return self::instantiate($result) ? true : false;
+            $result = self::findBySQLQuery($sql);
 
+            if($result) { 
+                  return $result;
+            } else {
+                  return false;
+            }
       }
 
       public function deleteValidator($selector) {
             global $database;
 
             $sql  = "DELETE FROM " . self::$table_name;
-            $sql .= " WHERE selector=" . $database->escapeValue($selector);
-            $sql .= " LIMIT 1";
+            $sql .= " WHERE selector='" . $database->escapeValue($selector);
+            $sql .= "' LIMIT 1";
 
             $database->query($sql);
             if(($database->affectedRows() == 1)) {

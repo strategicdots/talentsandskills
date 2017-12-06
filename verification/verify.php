@@ -1,20 +1,22 @@
 <?php $seperator = "../"; 
 require_once("{$seperator}includes/initialize.php"); 
 
-if(!isset($_GET['selector']) && (!isset($_GET['validator']))) { redirect_to("../login"); } 
+if(!isset($_GET['selector']) && (!isset($_GET['validator']))) { redirect_to($seperator); } 
     
 $userValidator  = new UserValidator();
 $validatorEntry = $userValidator->findValidatorDetails($_GET['selector']);
 
 
-if($validatorEntry) { // valid entry,
+if($validatorEntry[0]) { // valid entry,
 
     // check for token expiry
-    if($validatorEntry->expires < time()) { // token expired, delete all records and resend
+    $expires = strtotime($validatorEntry[0]->expires);
+
+    if($expires < time()) { // token expired, delete all records and resend
         
         $_SESSION['expiredToken'] = true;
         $session->message("This link has expired. Fill your email to verify your account");
-        $userValidator->deleteValidator($validatorEntry->user_id);
+        $userValidator->deleteValidator($_GET['selector']);
 
         redirect_to("{$seperator}verification/");
 
@@ -26,44 +28,46 @@ if($validatorEntry) { // valid entry,
          * and compare the two validators 
          */
         
-        $hashedQueryValidator = hash('SHA512', hex2bin($_GET['validator']));
+        $hashedQueryValidator = hash('sha512', hex2bin($_GET['validator']));
+        //echo $validatorEntry[0]->validator . "<br>";
+        //echo $hashedQueryValidator; exit;
 
-        if(hash_equals($hashedQueryValidator, $validatorEntry->validator)) {
-            
+        if(hash_equals($validatorEntry[0]->validator, $hashedQueryValidator)) {
             // token provided is valid,
             
             // validate user
-            $user = User::findDetails($validatorEntry->user_id);
+            $user = User::findDetails($validatorEntry[0]->user_id);
             $validated = $user->validateUser($user->id);
 
             if($validated) { // user validated, set session message
-                $session->message("Your account has been verified.");
+                
+                $session->message("Your account has been verified. You can now login");
 
                 //delete validator
                 $userValidator->deleteValidator($_GET['selector']);
 
                 if($user->candidate == 1) {
                     
-                    redirect_to("{$seperator}candidate/dashboard.php");
+                    redirect_to("{$seperator}login.php");
                 
                 } elseif($user->employer == 1) {
                    
-                    redirect_to("{$seperator}employer/dashboard.php");
+                    redirect_to("{$seperator}login.php");
                 
                 } elseif($user->intern == 1) {
 
-                    redirect_to("{$seperator}intern/dashboard.php");
+                    redirect_to("{$seperator}login.php");
 
                 }
 
-            } else { // user not validated, redirect to register page
+            } else { // user has not or has already been validated, redirect to register page
                 
-                redirect_to("{$seperator}register/");
+                redirect_to("{$seperator}login.php");
             
             }
 
         } else { // token is invalid
-            
+           
             $session->message("This link is invalid. Fill your email to verify your account");
             redirect_to("{$seperator}verification/");
         

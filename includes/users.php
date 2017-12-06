@@ -97,7 +97,7 @@ class User extends DatabaseObject {
 
         $database->query($sql);
         
-        if($database->affectedRows == 1) {
+        if($database->affectedRows() == 1) {
             
             return true;
         
@@ -110,6 +110,7 @@ class User extends DatabaseObject {
 
     public static function resetPassword($password, $user_id) {
         global $database;
+        
         $hashedPassword = passwordEncrypt($password);  
         
         $sql  = "UPDATE ". self::$table_name ." SET password = '";

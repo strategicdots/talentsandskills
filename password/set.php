@@ -15,15 +15,13 @@ if(isset($_SESSION['errors']) && ($_SESSION['errors'] != "")) {
 //  header 
  include_once("{$seperator}layout/header.php");
 ?>
-<div class="container">
-      <div class="row m-heavy-top-breather">
-            <div class="m-heavy-top-breather col-sm-6 col-sm-offset-3">
-                  <h3 class="capitalize">You can now change your password</h3>
+<div class="inner-top password">
+      <div class="sm-container margin-auto m-mid-breather p-heavy-breather p-heavy-side-breather">
+            <form action="<?php echo $seperator; ?>control/password/reset.php" method="post" class=" p-heavy-side-breather m-mid-breather p-mid-breather white-bg">
+                  <h2 class="text-center">Reset Your Password</h2>
 
+                  <div class="sm-container m-mid-top-breather">
                   <?php echo inline_message(); ?>
-                  <form action="<?php echo $seperator; ?>control/password/reset.php" method="post">
-                        <p class="m-light-bottom-breather">Enter and Confirm your new password</p>
-
                         <div class="form-group">
                               <label for="password">Password</label>
                               <input class="form-control" placeholder="Enter your new password" name="password" type="password" value="">
@@ -36,9 +34,10 @@ if(isset($_SESSION['errors']) && ($_SESSION['errors'] != "")) {
 
                         <input type="submit" name="submit" class="btn capitalize main-btn form-control" value="send verification email">
 
-                  </form>
-            </div>
+                  </div>
+            </form>
       </div>
+</div>
 </div>
 
 <!-- footer -->

@@ -1,4 +1,4 @@
-<?php $thisPage = "dashboard"; $seperator="../"; 
+<?php $thisPage = "dashboard"; $seperator="../"; $navbarType = "candidate"; 
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */

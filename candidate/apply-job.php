@@ -1,4 +1,4 @@
-<?php $thisPage = "apply-job"; $seperator="../"; 
+<?php $thisPage = "apply-job"; $seperator="../"; $navbarType = "candidate"; 
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */

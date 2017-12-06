@@ -1,4 +1,4 @@
-<?php $seperator = "../";
+<?php $seperator = "../../";
 require_once("{$seperator}includes/initialize.php");
 
 

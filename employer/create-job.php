@@ -1,4 +1,4 @@
-<?php $thisPage = "create-job"; $seperator="../"; 
+<?php $thisPage = "create-job"; $seperator="../"; $navbarType = "employer";
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
@@ -10,7 +10,7 @@ $time = strtotime("now");
 $day = date('d', $time);  $month = date('m', $time);  $year = date('Y', $time);
 
 // header
-include_once("{$seperator}layout/em-dashboard-header.php"); ?>
+include_once("{$seperator}layout/dashboard-header.php"); ?>
 
 <!--  main content  -->
 <div class="inner-top dashboard">

@@ -1,19 +1,21 @@
 <?php $thisPage = "password"; $seperator="../../"; 
 require_once("{$seperator}includes/initialize.php"); 
 
-if(!isset($_GET['selector']) && (!isset($_GET['validator']))) { redirect_to("../login.php"); } 
+if(!isset($_GET['selector']) && (!isset($_GET['validator']))) { redirect_to("{$seperator}login.php"); } 
     
 $userValidator  = new UserValidator();
 $validatorEntry = $userValidator->findValidatorDetails($_GET['selector']);
 
 
-if($validatorEntry) { // valid entry,
+if($validatorEntry[0]) { // valid entry,
 
       // check for token expiry
-      if($validatorEntry->expires < time()) { // token expired, delete all records and resend
+      $expires = strtotime($validatorEntry[0]->expires);
+      
+      if($expires < time()) { // token expired, delete all records and resend
         
             $session->message("This link has expired. Fill in your email to reset your password");
-            $userValidator->deleteValidator($validatorEntry->user_id);
+        $userValidator->deleteValidator($_GET['selector']);
 
             redirect_to("{$seperator}password/reset/");
 
@@ -25,12 +27,12 @@ if($validatorEntry) { // valid entry,
          * and compare the two validators 
       */
         
-      $hashedQueryValidator = hash('SHA512', hex2bin($_GET['validator']));
+      $hashedQueryValidator = hash('sha512', hex2bin($_GET['validator']));
 
-      if(hash_equals($hashedQueryValidator, $validatorEntry->validator)) {
+      if(hash_equals($hashedQueryValidator, $validatorEntry[0]->validator)) {
             
             // token provided is valid, find user details
-            $user = User::findDetails($validatorEntry->user_id);
+            $user = User::findDetails($validatorEntry[0]->user_id);
             $_SESSION['confirmedToken'] = true;
             $_SESSION['user'] = $user->id;
             
@@ -51,8 +53,8 @@ if($validatorEntry) { // valid entry,
       }
 
 } else { // selector is not present
-    
-    $session->message("This link is invalid. Fill your email to verify your account");
+      
+      $session->message("This link is invalid. Fill your email to verify your account");
       redirect_to("{$seperator}password/reset/");
 
 }

@@ -1,4 +1,4 @@
-<?php $thisPage = "jobs"; $seperator="../"; 
+<?php $thisPage = "jobs"; $seperator="../"; $navbarType = "employer";
 include_once("{$seperator}includes/initialize.php");
 
 $referer = $_SERVER['HTTP_REFERER'];
@@ -32,7 +32,7 @@ if(!empty($applications)) {
 ?>
 
 <!-- header -->
-<?php include_once("{$seperator}layout/em-dashboard-header.php"); ?>
+<?php include_once("{$seperator}layout/dashboard-header.php"); ?>
 <!--  end header -->
 
 <!--  main content  -->

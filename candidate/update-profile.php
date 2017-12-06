@@ -1,4 +1,4 @@
-<?php $thisPage = "my-profile"; $seperator="../"; 
+<?php $thisPage = "my-profile"; $seperator="../"; $navbarType = "candidate";
 include_once("{$seperator}includes/initialize.php");
 if(!isset($_GET['type'])) {redirect_to("my-profile.php"); }
 

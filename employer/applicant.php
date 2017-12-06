@@ -1,4 +1,4 @@
-<?php $thisPage = "jobs"; $seperator="../"; 
+<?php $thisPage = "jobs"; $seperator="../"; $navbarType = "employer";
 include_once("{$seperator}includes/initialize.php");
 
 $referer = $_SERVER['HTTP_REFERER'];
@@ -39,7 +39,7 @@ if(empty($candidate->avatar_url)) {
 
 
 // header
- include_once("{$seperator}layout/em-dashboard-header.php"); ?>
+ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
 
 <!--  main content  -->

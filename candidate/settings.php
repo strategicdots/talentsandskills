@@ -1,4 +1,4 @@
-<?php $thisPage = "settings"; $seperator="../"; 
+<?php $thisPage = "settings"; $seperator="../"; $navbarType = "candidate";
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */

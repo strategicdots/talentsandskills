@@ -1,4 +1,4 @@
-<?php $thisPage = "dashboard"; $seperator="../"; 
+<?php $thisPage = "dashboard"; $seperator="../"; $navbarType = "employer";
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
@@ -19,7 +19,7 @@ $jobsPerPage = Jobs::findAllUnderParent($employer->id, "employer_id", $order = t
 ?>
 
 <!-- header -->
-<?php include_once("{$seperator}layout/em-dashboard-header.php"); ?>
+<?php include_once("{$seperator}layout/dashboard-header.php"); ?>
 <!--  end header -->
 
 <!--  main content  -->
