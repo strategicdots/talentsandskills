@@ -1,10 +1,12 @@
 <?php $seperator = "../";
 include_once("{$seperator}includes/initialize.php");
 
-$type = "";
 if($_POST['submit']) {
     $errors = [];
     $referer = $_SERVER['HTTP_REFERER'];
+
+    // all post variables stored in a session
+    $_SESSION['post'] = $_POST;
 
     $raw_fields        = [
             'phone'         => $_POST['phone'], 
@@ -12,12 +14,12 @@ if($_POST['submit']) {
             'password'      => $_POST['password']
         ];
 
-    if($_POST['type'] == "1") { // candidate
+    if($_POST['account_type'] == "candidate" || $_POST['account_type'] == "intern") { // candidate or intern
             
             $raw_fields['firstname'] = $_POST['firstname']; 
             $raw_fields['lastname']  = $_POST['lastname']; 
         
-    } elseif($_POST['type'] == "2") { // employer
+    } elseif($_POST['account_type'] == "employer") { // employer
             
             $raw_fields['job_field']     = $_POST['job_field']; 
             $raw_fields['company_name']  = $_POST['job_field']; 
@@ -67,20 +69,28 @@ if($_POST['submit']) {
     
         $session->errors($errors);
         
-        if($_POST['type'] == "1") { 
+        if($_POST['account_type'] == "candidate") { 
             
-            $_SESSION['type'] = "1";
+            $_SESSION['account_type'] = "candidate";
 
-      } elseif($_POST['type'] == "2") {
+        } elseif($_POST['account_type'] == "employer") {
             
-            $_SESSION['type'] = "2"; 
-      }
+            $_SESSION['account_type'] = "employer"; 
+      
+        } elseif($_POST['account_type'] == "intern") {
 
-      redirect_to($referer);
+            $_SESSION['account_type'] = "intern";
+        }
+
+    redirect_to($referer);
 
     } else { 
-        // else continue
-        if($_POST['type'] == "1") {
+        // no errors
+        // delete post variables stored in session
+        unset($_SESSION['post']);
+
+        // now continue
+        if($_POST['account_type'] == "candidate") {
             
             $candidate = new Candidate();
             
@@ -96,20 +106,49 @@ if($_POST['submit']) {
                 if($userValidator->setValidator(User::findDetails($candidate->id))) {
 
                     $_SESSION['verification_mail'] = true;
+                    $msg  = "An email has been sent you to your mail.";
+                    $msg .= "Please check the mail to validate your account";
+                    
+                    $session->message($msg);
                     redirect_to($referer);
                 
                 } else {
                     $session->message("There is a problem");
                    redirect_to($referer);
                 }
-
-                /* $session->message("account created successfully");
-                $_SESSION['candidateID'] = $candidate->id;
-                 redirect_to("{$seperator}candidate/dashboard.php"); */
             
             }
 
-        } else if($_POST['type'] == "2") {
+        }elseif($_POST['account_type'] == "intern") {
+            
+            $intern = new Intern();
+            
+            $intern->phone         = trim($_POST['phone']); 
+            $intern->email         = trim($_POST['email']); 
+            $intern->firstname     = trim($_POST['firstname']); 
+            $intern->lastname      = trim($_POST['lastname']); 
+            $intern->password      = trim($_POST['password']); 
+            
+            if($intern->create()) {
+                // account created successfully, set validation
+                $userValidator = new UserValidator();
+                if($userValidator->setValidator(User::findDetails($intern->id))) {
+
+                    $_SESSION['verification_mail'] = true;
+                    $msg  = "An email has been sent you to your mail.";
+                    $msg .= "Please check the mail to validate your account";
+                    
+                    $session->message($msg);
+                    redirect_to($referer);
+                
+                } else {
+                    $session->message("There is a problem");
+                   redirect_to($referer);
+                }
+            
+            }
+
+        } elseif($_POST['account_type'] == "employer") {
             $employer = new Employer();
             
             $employer->phone         = trim($_POST['phone']); 
@@ -125,6 +164,10 @@ if($_POST['submit']) {
                 if($userValidator->setValidator(User::findDetails($candidate->id))) {
 
                     $_SESSION['verification_mail'] = true;
+                    $msg  = "An email has been sent you to your mail.";
+                    $msg .= "Please check the mail to validate your account";
+                    
+                    $session->message($msg);
                     redirect_to($referer);
                 
                 } else {

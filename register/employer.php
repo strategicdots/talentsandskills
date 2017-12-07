@@ -4,24 +4,32 @@ include_once("{$seperator}includes/initialize.php");
 // form action
 $action = "../control/register.php";
 // header 
-include_once("{$seperator}layout/header.php"); 
+include_once("{$seperator}layout/header.php");
+
+/**
+ * This part is to set the previously filled fields from
+ * register/index.php to be echoed here where it's needed
+ */
+if(!empty($_SESSION['PART_REG'])) {
+    $_POST = $_SESSION['PART_REG'];
+    unset($_SESSION['PART_REG']);
+}
 ?>
 
 <div class="inner-top register">
     <div class="sm-container margin-auto m-mid-breather p-mid-breather p-heavy-side-breather">
-        <?php if(!empty($_SESSION['type']) &&($_SESSION['type'] == "2")) { 
-                    echo inline_errors(); 
-                    unset($_SESSION['type']); 
-                    unset($session->errors); 
-                } 
-                    ?>
+
         <form action="<?php echo $action; ?>" method="post" class="p-heavy-side-breather m-mid-breather p-mid-breather white-bg">
-            <?php echo inline_message(); ?>
+
             <h2 class="text-center">I'm an Employer</h2>
             <p class="text-center">Get instant access to great candidates</p>
 
             <div class="sm-container m-mid-top-breather">
-                <input type="hidden" name="type" value="2">
+                
+                <?php echo inline_message(); ?>
+                <?php echo inline_errors(); ?>
+                
+                <input type="hidden" name="account_type" value="employer">
                 <div class="form-group">
                     <input type="email" name="email" value="<?php if(!empty($_POST['email'])) {echo $_POST['email']; }?>" placeholder="Company Email Address"
                         class="form-control" required>

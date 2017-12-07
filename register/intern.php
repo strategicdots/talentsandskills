@@ -3,27 +3,38 @@ include_once("{$seperator}includes/initialize.php");
 
 // form action
 $action = "../control/register.php";
+
+// reassign post variables stored in session and unset
+$_POST = $_SESSION['post'];
+unset($_SESSION['post']);
+
 // header 
-include_once("{$seperator}layout/header.php"); 
+include_once("{$seperator}layout/header.php");
+
+/**
+ * This part is to set the previously filled fields from
+ * register/index.php to be echoed here where it's needed
+ */
+if(!empty($_SESSION['PART_REG'])) {
+    $_POST = $_SESSION['PART_REG'];
+    unset($_SESSION['PART_REG']);
+}
+
 ?>
 
 <div class="inner-top register">
     <div class="sm-container margin-auto m-mid-breather p-mid-breather p-heavy-side-breather">
-        <?php if(!empty($_SESSION['type']) &&($_SESSION['type'] == "1")) { 
-                    echo inline_errors(); 
-                    unset($_SESSION['type']); 
-                    unset($session->errors); 
-                } 
-                    ?>
         <form action="<?php echo $action; ?>" method="post" class="p-heavy-side-breather m-mid-breather p-mid-breather white-bg">
-            
-            <?php echo inline_message(); ?>
 
-            <h2 class="text-center">I'm a Candidate</h2>
+            <h2 class="text-center">I'm an Intern</h2>
             <p class="text-center">Get headhunted by leading employers</p>
-            
+
             <div class="sm-container m-mid-top-breather">
-                <input type="hidden" name="type" value="1">
+                
+                <?php echo inline_message(); ?>
+                <?php echo inline_errors(); ?>
+
+                <input type="hidden" name="account_type" value="candidate">
                 <div class="form-group">
                     <input type="text" name="firstname" placeholder="Enter your first Name" value="<?php if(!empty($_POST['firstname'])) {echo $_POST['firstname']; }?>"
                         class="form-control" required>

@@ -28,6 +28,7 @@ require_once(LIB_PATH.DS."avatarUpload.php");
 require_once(LIB_PATH.DS."users.php");
 require_once(LIB_PATH.DS."userValidation.php");
 require_once(LIB_PATH.DS."candidate.php");
+require_once(LIB_PATH.DS."intern.php");
 require_once(LIB_PATH.DS."employers.php");
 require_once(LIB_PATH.DS."admin.php");
 

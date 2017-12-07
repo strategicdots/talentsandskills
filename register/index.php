@@ -6,9 +6,9 @@ $errors = "";
 if(isset($_POST['submit'])) {
     $errors = [];
 
-      $firstName         = trim($_POST['firstName']);
+      $firstName         = trim($_POST['firstname']);
       $email            = trim($_POST['email']);
-      $accountType      = trim($_POST['account-type']);
+      $accountType      = trim($_POST['account_type']);
 
       $raw_fields     = [
             'first_name'      => $firstName, 
@@ -91,7 +91,7 @@ include_once("{$seperator}layout/header.php");
 
                                     <div class="form-group">
                                           <label for="name" class="sr-only">Select One</label>
-                                          <select name="account-type" class="form-control">
+                                          <select name="account_type" class="form-control">
                                                 <option>Choose your account type</option>
                                                 <option value="candidate">Candidate</option>
                                                 <option value="intern">Intern</option>
