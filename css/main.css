@@ -503,6 +503,7 @@ DATE:               May 2017
 .btn-max {
     width: 100%;
     margin: auto;
+    display: block;
 }
 
 .btn:hover,
@@ -986,6 +987,52 @@ footer li a:hover {
     background-image: url("../img/abt-us.jpg");   
 }
 
+/* REGISTRATION PAGES */
+
+.rgstrtn-social {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding: 18.5px 0px;
+    display: block;
+    width: 100%;
+    margin: auto;
+    color: #fff;
+    transition: .3s;
+    font-size: inherit;
+}
+
+.rgstrtn-social:hover {
+    text-decoration: none;
+}
+
+.rgstrtn-social.fb {
+    background-color: #385499;
+    color: #fff;
+}
+
+.rgstrtn-social.twt {
+    background-color: #26B8EF;
+}
+
+.rgstrtn-social.lnkdin {
+    background-color: #2692BC;
+}
+
+.rgstrtn-social.fb:hover {
+    background-color: #283C6E;
+    color: #fff;
+}
+
+.rgstrtn-social.twt:hover {
+    background-color: #0F98CB;
+    color: #fff;
+}
+
+.rgstrtn-social.lnkdin:hover {
+    background-color: #1C6C8B;
+    color: #fff;
+}
 
 /*  CV PACKAGES  */
 .cv {

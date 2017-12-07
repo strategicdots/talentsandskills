@@ -1,115 +1,110 @@
 <?php $thisPage = "register"; $seperator="../"; 
 include_once("{$seperator}includes/initialize.php");
 
-// form action
-$action = "../control/register.php";
+$errors = "";
+// process form data from email type registratioin
+if(isset($_POST['submit'])) {
+    $errors = [];
+
+      $firstName         = trim($_POST['firstName']);
+      $email            = trim($_POST['email']);
+      $accountType      = trim($_POST['account-type']);
+
+      $raw_fields     = [
+            'first_name'      => $firstName, 
+            'email'           => $email, 
+            'account_type'    => $accountType
+      ];
+
+      foreach ($raw_fields as $field => $value) {
+            if(!$validation->hasPresence($value)) {
+                  $errors[$field] = ucwords(str_replace("_", " ", $field)) . " can't be blank";
+            } 
+      }
+
+      if(empty($errors)) {
+            
+            // validations passed
+            // redirect to the appropriate section for registration
+            $_SESSION['PART_REG'] = $_POST;
+            if($accountType == "candidate") {
+                  
+                  redirect_to("candidate.php");
+        
+            } elseif($accountType == "employer") {
+              
+                  redirect_to("employer.php");
+        
+            } elseif($accountType == "intern") {
+                  
+                  redirect_to("intern.php");
+            }
+         
+      } else {
+           $session->message("Please fill all fields");
+      }
+}
+
 // header 
 include_once("{$seperator}layout/header.php"); 
 ?>
 
-<div class="container inner-top p-heavy-top-breather">
-    <div class="row">
-        <!-- candidate form -->
-        <div class="col-sm-6">
-            <div class="heavy-container">
-                <?php echo inline_message(); ?>
-                <h2 class="text-center">I'm a Candidate</h2>
-                <p class="text-center">Get headhunted by leading employers</p>
-                <?php if(!empty($_SESSION['type']) &&($_SESSION['type'] == "1")) { 
-                    echo inline_errors(); 
-                    unset($_SESSION['type']); 
-                    unset($session->errors); 
-                } 
-                    ?>
-                <form action="<?php echo $action; ?>" method="post">
-                    <input type="hidden" name="type" value="1">
-                    <div class="form-group">
-                        <input type="text" name="firstname" placeholder="Enter your first Name" value="<?php if(!empty($_POST['firstname'])) {echo $_POST['firstname']; }?>" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="text" name="lastname" placeholder="Enter your Last Name" value="<?php if(!empty($_POST['lastname'])) {echo $_POST['lastname']; }?>" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="email" name="email" placeholder="Enter Your Email" value="<?php if(!empty($_POST['email'])) {echo $_POST['email']; }?>" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="tel" name="phone" placeholder="Phone Number" value="<?php if(!empty($_POST['phone'])) {echo $_POST['phone']; }?>" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="password" name="password" placeholder="Password" value="<?php if(!empty($_POST['password'])) {echo $_POST['password']; }?>" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <input class="btn main-btn form-control" name="submit" type="submit" value="Register as a Candidate">
-                    </div>
-                </form>
-
+<div class="container inner-top p-heavy-top-breather registration">
+      <div class="row">
+            <!-- signup with social network -->
+            <div class="col-sm-6 rgstrtn-col">
+                  <div class="heavy-container light-bx-shadow p-light-breather p-mid-side-breather sm-br">
+                        <p class="text-center capitalize headfont">Sign up with a social network</p>
+                        <div class="m-light-breather mid-container">
+                              <div class="m-light-bottom-breather">
+                                    <a class="rgstrtn-social fb" href="">Facebook</a>
+                              </div>
+                              <div class="m-light-bottom-breather">
+                                    <a class="rgstrtn-social twt" href="">Twitter</a>
+                              </div>
+                              <div class="m-light-bottom-breather">
+                                    <a class="rgstrtn-social lnkdin" href="">LinkedIN</a>
+                              </div>
+                        </div>
+                  </div>
             </div>
-        </div>
 
-        <!-- employer form -->
-        <div class="col-sm-6">
-            <div class="heavy-container">
-                <h2 class="text-center">I'm an Employer</h2>
-                <p class="text-center">Get instant access to great candidates</p>
-                <?php if(!empty($_SESSION['type']) &&($_SESSION['type'] == "2")) { 
-                    echo inline_errors(); 
-                    unset($_SESSION['type']); 
-                    unset($session->errors); 
-                }
-                ?>
-                <form action="<?php echo $action; ?>" method="post">
-                    <input type="hidden" name="type" value="2">
-                    <div class="form-group">
-                        <input type="email" name="email" value="<?php if(!empty($_POST['email'])) {echo $_POST['email']; }?>" placeholder="Company Email Address" class="form-control" required>
-                    </div>
+            <!-- signup with email address -->
+            <div class="col-sm-6 rgstrtn-col">
+                  <div class="heavy-container light-bx-shadow p-light-breather p-mid-side-breather sm-br">
+                        <p class="text-center capitalize headfont">Sign up with your email address</p>
 
-                    <div class="form-group">
-                        <input type="text" name="company_name" value="<?php if(!empty($_POST['company_name'])) {echo $_POST['company_name']; }?>" placeholder="Company Name" class="form-control" required>
-                    </div>
 
-                    <div class="form-group">
-                        <select class="form-control" name="job_field" required>
-                            <option class="capitalize">Please select your field</option>
-                            
-                            <?php foreach($jobFields as $field): ?>
-                            
-                            <?php if(!empty($_POST['job_field']) && ($_POST['job_field'] == $field->name)): ?>
-                            
-                            <option value="<?php echo $field->name; ?>" selected>
-                                <?php echo ucwords($field->name); ?>
-                            </option>
-                            
-                            <?php else: ?>
-                            
-                            <option value="<?php echo $field->name; ?>">
-                                <?php echo ucwords($field->name); ?>
-                            </option>
+                        <div class="m-light-breather mid-container">
+                              <?php echo inline_message(); ?>
+                              <form action="#" method="post">
 
-                            <?php endif; endforeach; ?>
-                        
-                        </select>
-                    </div>
+                                    <div class="form-group">
+                                          <label for="name" class="sr-only">Enter Your First Name</label>
+                                          <input class="form-control" placeholder="Enter Your First Name" name="firstname" type="text" value="<?php if(!empty($firstName)) {echo $name; } ?>">
+                                    </div>
 
-                    <div class="form-group">
-                        <input type="tel" name="phone" value="<?php if(!empty($_POST['phone'])) {echo $_POST['phone']; }?>" placeholder="Phone Number" class="form-control" required>
-                    </div>
+                                    <div class="form-group">
+                                          <label for="email" class="sr-only">Enter Your Email</label>
+                                          <input class="form-control" placeholder="Enter Your email" name="email" type="text" value="<?php if(!empty($email)) {echo $email; } ?>">
+                                    </div>
 
-                    <div class="form-group">
-                        <input type="password" name="password" placeholder="Password" value="" class="form-control" required>
-                    </div>
+                                    <div class="form-group">
+                                          <label for="name" class="sr-only">Select One</label>
+                                          <select name="account-type" class="form-control">
+                                                <option>Choose your account type</option>
+                                                <option value="candidate">Candidate</option>
+                                                <option value="intern">Intern</option>
+                                                <option value="employer">Employer</option>
+                                          </select>
+                                    </div>
 
-                    <div class="form-group">
-                        <input class="btn sec-btn form-control" name="submit" type="submit" value="Register as an Employer">
-                    </div>
-                </form>
+                                    <input type="submit" name="submit" class="btn capitalize main-btn form-control" value="Register">
+                              </form>
+                        </div>
+                  </div>
             </div>
-        </div>
-    </div>
+      </div>
 </div>
 
 <!-- footer -->

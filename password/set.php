@@ -16,7 +16,7 @@ if(isset($_SESSION['errors']) && ($_SESSION['errors'] != "")) {
  include_once("{$seperator}layout/header.php");
 ?>
 <div class="inner-top password">
-      <div class="sm-container margin-auto m-mid-breather p-heavy-breather p-heavy-side-breather">
+      <div class="sm-container margin-auto m-mid-breather p-mid-breather p-heavy-side-breather">
             <form action="<?php echo $seperator; ?>control/password/reset.php" method="post" class=" p-heavy-side-breather m-mid-breather p-mid-breather white-bg">
                   <h2 class="text-center">Reset Your Password</h2>
 
