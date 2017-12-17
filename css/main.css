@@ -419,8 +419,8 @@ DATE:               May 2017
 }
 
 .brandtxt-color {
-    color: #0000ff;
-    !important
+    color: #0000ff !important;
+    
 }
 
 .secbrandtxt-color {
@@ -700,19 +700,16 @@ h1 span {
 }
 
 /*  dropdown */
-
-/* .dropdown-menu>li>a:hover, 
-.dropdown-menu>li>a:focus {
-padding-top: 10px;
-padding-bottom: 10px;
-margin-top: 5px;
-} */
-
 .dropdown-menu>li>a {
     padding-top: 10px;
     padding-bottom: 10px;
     margin-top: 5px;
 }
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
 
 .logo {
     width: 200px;
@@ -1103,6 +1100,12 @@ progress[value]::-webkit-progress-value {
 /* MEDIA QUERIES */
 
 @media (max-width: 767px) {
+    
+    /* container classes */
+    .max-container {
+        max-width: 100%;
+    }
+
     /* BREATHER CLASSES */
     .m-light-bottom-breather {
         margin-bottom: 10px;

@@ -222,6 +222,27 @@ function jobDeadline($deadline = null, $closedString = null) {
     
 }
 
+function otherPagesTopDefault($headline, $secfont = null) { 
+    // .top
+    $output = "<div class=\"inner-top other-pages abt\">";
+    $output .= "<div class=\"sm-container text-center\">";
+    $output .= "<h1 class=\"sectxt-color uppercase\">";
+    $output .= "<span class=\"capitalize\">{$secfont}</span> {$headline}</h1>";
+    $output .= "</div></div>";
+    // end .top 
+
+    //  main content 
+    $output .= "<div class=\"max-container m-mid-breather\">";
+    $output .= "<div class=\"p-light-bottom-breather heavy-line-height p-heavy-side-breather\">";
+
+    return $output;
+
+}
+
+function otherPagesBottomDefault() {
+    return "</div> </div>";
+}
+
 // CANDIDATE VIEW FUNCTIONS
 function candidateSidebar($user) {
     global $states;

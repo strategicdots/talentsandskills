@@ -48,5 +48,4 @@ class Employer extends User {
             return false;
         }
     }
-
 }

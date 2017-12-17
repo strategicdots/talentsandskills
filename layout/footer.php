@@ -24,15 +24,11 @@
                             <h4 class="hdln">Important Pages</h4>
                             <ul class="no-left-padding">
                                 <li class=""><a href="<?php echo $seperator; ?>about-us.php">About Us</a></li>
-                                <li class=""><a href="">Recruiting  Services</a></li>
-                                <li class=""><a href="<?php echo $seperator; ?>cv-packages.php"">CV Packages</a></li>
-                                <li class=""><a href="">Terms and Conditions</a></li>
-                                <li class=""><a href="">Contact Us</a></li>
-                                <li class=""><a href="">Employer</a></li>
-                                <li class=""><a href="">Candidate</a></li>
-                                <li class=""><a href="">Coporate Training</a></li>
-                                <li class=""><a href="">Register</a></li>
-                                <li class=""><a href="">Employer Resume Access Packages</a></li>
+                                <li class=""><a href="<?php echo $seperator; ?>our-services.php">Recruiting  Services</a></li>
+                                <li class=""><a href="<?php echo $seperator; ?>cv-packages.php">CV Packages</a></li>
+                                <li class=""><a href="<?php echo $seperator; ?>terms-and-policies.php">Terms and Conditions</a></li>
+                                <li class=""><a href="<?php echo $seperator; ?>contact-us.php">Contact Us</a></li>
+                                <li class=""><a href="<?php echo $seperator; ?>register/">Register</a></li>
                             </ul>
                         </div> 
                     </div> 
@@ -49,11 +45,11 @@
                                 </address>
                                 <div id="social">
                                     <ul class="social-links clearfix">             
-                                        <li class="facebook"><a href="" title="Facebook" target="_blank"><i class="icon-facebook"></i></a></li>
-                                        <li class="googleplus"><a href="" title="Google+" target="_blank"><i class="icon-google-plus"></i></a></li>
-                                        <li class="twitter"><a href="" title="Twitter" target="_blank"><i class="icon-twitter"></i></a></li>
-                                        <li class="youtube"><a href="" title="YouTube" target="_blank"><i class="icon-youtube"></i></a></li>
-                                        <li class="linkedin"><a href="" title="LinkedIN" target="_blank"><i class="icon-linkedin"></i></a></li>
+                                        <li class="facebook"><a href="https://www.facebook.com/TalentsandSkills" title="Facebook" target="_blank"><i class="icon-facebook"></i></a></li>
+                                        <li class="googleplus"><a href="https://plus.google.com/113481807732399969558" title="Google+" target="_blank"><i class="icon-google-plus"></i></a></li>
+                                        <li class="twitter"><a href="https://twitter.com/talentsnskills" title="Twitter" target="_blank"><i class="icon-twitter"></i></a></li>
+                                        <li class="youtube"><a href="https://www.youtube.com/channel/UCSZCTlJnuCkZanJxiU6XTMg" title="YouTube" target="_blank"><i class="icon-youtube"></i></a></li>
+                                        <li class="linkedin"><a href="https://www.linkedin.com/company/talents-and-skills" title="LinkedIN" target="_blank"><i class="icon-linkedin"></i></a></li>
                                     </ul>
                                 </div><br />
 
@@ -68,6 +64,8 @@
 
 <script type="text/javascript" src="<?php echo $seperator; ?>js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="<?php echo $seperator; ?>js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo $seperator; ?>js/project.js"></script>
+
 <?php if($thisPage == "my-profile"): ?> 
 <script type="text/javascript" src="<?php echo $seperator;?>js/profile.js"></script>
 
@@ -78,9 +76,7 @@
 <script type="text/javascript" src="<?php echo $seperator;?>js/settings.js"></script>
 
 <?php endif; ?>
-<?php // if($thisPage == "create-job"): ?>
-
-<?php // endif; ?>
+<!-- <script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=16774964"></script> -->
 
 </body>
 </html>

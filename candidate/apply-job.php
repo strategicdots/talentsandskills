@@ -18,8 +18,6 @@ $deadline = jobDeadline($job->deadline);
 
 /* APPLICATION PROCESSING */
 if(isset($_POST['submit'])) {
-
-      // print_r(trim($_POST['editor'])); exit;
       
             $uploadErrs = [];
             $message = "";

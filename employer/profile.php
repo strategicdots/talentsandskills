@@ -168,12 +168,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                                                   </div>
                                                             
 
-
-
-
                                                       </div>
-
-
 
 
                                                 </div>
@@ -191,11 +186,8 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
             </div>
       </div>
-</div>
-<!-- end main content -->
+</div><!-- end main content -->
 
-<script>
-</script>
 
 <!-- footer -->
 <?php include_once("{$seperator}layout/footer.php"); ?>
