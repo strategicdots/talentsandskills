@@ -5,17 +5,6 @@ DEVELOPER:          Yusuf Rafiu
 DATE:               May 2017
 =============================================================================================== */
 
-
-/*  1.      GENERAL STYLES
-2.      TOP PART
-2.1     NAVBAR 
-2.2     SIGNUP PAGE
-
-
-
-*/
-
-
 /* GENERAL STYLES */
 
 .max-container {
@@ -997,6 +986,7 @@ footer li a:hover {
     color: #fff;
     transition: .3s;
     font-size: inherit;
+    height: inherit !important;
 }
 
 .rgstrtn-social:hover {

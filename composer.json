@@ -1,9 +1,12 @@
 {
     "name": "yusuf/talents",
     "require": {
-        "hybridauth/hybridauth": "^2.9"
+        "hybridauth/hybridauth": "2.9"
     },
-    "config": {
-        "vendor-dir": "vendor"
-    }
+    "authors": [
+        {
+            "name": "Yusuf",
+            "email": "yusuf_rafiu@yahoo.co.uk"
+        }
+    ]
 }

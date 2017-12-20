@@ -7,7 +7,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="description" content="">
     <link rel="stylesheet" href="<?php echo $seperator; ?>css/bootstrap.min.css">
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo $seperator; ?>css/main.css">
     <?php if($thisPage == "pricingTable"): ?>
     <link rel="stylesheet" href="<?php echo $seperator; ?>css/pricing-table.css">

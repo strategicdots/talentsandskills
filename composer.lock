@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "453f90683993f620b71fb10e1facf427",
+    "content-hash": "1b4f3762053db5f6fa6b7b1bf50d9f0f",
     "packages": [
         {
             "name": "facebook/graph-sdk",
@@ -66,25 +66,22 @@
         },
         {
             "name": "hybridauth/hybridauth",
-            "version": "v2.9.6",
+            "version": "v2.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hybridauth/hybridauth.git",
-                "reference": "8e17bdb8d28efedb008504550db230c985723d8a"
+                "reference": "d959bc6e106ffe10a44820f4675cb5b9dfc8a945"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/8e17bdb8d28efedb008504550db230c985723d8a",
-                "reference": "8e17bdb8d28efedb008504550db230c985723d8a",
+                "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/d959bc6e106ffe10a44820f4675cb5b9dfc8a945",
+                "reference": "d959bc6e106ffe10a44820f4675cb5b9dfc8a945",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "facebook/graph-sdk": "^5.4",
                 "php": ">=5.2.0"
-            },
-            "require-dev": {
-                "squizlabs/php_codesniffer": "2.*"
             },
             "type": "library",
             "autoload": {
@@ -118,7 +115,7 @@
                 "twitter",
                 "yahoo"
             ],
-            "time": "2017-07-09T07:14:21+00:00"
+            "time": "2017-03-24T17:45:49+00:00"
         }
     ],
     "packages-dev": [],
