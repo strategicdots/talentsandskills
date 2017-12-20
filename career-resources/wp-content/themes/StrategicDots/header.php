@@ -77,7 +77,7 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="" class="dropdown-toggle" data-toggle="dropdown"> career resources
+                                <a href="" class="dropdown-toggle current" data-toggle="dropdown"> career resources
                                     <i class="caret"></i>
                                 </a>
                                 <ul class="dropdown-menu">

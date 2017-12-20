@@ -21,17 +21,19 @@ include_once("layout/header.php"); ?>
             <div class="container">
                   <div class="row">
                         <!-- 10,000 plan -->
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-sm-6">
                               <div class="pricingTable">
                                     <div class="pricingTable-header">
-                                          <span class="price-icon"></span>
-                                          <span class="price-value">&#x20A6;10,000
-                                                <span class="month">monthly</span>
-                                          </span>
+                                          <div class="hexagon"></div>
+                                          <div class="pricing">
+                                                <span class="price-value">&#x20A6;10,000
+                                                      <span class="month">30 days</span>
+                                                </span>
+                                          </div>
                                           <h3 class="heading">pay as you go</h3>
                                     </div>
                                     <div class="pricingContent">
-                                          <p class="small-font-size">This option enables you to pay per CV shortlisting and gain access to the candidates
+                                          <p class="">This option enables you to pay per CV shortlisting and gain access to the candidates
                                                 contact details immediately.</p>
                                           <ul>
                                                 <li>
@@ -56,17 +58,19 @@ include_once("layout/header.php"); ?>
                         </div>
 
                         <!-- 20,000 plan -->
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-sm-6">
                               <div class="pricingTable">
                                     <div class="pricingTable-header">
-                                          <span class="price-icon"></span>
-                                          <span class="price-value">&#x20A6;20,000
-                                                <span class="month">monthly</span>
-                                          </span>
+                                          <div class="hexagon"></div>
+                                          <div class="pricing">
+                                                <span class="price-value">&#x20A6;20,000
+                                                      <span class="month">30 days</span>
+                                                </span>
+                                          </div>
                                           <h3 class="heading">basic annual plan</h3>
                                     </div>
                                     <div class="pricingContent">
-                                          <p class="small-font-size">With our basic annual access plan you save even more money for your organization.</p>
+                                          <p class="">With our basic annual access plan you save even more money for your organization.</p>
                                           <ul>
                                                 <li>
                                                       <i class="fa fa-check"></i>Unlimited job postings
@@ -91,18 +95,25 @@ include_once("layout/header.php"); ?>
                               <!-- BUTTON BOX-->
                         </div>
 
+                  </div>
+            </div>
+
+            <div class="container m-mid-top-breather">
+                  <div class="row">
                         <!-- 40,000 plan -->
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-sm-6">
                               <div class="pricingTable">
                                     <div class="pricingTable-header">
-                                          <span class="price-icon"></span>
-                                          <span class="price-value">&#x20A6;40,000
-                                                <span class="month"></span>
-                                          </span>
-                                          <h3 class="heading">STANDARD BUSINESS PLAN</h3>
+                                          <div class="hexagon"></div>
+                                          <div class="pricing">
+                                                <span class="price-value">&#x20A6;40,000
+                                                      <span class="month">60 days</span>
+                                                </span>
+                                          </div>
+                                          <h3 class="heading">standard business plan</h3>
                                     </div>
                                     <div class="pricingContent">
-                                          <p class="small-font-size">With our basic annual access plan you save even more money for your organization.</p>
+                                          <p class="">With our basic annual access plan you save even more money for your organization.</p>
                                           <ul>
                                                 <li>
                                                       <i class="fa fa-check"></i>FREE &amp; Unlimited job postings</li>
@@ -116,8 +127,6 @@ include_once("layout/header.php"); ?>
                                                       <i class="fa fa-check"></i>Up to 10 users (Account Admins)</li>
                                                 <li>
                                                       <i class="fa fa-check"></i>Access to 30 Resumes</li>
-                                                <li>
-                                                      <i class="fa fa-check"></i>60 days duration</li>
                                           </ul>
                                     </div>
                                     <!-- /  CONTENT BOX-->
@@ -126,30 +135,25 @@ include_once("layout/header.php"); ?>
                                                 <i class="fa fa-shopping-cart"></i> order now</a>
                                     </div>
                               </div>
-                              <!-- BUTTON BOX-->
+
                         </div>
 
-
-
-
-                  </div>
-            </div>
-
-            <div class="container m-mid-top-breather">
-                  <div class="row">
                         <!-- 70,000 plan -->
 
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-sm-6">
                               <div class="pricingTable">
                                     <div class="pricingTable-header">
-                                          <span class="price-icon"></span>
-                                          <span class="price-value">&#x20A6;70,000
-                                                <span class="month"></span>
-                                          </span>
-                                          <h3 class="heading">ADVANCED CORPORATE PLAN (NEGOTIABLE)</h3>
+                                          <div class="hexagon"></div>
+                                          <div class="hexagon"></div>
+                                          <div class="pricing">
+                                                <span class="price-value">&#x20A6;70,000
+                                                      <span class="month">90 days</span>
+                                                </span>
+                                          </div>
+                                          <h3 class="heading">advanced corporate plan</h3>
                                     </div>
                                     <div class="pricingContent">
-                                          <p class="small-font-size">With our basic annual access plan you save even more money for your organization.</p>
+                                          <p class="">With our basic annual access plan you save even more money for your organization.</p>
                                           <ul>
                                                 <li>
                                                       <i class="fa fa-check"></i>FREE &amp; Unlimited job postings</li>
@@ -160,15 +164,9 @@ include_once("layout/header.php"); ?>
                                                 <li>
                                                       <i class="fa fa-check"></i>Candidate shortlist for unlimited number of jobs</li>
                                                 <li>
-                                                      <i class="fa fa-check"></i>Senior Executive (Experienced) Talent search</li>
-                                                <li>
-                                                      <i class="fa fa-check"></i>Dedicated Account Manager for shortlisting assistance</li>
-                                                <li>
                                                       <i class="fa fa-check"></i>Up to 20 users (Account Admins)</li>
                                                 <li>
                                                       <i class="fa fa-check"></i>Access to 50 Resumes</li>
-                                                <li>
-                                                      <i class="fa fa-check"></i>90 days duration</li>
                                           </ul>
                                     </div>
                                     <!-- /  CONTENT BOX-->
@@ -179,11 +177,8 @@ include_once("layout/header.php"); ?>
 
 
                               </div>
-                              <!-- BUTTON BOX-->
+
                         </div>
-
-
-
 
                   </div>
             </div>

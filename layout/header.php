@@ -35,11 +35,18 @@
                             <!-- <li class="<?php if($thisPage == "find-jobs"){echo "current"; } ?>">
                                 <a href=""> find jobs </a>
                             </li> -->
-                            <li class="<?php if($thisPage == "candidates"){echo "current"; } ?>">
-                                <a href="">candidates </a>
-                            </li>
                             <li class="<?php if($thisPage == "interns"){echo "current"; } ?>">
                                 <a href=""> interns </a>
+                            </li>
+                            <li class="dropdown <?php if($thisPage == "candidates"){echo "current"; } ?>">
+                                <a href="" class="dropdown-toggle" data-toggle="dropdown"> candidates <i class="caret"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?php echo $seperator; ?>background-checks.php">background checks</a></li>
+                                    <li><a href="<?php echo $seperator; ?>corporate-training.php">corporate trainings</a></li>
+                                    <li><a href="<?php echo $seperator; ?>hr-outsourcing.php">HR outsourcing</a></li>
+                                    <li><a href="<?php echo $seperator; ?>pre-employment-testing.php">pre-employment testing</a></li>
+                                    <li><a href="<?php echo $seperator; ?>recruitment-solutions.php">recruitment solutions</a></li>
+                                </ul>
                             </li>
                             <li class="dropdown <?php if($thisPage == "employers"){echo "current"; } ?>">
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown"> employers <i class="caret"></i></a>
@@ -63,8 +70,8 @@
                             <li class="dropdown <?php if($thisPage == "career-resources"){echo "current"; } ?>">
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown"> career resources <i class="caret"></i></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="">career tips</a></li>
-                                    <li><a href="">recruitment advice</a></li>
+                                    <li><a href="http://talents/career-resources/career-tips/">career tips</a></li>
+                                    <li><a href="http://talents/career-resources/recruitment-advice/">recruitment advice</a></li>
                                 </ul>
                             </li>
                             <li>

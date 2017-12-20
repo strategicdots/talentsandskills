@@ -10,7 +10,7 @@
 
             <?php if (get_the_post_thumbnail()) : ?>
             <div class="post-img">
-                <?php the_post_thumbnail('medium-large', ['class' => 'img-responsive img-center img-rounded', 'title' => 'Feature image']); ?>
+                <?php the_post_thumbnail('medium', ['class' => 'img-responsive img-center img-rounded', 'title' => 'Feature image']); ?>
             </div>
             <?php endif; ?>
             
@@ -25,20 +25,22 @@
 
             <!-- read more -->
             <div class="more-link text-center">
-                <hr class="line">
                 <a class="read-more btn" href="<?php the_permalink(); ?>">Read More</a>
             </div>
+
+            <!-- post meta data -->
             <div class="post-meta">
                 <i class="fa fa-clock-o"></i>
-                <span><?php the_date(); ?></span> &nbsp;&nbsp;
+                <span><?php the_date("M j, Y"); ?></span> &nbsp;&nbsp;
                 <i class="fa fa-comment-o"></i>
                 <span>&nbsp;
-                    <a href="<?php the_permalink(); ?>#comments">Comments</a>
-                </span>&nbsp;&nbsp;
+                    <a href="<?php the_permalink(); ?>#comments">
+                    <?php comments_number('no Comment', 'one Comment', '% Comments'); ?>
+                    </a>
+                </span><br>
                 <i class="fa fa-smile-o"></i>
                 <span><?php the_author(); ?></span>
             </div>
-            <div class="bar"></div>
 
         </div>
         <?php endwhile; ?>

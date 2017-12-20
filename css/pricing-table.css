@@ -5,9 +5,12 @@
       margin-top: 60px;
       margin-left: 10px;
       margin-right: 10px;
+      min-height: 600px;
+      position: relative'
+
 }
 
-.pricingContent > p {
+.pricingContent>p {
       color: #878787;
       margin: 10px;
 }
@@ -24,46 +27,57 @@
       background-color: #FFCC00;
 }
 
-.pricingTable .price-icon {
-      display: block;
-      width: 87px;
-      height: 48px;
-      background: #fff;
-      border-left: 1px solid #FFCC00;
-      border-right: 1px solid #FFCC00;
+.hexagon {
       position: absolute;
-      top: -20px;
-      left: 35%;
+      width: 120px;
+      height: 69.28px;
+      background-color: #ffffff;
+      margin: 34.64px 0;
+      border-left: solid 2px #FFCC00;
+      border-right: solid 2px #FFCC00;
+      top: -70%;
+      left: 40%;
+      /* z-index: -10; */
 }
 
-.pricingTable .price-icon:after,
-.pricingTable .price-icon:before {
+.hexagon:before,
+.hexagon:after {
       content: "";
-      width: 61.5px;
-      height: 61.5px;
-      background: #fff;
-      border-bottom: 2px solid #FFCC00;
-      border-left: 2px solid #FFCC00;
       position: absolute;
-      bottom: -31.012px;
-      left: 10.5px;
+      width: 84.85px;
+      height: 84.85px;
+      -webkit-transform: scaleY(0.5774) rotate(-45deg);
+      -ms-transform: scaleY(0.5774) rotate(-45deg);
       transform: scaleY(0.5774) rotate(-45deg);
-      border-radius: 0 7px;
+      background-color: inherit;
+      left: 15.5736px;
 }
 
-.pricingTable .price-icon:before {
-      border: 0px none;
-      border-right: 2px solid #FFCC00;
-      border-top: 2px solid #FFCC00;
-      top: -31.012px;
+.hexagon:before {
+      top: -42.4264px;
+      border-top: solid 2.8284px #FFCC00;
+      border-right: solid 2.8284px #FFCC00;
+      z-index: -1;
+}
+
+.hexagon:after {
+      bottom: -42.4264px;
+      border-bottom: solid 2.8284px #FFCC00;
+      border-left: solid 2.8284px #FFCC00;
+      z-index: 1;
+      
+}
+
+.pricing {
+      position: absolute;
+      left: 45%;
+      z-index: 1000;
+      top: -25px;
 }
 
 .pricingTable .price-value {
       font-size: 20px;
       color: #000;
-      position: absolute;
-      top: -24px;
-      left: 38%;
 }
 
 .pricingTable .month {
@@ -76,7 +90,7 @@
       font-size: 17px;
       letter-spacing: 1px;
       text-transform: uppercase;
-      margin: 15px 0;
+      margin: 25px 0 15px 0;
       transition: all 0.4s ease 0s;
 }
 
@@ -100,7 +114,7 @@
 .pricingTable .pricingContent ul li i {
       margin: 0 10px 0 0;
       font-style: italic;
-      color: #FFCC00;
+      color: #0000ff;
 }
 
 .pricingTable .pricingTable-signup {
