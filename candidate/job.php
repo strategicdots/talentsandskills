@@ -2,7 +2,11 @@
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
-if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
+if (!$session->isCandidateLoggedIn()) {
+    $session->message("First, you have to login.");
+    redirect_to("{$seperator}login.php"); 
+
+} 
 
 /* check ID of job */
 if(!$_GET && !isset($_GET['id'])) { redirect_to("job-search.php"); }

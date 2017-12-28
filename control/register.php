@@ -132,19 +132,22 @@ if($_POST['submit']) {
             if($intern->create()) {
                 // account created successfully, set validation
                 $userValidator = new UserValidator();
-                if($userValidator->setValidator(User::findDetails($intern->id))) {
 
-                    $_SESSION['verification_mail'] = true;
-                    $msg  = "An email has been sent you to your mail.";
-                    $msg .= "Please check the mail to validate your account";
+                if(!$userValidator->setValidator(User::findDetails($intern->id))) {
+                    $msg = "Validation email not sent.";
+                    $msg .= "There's a problem with the email registered.";
                     
                     $session->message($msg);
                     redirect_to($referer);
-                
-                } else {
-                    $session->message("There is a problem");
-                   redirect_to($referer);
                 }
+
+                $_SESSION['verification_mail'] = true;
+                $msg  = "An email has been sent you to your mail.";
+                $msg .= "Please check the mail to validate your account";
+                    
+                $session->message($msg);
+                redirect_to($referer);
+                
             
             }
 

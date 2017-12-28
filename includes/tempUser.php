@@ -1,5 +1,6 @@
 <?php require_once('initialize.php');
 
+
 class TemporaryUser extends User {
     protected static $table_name="temporary_user";
     public $firstname;

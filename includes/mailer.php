@@ -1,4 +1,4 @@
-<?php include_once("initialize.php");
+<?php require_once('initialize.php');
 
 class Mailer extends PHPMailer {
       public $Host = "smtp.ipage.com";

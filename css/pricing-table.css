@@ -1,3 +1,7 @@
+/**
+.col-sm-4 pricingTables are preceded by .sm
+ */
+
 .pricingTable {
       text-align: center;
       background: #fff;
@@ -6,8 +10,12 @@
       margin-left: 10px;
       margin-right: 10px;
       min-height: 600px;
-      position: relative'
+      position: relative
 
+}
+
+.sm .pricingTable {
+      min-height: 500px;
 }
 
 .pricingContent>p {
@@ -38,6 +46,10 @@
       top: -70%;
       left: 40%;
       /* z-index: -10; */
+}
+
+.sm .hexagon {
+      left: 30%;
 }
 
 .hexagon:before,
@@ -73,6 +85,10 @@
       left: 45%;
       z-index: 1000;
       top: -25px;
+}
+
+.sm .pricing {
+      left: 40%;
 }
 
 .pricingTable .price-value {

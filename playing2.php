@@ -11,10 +11,11 @@ $hashedqueryToken = hash('sha512', hex2bin($queryToken));
 $dbtoken = hash('sha512', $token);
 $selector = bin2hex(random_bytes(8));
 
-/* if(hash_equals($dbtoken, $hashedqueryToken)) {
-      echo "1";
-} else {
-      echo "2";
-} */
+parse_str($_SERVER['QUERY_STRING'], $queryString);
+$queryString['foo'] = "bar";
 
-echo $queryToken . "<br>"; echo $dbtoken . "<br>"; echo date("Y-m-d H:i:s", (time() + 60*60)) . "<br>"; echo $selector; exit;
+// echo http_build_query($queryString);
+
+//echo "<pre>"; print_r($queryString);
+
+// echo "<pre>"; print_r($_SERVER['QUERY_STRING']);

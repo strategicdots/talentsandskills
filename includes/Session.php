@@ -1,11 +1,16 @@
-<?php
+<?php require_once('initialize.php');
+
 class Session {
     
     // user login & logout activities
-    private $candidateLoggedIn=false;
-    private $employerLoggedIn=false;
+    private $candidateLoggedIn = false;
+    private $employerLoggedIn = false;
+    private $internLoggedIn = false;
+    private $adminLoggedIn = false;
     public $candidateID;
     public $employerID;
+    public $internID;
+    public $adminID;
     
     // other session settings
     public $message;
@@ -15,12 +20,21 @@ class Session {
         $this->checkMessage();
         $this->checkCandidateLogin();
         $this->checkEmployerLogin();
+        $this->checkInternLogin();
+        // $this->checkAdminLogin();
         $this->checkErrors();
 
-        if($this->candidateLoggedIn || $this->employerLoggedIn) {
-            
+        if(
+            $this->candidateLoggedIn || 
+            $this->employerLoggedIn  ||
+            $this->internLoggedIn  ||
+            $this->adminLoggedIn  
+        ) 
+        {
+
             session_regenerate_id(true);
             $this->checkUserActivity();
+        
         } 
         else {
 
@@ -46,7 +60,7 @@ class Session {
         }
     }
 
-    // LOGIN & LOGOUT DETAILS
+    // CANDIDATE LOGIN & LOGOUT DETAILS
     public function isCandidateLoggedIn() {
         return $this->candidateLoggedIn;
     }
@@ -76,33 +90,67 @@ class Session {
     }
 
 
-        // ADMIN LOGIN & LOGOUT DETAILS
-        public function isEmployerLoggedIn() {
-            return $this->employerLoggedIn;
+    // INTERN LOGIN & LOGOUT DETAILS
+    public function isInternLoggedIn()
+    {
+        return $this->internLoggedIn;
+    }
+
+    public function internLogin($intern)
+    {
+        // database should find user based on username/password
+        if ($user) {
+            $this->internID = $_SESSION['internID'] = $intern->internID;
+            $this->internLoggedIn = true;
         }
-    
-        public function employerLogin($employer) {
-            if($admin){
-                $this->employerID = $_SESSION['employerID'] = $employerID;
-                $this->employerLoggedIn = true;
-            }
+    }
+
+    public function internLogout()
+    {
+        unset($_SESSION['internID']);
+        unset($this->internID);
+        $this->internLoggedIn = false;
+    }
+
+    private function checkInternLogin()
+    {
+        if (isset($_SESSION['internID'])) {
+            $this->internID = $_SESSION['internID'];
+            $this->internLoggedIn = true;
+        } else {
+            unset($this->internID);
+            $this->internLoggedIn = false;
         }
+    }
+
+
+    // EMPLOYER LOGIN & LOGOUT DETAILS
+    public function isEmployerLoggedIn() {
+        return $this->employerLoggedIn;
+    }
     
-        public function employerLogout() {
-            unset($_SESSION['employerID']);
+    public function employerLogin($employer) {
+        if($admin){
+            $this->employerID = $_SESSION['employerID'] = $employerID;
+            $this->employerLoggedIn = true;
+        }
+    }
+    
+    public function employerLogout() {
+        unset($_SESSION['employerID']);
+        unset($this->employerID);
+        $this->employerLoggedIn = false;
+    }
+    
+    private function checkEmployerLogin() {
+        if(isset($_SESSION['employerID'])) {
+            $this->employerID = $_SESSION['employerID'];
+            $this->employerLoggedIn = true;
+        } else {
             unset($this->employerID);
             $this->employerLoggedIn = false;
         }
-    
-        private function checkEmployerLogin() {
-            if(isset($_SESSION['employerID'])) {
-                $this->employerID = $_SESSION['employerID'];
-                $this->employerLoggedIn = true;
-            } else {
-                unset($this->employerID);
-                $this->employerLoggedIn = false;
-            }
-        }
+    }
     
 
 

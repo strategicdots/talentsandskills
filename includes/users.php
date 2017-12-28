@@ -14,6 +14,7 @@ class User extends DatabaseObject {
     public $location;
     public $avatar_url;
     public $candidate;
+    public $intern;
     public $employer;
     public $validated;
     

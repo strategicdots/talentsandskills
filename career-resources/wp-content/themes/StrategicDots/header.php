@@ -29,12 +29,41 @@
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="">
-                                <a href="">candidates </a>
-                            </li>
+
+                            <!-- interns -->
                             <li class="">
                                 <a href=""> interns </a>
                             </li>
+
+                            <!-- candidates -->
+                            <li class="dropdown">
+                                <a href="" class="dropdown-toggle" data-toggle="dropdown"> candidates
+                                    <i class="caret"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="http://localhost/talents/register/candidate.php">register</a>
+                                    </li>
+                                    <li>
+                                        <a href="http://localhost/talents/view-jobs/">View Vacancies</a>
+                                    </li>
+                                    <li>
+                                        <a href="http://localhost/talents/employability-training.php">Employability Training</a>
+                                    </li>
+                                    <li>
+                                        <a href="http://localhost/talents/resume-services.php">CV &#038; Resume Writing Services</a>
+                                    </li>
+                                    <!-- <li><a href="http://localhost/talents/">Upgrade To Super Candidate</a></li> -->
+                                    <li>
+                                        <a href="http://localhost/talents/career-resources/career-tips">Career Tips</a>
+                                    </li>
+                                    <!-- <li>
+                                        <a href="http://localhost/talents/employers-list.php">Employers' List</a>
+                                    </li> -->
+                                </ul>
+                            </li>
+
+                            <!-- employers -->
                             <li class="dropdown">
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown"> employers
                                     <i class="caret"></i>
@@ -52,8 +81,14 @@
                                     <li>
                                         <a href="http://localhost/talents/employer/request-interns.php">request for interns</a>
                                     </li>
+                                    <li>
+                                        <a href="http://localhost/talents/career-resources/recruitment-advice">recruitment advice</a>
+                                    </li>
+
                                 </ul>
                             </li>
+
+                            <!-- services -->
                             <li class="dropdown">
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown"> services
                                     <i class="caret"></i>
@@ -76,22 +111,28 @@
                                     </li>
                                 </ul>
                             </li>
+
+                            <!-- career resources -->
                             <li class="dropdown">
                                 <a href="" class="dropdown-toggle current" data-toggle="dropdown"> career resources
                                     <i class="caret"></i>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="">career tips</a>
+                                        <a href="http://localhost/talents/career-resources/career-tips">career tips</a>
                                     </li>
                                     <li>
-                                        <a href="">recruitment advice</a>
+                                        <a href="http://localhost/talents/career-resources/recruitment-advice">recruitment advice</a>
                                     </li>
                                 </ul>
                             </li>
+
+                            <!-- login -->
                             <li>
                                 <a href="http://localhost/talents/login.php"> log in </a>
                             </li>
+
+                            <!-- signup -->
                             <li>
                                 <a href="http://localhost/talents/register" class="last"> sign up </a>
                             </li>

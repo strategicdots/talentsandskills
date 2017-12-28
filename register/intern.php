@@ -34,7 +34,7 @@ if(!empty($_SESSION['PART_REG'])) {
                 <?php echo inline_message(); ?>
                 <?php echo inline_errors(); ?>
 
-                <input type="hidden" name="account_type" value="candidate">
+                <input type="hidden" name="account_type" value="intern">
                 <div class="form-group">
                     <input type="text" name="firstname" placeholder="Enter your first Name" value="<?php if(!empty($_POST['firstname'])) {echo $_POST['firstname']; }?>"
                         class="form-control" required>
@@ -61,7 +61,7 @@ if(!empty($_SESSION['PART_REG'])) {
                 </div>
 
                 <div class="form-group">
-                    <input class="btn main-btn form-control" name="submit" type="submit" value="Register as a Candidate">
+                    <input class="btn main-btn form-control" name="submit" type="submit" value="Register as a Intern">
                 </div>
             </div>
         </form>

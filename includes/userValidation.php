@@ -102,7 +102,7 @@ class UserValidator extends DatabaseObject {
                   return false;
             }
       }
-
+      
       public function setValidator($user, $password = false) {
             /**
              * validator needs to be hashed (SHA512)

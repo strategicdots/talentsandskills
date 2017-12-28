@@ -674,7 +674,7 @@ h1 span {
 }
 
 .nav a.last {
-    margin-left: 5em;
+    margin-left: 2em;
     border: 2px solid #FFCC00;
     border-radius: 5px;
 }
@@ -713,7 +713,7 @@ h1 span {
 /* TOP PART */
 
 .top {
-    background: url(../img/hm-bg2.jpg) #f5f5f5 no-repeat;
+    background: url(../img/hm-bg3.jpg) #f5f5f5 no-repeat;
     padding-bottom: 0;
     margin-bottom: 0;
     background-size: cover;
@@ -732,7 +732,7 @@ h1 span {
 }
 
 .top form {
-    background-color: rgba(238, 238, 238, .3)
+    background-color: rgba(2, 2, 2, .5)
 }
 
 .jumbo-stripe {

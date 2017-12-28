@@ -1,10 +1,11 @@
-<?php
+<?php require_once('initialize.php');
 
 class Pagination {
 	
       public $current_page;
       public $per_page;
       public $total_count;
+      protected $totalItems = [];
 
       public function __construct($page=1, $per_page=10, $total_count=0){
         
@@ -44,6 +45,25 @@ class Pagination {
       public function has_previous_page() {
             
             return $this->previous_page() >= 1 ? true : false;
+      
+      }
+
+
+      public function load($items) {
+
+            if($items) {
+                  
+                  foreach($items as $item) {
+                        
+                        $this->totalItems[] = $item;
+                  }
+            }
+
+      }
+
+      public function pageItems() {
+           
+            return array_slice($this->totalItems, $this->offset(), $this->per_page); 
       
       }
 

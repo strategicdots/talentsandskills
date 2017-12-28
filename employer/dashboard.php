@@ -14,7 +14,7 @@ $total_count = count(Jobs::findAllUnderParent($employer->id, "employer_id"));
 $pagination = new Pagination($page, $per_page, $total_count);
 
 // get the job posted per page
-$jobsPerPage = Jobs::findAllUnderParent($employer->id, "employer_id", $order = true, $pagination);
+$jobsPerPage = $pagination->pageItems();
 
 ?>
 

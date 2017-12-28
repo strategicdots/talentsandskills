@@ -1,5 +1,8 @@
 <?php include_once("initialize.php");
 
+// GENERAL FUNCTIONS
+
+#region
 function redirect_to( $location = NULL ) {
     if($location != NULL) {
         // flush();
@@ -172,28 +175,131 @@ function formatSalaryRange($range) {
 function paginationNavigation($pagination, $page) {
     $output = "";
     
+    //inner function for uri query string
+    // arg: page query string
+    function query($pageQuery) {
+
+        if (isset($_SERVER['QUERY_STRING'])) {
+                
+            // parse the query string
+            parse_str($_SERVER['QUERY_STRING'], $queryString);
+
+            // if page is already set, unset it
+            if (isset($queryString['page'])) {
+
+                unset($queryString['page']);
+
+            }
+
+            // add page query to $queryString
+            $queryString['page'] = $pageQuery;
+
+            $output  = "<a href=\"?" . http_build_query($queryString);
+            $output .= "\">{$pageQuery}</a>";
+
+        } else {
+
+            $output .= "<a href=\"?&page={$pageQuery}\">{$pageQuery}</a> ";
+
+        }
+
+        return $output;
+    }
+
+
     $output .= "<div class=\"pagination\" style=\"clear: both;\">";
     
     if($pagination->total_pages() > 1) {
     
-        if($pagination->has_previous_page()) { 
-            $output .= "<a href=\"?&page=";
-            $output .= $pagination->previous_page();
-            $output .= "\">&laquo; Previous</a> "; 
+        if($pagination->has_previous_page()) {
+
+            if (isset($_SERVER['QUERY_STRING'])) {
+                
+                // parse the query string
+                parse_str($_SERVER['QUERY_STRING'], $queryString);
+
+                // if page is already set, unset it
+                if (isset($queryString['page'])) {
+
+                    unset($queryString['page']);
+
+                }
+
+                    // add page query to $queryString
+                $queryString['page'] = $pagination->previous_page();
+
+                $output .= "<a href=\"?" . http_build_query($queryString);
+                $output .= "\">&laquo; Previous</a>";
+
+            } else {
+
+                $output .= "<a href=\"?&page=";
+                $output .= $pagination->previous_page();
+                $output .= "\">&laquo; Previous</a> "; 
+
+            }
         }
     
         for($i=1; $i <= $pagination->total_pages(); $i++) {
+
             if($i == $page) {
                 $output .= " <span class=\"selected\">{$i}</span> ";
+            
             } else {
-                $output .= "<a href=\"?&page={$i}\">{$i}</a> "; 
+
+                if (isset($_SERVER['QUERY_STRING'])) {
+                
+                    // parse the query string
+                    parse_str($_SERVER['QUERY_STRING'], $queryString);
+
+                    // if page is already set, unset it
+                    if (isset($queryString['page'])) {
+
+                        unset($queryString['page']);
+
+                    }
+
+                    // add page query to $queryString
+                    $queryString['page'] = $i;
+
+                    $output .= " <a href=\"?" . http_build_query($queryString);
+                    $output .= "\">{$i}</a>";
+
+                } else {
+
+                    $output .= "<a href=\"?&page={$i}\">{$i}</a>"; 
+
+                }
             }
         }
     
         if($pagination->has_next_page()) { 
-            $output .= "<a href=\"?&page=";    
-            $output .= $pagination->next_page();
-            $output .= "\">Next &raquo;</a> "; 
+
+            if(isset($_SERVER['QUERY_STRING'])) {
+                
+                // parse the query string
+                parse_str($_SERVER['QUERY_STRING'], $queryString);
+
+                // if page is already set, unset it
+                if(isset($queryString['page'])) {
+                    
+                    unset($queryString['page']);
+                
+                }
+
+                // add page query to $queryString
+                $queryString['page'] = $pagination->next_page();
+
+                $output .= " <a href=\"?" . http_build_query($queryString);    
+
+            } else {
+                
+                $output .= "<a href=\"?&page=";    
+                $output .= $pagination->next_page();
+                           
+            }
+
+            $output .= "\">Next &raquo;</a>"; 
         }
     }
     
@@ -219,7 +325,7 @@ function jobDeadline($deadline = null, $closedString = null) {
     }
 
     return $output;
-    
+
 }
 
 function otherPagesTopDefault($headline, $secfont = null) { 
@@ -243,7 +349,10 @@ function otherPagesBottomDefault() {
     return "</div> </div>";
 }
 
+#endregion
+
 // CANDIDATE VIEW FUNCTIONS
+#region
 function candidateSidebar($user) {
     global $states;
 
@@ -258,8 +367,14 @@ function candidateSidebar($user) {
     $output .= "<div class=\"row m-mid-bottom-breather\">";
 
     $output .= "<div class=\"col-sm-4 bioimage\">";
-    $output .= "<img class=\"img-center img-circle img-responsive\" src=\"../img/candidate-placeholder.jpg\" alt=\"\">";
-    $output .= "</div>";
+    $output .= "<img class=\"img-center img-circle img-responsive\""; 
+    
+    if(!isset($user->avatar_url)) {
+            $output .= " src = \"../img/candidate-placeholder.jpg\"";
+    }
+
+    $output .= "src=\"$user->avatar_url\"";
+    $output .= "alt=\"\">";    $output .= "</div>";
 
     $output .= "<div class=\"col-sm-8 bio-details\">";
     $output .= "<p class=\"headfont lead no-margin\">";
@@ -464,6 +579,7 @@ function jobSearchFilter() {
 }
 
 function topJobSearch($states) {
+    global $states;
 
     $output  = "<div class=\"container\">";
     $output .= "<div class=\"white-bg p-mid-breather lg-br\">";
@@ -476,12 +592,12 @@ function topJobSearch($states) {
     $output .= "<div class=\"col-sm-5\">";
     $output .= "<select class=\"form-control\" name=\"location\">";
     foreach($states as $state){  
-        $output .= "<option value=\"" . $state->name . "\">" . $state->name . "</option>";
+        $output .= "<option value=\"" . trim($state->name) . "\">" . trim($state->name) . "</option>";
     }
     $output .= "</select>";
     $output .= "</div>";
     $output .= "<div class=\"col-sm-2\">";
-    $output .= "<input type=\"submit\" class=\"btn main-btn capitalize form-control\" name=\"submit\" value=\"find jobs\">";
+    $output .= "<input type=\"submit\" class=\"btn main-btn capitalize form-control\" name=\"\" value=\"find\">";
     $output .= "</div></div></form></div></div></div>";
 
     return $output;
@@ -1456,9 +1572,232 @@ function candidateApplications($applications) {
 
     return $output;
 }
+#endregion
 
+
+// INTERN VIEW FUNCTIONS 
+#region
+
+function internSidebar($user)
+{
+    global $states;
+
+    $output = "";
+
+    //about me 
+    $output .= "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
+    $output .= "<div class=\"p-vlight-breather sec-bg p-mid-side-breather\">";
+    $output .= "<p class=\"headfont uppercase no-margin text-center\">about me</p></div>";
+    $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
+
+    $output .= "<div class=\"row m-mid-bottom-breather\">";
+
+    $output .= "<div class=\"col-sm-4 bioimage\">";
+    $output .= "<img class=\"img-center img-circle img-responsive\""; 
+    
+    if(!isset($user->avatar_url)) {
+        $output .= "src=\"../img/candidate-placeholder.jpg\"";
+    }
+
+    $output .= "src=\"$user->avatar_url\"";
+    $output .= "alt=\"\">";
+    $output .= "</div>";
+
+    $output .= "<div class=\"col-sm-8 bio-details\">";
+    $output .= "<p class=\"headfont lead no-margin\">";
+    $output .= $user->fullName() . "</p>";
+
+    $output .= "<p class=\"mid-font-size\">";
+    $output .= $user->email . "</p>";
+
+    $output .= "<p class=\"mid-font-size no-margin\"><span class=\"txt-bold\">Mobile:</span>";
+    $output .= $user->phone . "</p>";
+
+    $output .= "<p class=\"mid-font-size\"><span class=\"txt-bold\">D.O.B: </span>";
+    $output .= $user->dob . "</p>";
+
+    $output .= "</div></div>";
+
+    $output .= "</div></div>";
+
+    // employers that have shortlisted you
+    $output .= "<div class=\"light-bx-shadow m-mid-bottom-breather\">";
+    $output .= "<div class=\"p-vlight-breather sec-bg p-mid-side-breather\">";
+    $output .= "<p class=\"headfont uppercase no-margin text-center\">employers that have shortlisted you</p>";
+    $output .= "</div>";
+    $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
+    $output .= "<p class=\"\">You haven't applied for any job</p>";
+    $output .= "</div></div>";
+
+    return $output;
+}
+
+function pdFormIntern($intern = null) 
+{
+    global $states;
+
+    if (isset($intern->dob)) {
+        $dobArray = explode('/', $intern->dob);
+        $dob_d = $dobArray[0];
+        $dob_m = $dobArray[1];
+        $dob_y = $dobArray[2];
+    }
+    $output = "<form action=\"../control/intern/profile.php\" method=\"post\" id=\"pd-form\" class=\"sm\">";
+    $output .= "<input type=\"hidden\" value=\"pd\" name=\"update_type\">";
+    $output .= "<p class=\"capitalize small-font-size txt-bold\">fill in the details</p>";
+    $output .= "<div class=\"row\">";
+
+    // first column
+    $output .= "<div class=\"col-sm-6\">";
+
+    // input: EMAIL
+    $output .= "<div class=\"form-group\">";
+    $output .= "<label class=\"txt-bold small-font-size capitalize\">email</label>";
+    $output .= "<input type=\"text\" class=\"form-control\" value=\"{$intern->email}\" name=\"email\" placeholder=\"your email\"></div>";
+
+    // input: PHONE
+    $output .= "<div class=\"form-group\">";
+    $output .= "<label class=\"txt-bold small-font-size capitalize\">phone</label>";
+    $output .= "<input type=\"tel\" class=\"form-control\" name=\"phone\" value=\"{$intern->phone}\" placeholder=\"your phone number\"></div>";
+
+    // input: LOCATION
+    $output .= "<div class=\"form-group\">";
+    $output .= "<label class=\"txt-bold small-font-size capitalize\">Choose your location </label>";
+    $output .= "<select class=\"form-control\" id=\"location\" name=\"location\">";
+
+    foreach ($states as $state) {
+        $output .= "<option value=\"";
+        $output .= $state->name . "\"";
+        if ($state == $intern->location) {
+            $output .= " selected>";
+        } else {
+            $output .= " >";
+        }
+
+        $output .= $state->name . "</option>";
+    }
+    $output .= "</select></div>";
+
+    // input: DOB
+    $output .= "<div class=\"form-group\">";
+    $output .= "<label class=\"txt-bold small-font-size capitalize\">Date of Birth</label>";
+    $output .= "<div class=\"row\">";
+
+    // day
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<select name=\"dob_d\" class=\"form-control\" id=\"dob_d\">";
+    $output .= "<option>DD</option>";
+
+    for ($i = 1; $i <= 31; $i++) {
+        if ($i <= 9) {
+            if (!empty($dob_d) && $dob_d == $i) {
+                $output .= "<option value= \"{$i}\" selected>0{$i}</option>";
+            } else {
+                $output .= "<option value= \"{$i}\">0{$i}</option>";
+            }
+        } else {
+            if (!empty($dob_d) && $dob_d == $i) {
+                $output .= "<option value= \"{$i}\" selected>{$i}</option>";
+            } else {
+                $output .= "<option value= \"{$i}\">{$i}</option>";
+            }
+        }
+    }
+
+    $output .= "</select></div>";
+
+    // month
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<select name=\"dob_m\" class=\"form-control\" id=\"dob_m\">";
+    $output .= "<option>MM</option>";
+
+    for ($i = 1; $i <= 12; $i++) {
+        if ($i <= 9) {
+            if (!empty($dob_m) && $dob_m == $i) {
+                $output .= "<option value= \"{$i}\" selected>0{$i}</option>";
+            } else {
+                $output .= "<option value= \"{$i}\">0{$i}</option>";
+            }
+        } else {
+
+            if (!empty($dob_m) && $dob_m == $i) {
+                $output .= "<option value= \"{$i}\" selected>{$i}</option>";
+            } else {
+                $output .= "<option value= \"{$i}\">{$i}</option>";
+            }
+        }
+
+    }
+
+    $output .= "</select></div>";
+
+    // year
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<select name=\"dob_y\" class=\"form-control\" id=\"dob_y\">";
+    $output .= "<option>YYYY</option>";
+    for ($i = 1900; $i <= 2017; $i++) {
+        if (!empty($dob_y) && $dob_y == $i) {
+            $output .= "<option value= \"{$i}\" selected>{$i}</option>";
+        } else {
+            $output .= "<option value= \"{$i}\">{$i}</option>";
+        }
+    }
+    $output .= "</select></div></div></div>";
+
+    $output .= "</div>";
+
+    // second column
+    $output .= "<div class=\"col-sm-6\">";
+
+    // input: GENDER
+    $output .= "<div class=\"form-group\">";
+    $output .= "<label class=\"txt-bold small-font-size capitalize\">Gender</label>";
+    $output .= "<select name=\"gender\" class=\"form-control\">";
+
+    if ($intern->gender == "M") {
+        $output .= "<option value=\"M\" selected>Male</option>";
+    } else {
+        $output .= "<option value=\"M\">Male</option>";
+    }
+
+    if ($intern->gender == "F") {
+        $output .= "<option value=\"F\" selected>Female</option>";
+    } else {
+        $output .= "<option value=\"F\">Female</option>";
+    }
+    $output .= "</select></div>";
+
+    // input: ADDRESS
+    $output .= "<div class=\"form-group\">";
+    $output .= "<label class=\"txt-bold small-font-size capitalize\">address</label>";
+    $output .= "<textarea class=\"form-control\" name=\"address\" rows=\"7\">";
+    if (!empty($intern->address)) {
+        $output .= break2NewLine($intern->address);
+    } else {
+        $output .= "current address";
+    }
+    $output .= "</textarea></div>";
+
+    $output .= "</div></div>";
+
+    // input: SUBMIT BUTTON
+    $output .= "<div class=\"sm-container m-vlight-breather\">";
+    $output .= "<div class=\"row\">";
+    $output .= "<div class=\"col-sm-8\">";
+    $output .= "<input type=\"submit\" value=\"Confirm Changes\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
+
+    // input: CANCEL BUTTON
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<a href=\"my-profile.php\" class=\"form-control capitalize btn main-btn\" >cancel</a>";
+    $output .= "</div></div></div></form>";
+
+    return $output;
+}
+#endregion
 
 // EMPLOYER VIEW FUNCTIONS
+
+#region
 function jobPosted($jobsPosted, $n) {
     $i = $n;
 
@@ -1621,3 +1960,5 @@ function employerSidebar($employer) {
 
     return $output;
 }
+
+#endregion

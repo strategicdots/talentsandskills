@@ -1,59 +1,19 @@
 <?php $thisPage = "register"; $seperator="../"; 
 include_once("{$seperator}includes/initialize.php");
-include_once("{$seperator}vendor/hybridauth/hybridauth/hybridauth/Hybrid/Auth.php");
-include_once("{$seperator}vendor/hybridauth/hybridauth/hybridauth/Hybrid/Endpoint.php");
-
-// Social Media Registration
-/**
- * including $config file,
- * this is where all social media authentication are stored
- * needed for access
- */
-
-// echo $config; exit;
+include_once("{$seperator}socialConfig.php");
 
 
 // facebook registration
-if(isset($_POST['fb_auth'])) {
+$redirectURL = "http://localhost/talents/register/index.php";
+$permissions = ['email', 'birthday', 'location'];
+$loginURL = $helper->getLoginUrl($redirectURL, $permissions);
 
-      $config = [
-            "base_url" => "http://localhost/talents/register/index.php",
-            "providers" => [
-                  "Facebook" => [
-                        "enabled" => true,
-                        "keys" => ["id" => "1782052178495689", "secret" => "44ebff15be92eda57114778627d7cf66"],
-                        "scope" => ['email', 'user_about_me', 'user_birthday'],
-                        "photo_size" => 200
-                  ]
-            ]
-      ];
-      $hybridauth = new Hybrid_Auth($config);
+// echo $loginURL; exit;
 
-      if (isset($_REQUEST['hauth.start']) || isset($_REQUEST['hauth.done'])) {
-            echo "1"; exit;
-            Hybrid_Endpoint::process();
-      } else {
-            echo "2"; exit;
-      }
-
-      try {
-            $hybridauth = new Hybrid_Auth($config);
-            $adapter = $hybridauth->authenticate("Facebook");
-            $userProfile = $adapter->getUserProfile();
-
-      } catch(Exception $e) {
-            die("<p>got an error</p>") . $e->getMessage();
-      }
-
-      if(isset($userProfile)) {
-            var_dump($userProfile);
-      }
-
-}
 
 // twitter registration
 if (isset($_POST['twt_auth'])) {
-
+      
 }
 
 // LinkedIn registration
@@ -66,7 +26,7 @@ $errors = "";
 if(isset($_POST['submit'])) {
     $errors = [];
 
-      $firstName         = trim($_POST['firstname']);
+      $firstName        = trim($_POST['firstname']);
       $email            = trim($_POST['email']);
       $accountType      = trim($_POST['account_type']);
 
@@ -118,9 +78,8 @@ include_once("{$seperator}layout/header.php");
                         <div class="m-light-breather mid-container">
                               <div class="m-light-bottom-breather">
                                     <form method="post" action="#">
-                                          <input type="hidden" name="fb_auth" value="true">
-                                          <input type="submit" class="btn rgstrtn-social fb" value="Register With Facebook">
-                                          <!-- <a class="rgstrtn-social fb" href="">Facebook</a> -->
+                                          <!-- <input type="hidden" name="fb_auth" value="true"> -->
+                                          <input type="button" onclick="window.location = '<?php echo $loginURL; ?>';" class="btn rgstrtn-social fb" value="Register With Facebook">
                                     </form>
                               </div>
                               <div class="m-light-bottom-breather">

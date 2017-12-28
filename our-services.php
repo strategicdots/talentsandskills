@@ -9,6 +9,7 @@ include_once("layout/header.php"); ?>
 
 <!-- content starts -->
 <div>
+      <h2 class="capitalize headfont m-light-bottom-breather brandtxt-color">Talents and skills premium services</h2>
       <p>We offer a specialized Recruitment Consulting service that ensures we attract the best talent on behalf of our clients,
             covering the full recruitment cycle of specific recruitment assignments for major brands and multinational companies.
             Our track record in this includes servicing clients recruitment and talent search in the in the following industries:

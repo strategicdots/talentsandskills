@@ -3,7 +3,9 @@
 class Jobs extends DatabaseObject {
     protected static $table_name="jobs";
 
+    #region
     public $id;
+    public $created;
     public $employer_id;
     public $title;
     public $job_field;
@@ -16,6 +18,7 @@ class Jobs extends DatabaseObject {
     public $description;
     public $qualification;
     public $appicants;    
+#endregion
 
     public function create() {
         global $database;
@@ -67,10 +70,11 @@ class Jobs extends DatabaseObject {
     public static function topSearch($keyword, $location) {
         global $database;
 
+        // search through the three columns: keywords, employer and location
         $sql  = "SELECT * FROM " . self::$table_name;
         $sql .= " WHERE ( CONCAT_WS('|', keywords, employer, location) LIKE '%";
         $sql .= $database->escapeValue($keyword);
-        $sql .= "%' ) AND ";
+        $sql .= "%' ) OR ";
         $sql .= "location = '";
         $sql .= $database->escapeValue($location) . "'";
 
@@ -106,10 +110,14 @@ class Jobs extends DatabaseObject {
 
     }
 
+    // new jobs for the month
     public static function newJobs() {
-        $sql = "SELECT * FROM " . self::$table_name . " ORDER BY id DESC ";
 
-        $jobObjects = self::findBySQLQuery($sql);
+        $sql  = "SELECT * FROM " . self::$table_name;
+        $sql .= " WHERE DATE_FORMAT(NOW(), '%m-%Y') = ";
+        $sql .= " DATE_FORMAT(created, '%m-%Y')";
+
+        $jobObjects = self::findBySQLQuery($sql);  
 
         if($jobObjects) { 
             return $jobObjects; 

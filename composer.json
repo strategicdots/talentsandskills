@@ -1,7 +1,7 @@
 {
     "name": "yusuf/talents",
     "require": {
-        "hybridauth/hybridauth": "2.9"
+        "facebook/graph-sdk": "5.5"
     },
     "authors": [
         {

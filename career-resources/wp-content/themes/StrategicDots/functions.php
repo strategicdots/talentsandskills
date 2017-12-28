@@ -8,6 +8,7 @@ function theme_styles() {
 
     wp_enqueue_style( 'bootstrap_css', get_template_directory_uri() . '/css/bootstrap.min.css' );
     wp_enqueue_style( 'master_css', get_template_directory_uri() . '/css/master.css' );
+    wp_enqueue_style('jobs_css', 'http://localhost/talents/css/jobs.css');
     wp_enqueue_style('fa_css', "http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
     wp_enqueue_style( 'fonts_css', get_template_directory_uri() . '/fonts/fonts.css' );
     wp_enqueue_style( 'wp_main_css', get_template_directory_uri() . '/style.css' );
