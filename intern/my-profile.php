@@ -1,6 +1,17 @@
 <?php $thisPage = "my-profile"; $seperator="../"; $navbarType = "intern";
 include_once("{$seperator}includes/initialize.php");
 
+// Form Submission and redirection to control file
+if ($_POST['submit']) {
+
+    $session->postValues($_POST);
+    $session->fileValues($_FILES);
+
+    $action = "{$seperator}control/intern/intern-letter.php";
+    redirect_to($action);
+
+}
+
 /* check user status */
 if (!$session->isInternLoggedIn()) {
     redirect_to("{$seperator}login.php");
@@ -125,7 +136,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                 </div>
 
                                 <div class="clearfix small-font-size">
-                                    <a href="update-profile.php?type=personal_details" class="btn sec-btn capitalize pull-right">edit</a>
+                                    <a href="update-profile.php" class="btn sec-btn capitalize pull-right">edit</a>
                                 </div>
                             </div>
 

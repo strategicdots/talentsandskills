@@ -34,18 +34,23 @@ $deadline = jobDeadline($job->deadline);
                 <!-- jobs details -->
                 <div class="col-sm-9 white-bg m-heavy-side-breather">
 
-                    <!-- title -->
                     <div class="m-mid-breather">
+                        
+                        <!-- title -->
                         <h2 class="capitalize no-margin">
                             <?php echo $job->title; ?>
                         </h2>
+                        
+                        <!-- company name -->
                         <p class="secheadfont uppercase">
                             <?php echo $employer->company_name; ?>
                         </p>
+
+                        <!-- application btn -->
                         <a href="apply-job.php?id=<?php echo $job->id;?>" class="btn main-btn capitalize">apply for this job</a>
 
-                        <?php if(!empty($employer->about_company)): ?>
                         <!-- about company -->
+                        <?php if(!empty($employer->about_company)): ?>
                         <div class="m-mid-top-breather">
                             <p class="lead no-margin txt-bold capitalize">about
                                 <?php echo $employer->company_name; ?>
@@ -63,7 +68,7 @@ $deadline = jobDeadline($job->deadline);
                         </div>
                         <?php endif; ?>
                         
-                        <!-- apply btn -->
+                        <!-- application btn -->
                         <div class="m-mid-breather">
                             <a href="apply-job.php?id=<?php echo $job->id;?>" class="btn main-btn capitalize">apply for this job</a>
                         </div>

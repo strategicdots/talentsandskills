@@ -1,6 +1,18 @@
 <?php $thisPage = "settings"; $seperator="../"; $navbarType = "employer";
 include_once("{$seperator}includes/initialize.php");
 
+// Form Submission and redirection to control file
+if ($_POST['submit']) {
+
+    $session->postValues($_POST);
+    $session->fileValues($_FILES);
+
+    $action = "{$seperator}control/employer/settings.php";
+
+    redirect_to($action);
+
+}
+
 /* check user status */
 if (!$session->isEmployerLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 $employer = Employer::findDetails($session->employerID);
@@ -49,7 +61,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                                                 <!-- password form -->
                                                 <div class="hide-el" id="pswd-div">
-                                                    <form action="../control/employer/settings.php" method="post" class="sm">
+                                                    <form action="" method="post" class="sm">
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">Enter your old password</label>
                                                             <input class="form-control" type="password" name="password" placeholder="Enter your old password">
@@ -87,7 +99,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                                                 <!-- email form -->
                                                 <div class="hide-el" id="email-div">
-                                                    <form method="post" action="../control/employer/settings.php" class="sm">
+                                                    <form method="post" action="" class="sm">
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">enter your new email</label>
                                                             <input class="form-control" type="email" name="email" placeholder="enter your new email">
@@ -124,7 +136,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                                                 <!-- avatar form -->
                                                 <div class="hide-el" id="avtr-div">
-                                                    <form method="post" class="sm" action="../control/employer/settings.php" enctype="multipart/form-data">
+                                                    <form method="post" class="sm" action="" enctype="multipart/form-data">
                                                         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo maxFileSize(); ?>">
 
                                                         <?php if(!empty($employer->cv_path)): ?>

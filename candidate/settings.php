@@ -4,6 +4,17 @@ include_once("{$seperator}includes/initialize.php");
 /* check user status */
 if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 
+// Form Submission and redirection to control file
+if ($_POST['submit']) {
+
+    $session->postValues($_POST);
+    $session->fileValues($_FILES);
+
+    $action = "{$seperator}control/candidate/settings.php";
+    redirect_to($action);
+
+}
+
 $candidate          = Candidate::findDetails($session->candidateID);
 $desiredJob         = DesiredJob::findAllUnderParent($candidate->id, "user_id");
 $schools            = School::findAllUnderParent($candidate->id, "user_id");
@@ -56,7 +67,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                                                 <!-- password form -->
                                                 <div class="hide-el" id="pswd-div">
-                                                    <form action="../control/candidate/settings.php" method="post" class="sm">
+                                                    <form action="" method="post" class="sm">
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">Enter your old password</label>
                                                             <input class="form-control" type="password" name="password" placeholder="Enter your old password">
@@ -94,7 +105,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                                                 <!-- email form -->
                                                 <div class="hide-el" id="email-div">
-                                                    <form method="post" action="../control/candidate/settings.php" class="sm">
+                                                    <form method="post" action="" class="sm">
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">enter your new email</label>
                                                             <input class="form-control" type="email" name="email" placeholder="enter your new email">
@@ -131,7 +142,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                                                 <!-- avatar form -->
                                                 <div class="hide-el" id="avtr-div">
-                                                    <form method="post" class="sm" action="../control/candidate/settings.php" enctype="multipart/form-data">
+                                                    <form method="post" class="sm" action="" enctype="multipart/form-data">
                                                         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo maxFileSize(); ?>">
 
                                                         <?php if(!empty($candidate->avatar_url)): ?>

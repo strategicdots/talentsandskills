@@ -1,6 +1,8 @@
 <?php $seperator = "../../";
 include_once("{$seperator}includes/initialize.php");
 
+$_POST = $session->postValues();
+
 if(!$_POST['submit']) {redirect_to($seperator); }
 
 // convert text to lists

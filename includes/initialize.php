@@ -58,6 +58,7 @@ require_once(LIB_PATH . DS . "jobDescription.php");
 require_once(LIB_PATH . DS . "interfaces.php");
 require_once(LIB_PATH . DS . "salaryRange.php");
 require_once(LIB_PATH . DS . "application.php");
+require_once(LIB_PATH . DS . "internshipDetails.php");
 
 // PHPMAILER OBJECTS
 require_once(LIB_PATH . DS . "phpmailer/class.phpmailer.php");

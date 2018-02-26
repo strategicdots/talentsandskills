@@ -1,6 +1,18 @@
 <?php $thisPage = "employer_profile"; $seperator="../"; $navbarType = "employer";
 include_once("{$seperator}includes/initialize.php");
 
+// Form Submission and redirection to control file
+if ($_POST['submit']) {
+
+      $session->postValues($_POST);
+      $session->fileValues($_FILES);
+
+      $action = "{$seperator}control/employer/settings.php";
+
+      redirect_to($action);
+
+}
+
 /* check user status */
 if (!$session->isEmployerLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 
@@ -40,7 +52,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                                 <div class="row">
 
                                                       <div class="col-sm-6">
-                                                            <form action="<?php echo $seperator; ?>control/employer/settings.php" method="post" class="sm">
+                                                            <form action="" method="post" class="sm">
                                                                   <input type="hidden" name="details" value="details">
 
                                                                   <div class="form-group">
@@ -97,7 +109,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                                                   <!-- password form -->
                                                                   <div class="hide-el" id="pswd-div">
 
-                                                                        <form action="<?php echo $seperator; ?>control/employer/settings.php" method="post" class="sm">
+                                                                        <form action="" method="post" class="sm">
 
                                                                               <div class="form-group">
                                                                                     <label class="capitalize small-font-size">Enter your old password</label>
@@ -142,7 +154,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                                                                         <!-- avatar form -->
                                                                         <div class="hide-el" id="avtr-div">
-                                                                              <form method="post" class="sm" action="<?php echo $seperator; ?>control/employer/settings.php" enctype="multipart/form-data">
+                                                                              <form method="post" class="sm" action="" enctype="multipart/form-data">
                                                                                     <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo maxFileSize(); ?>">
 
                                                                                     <?php if(!empty($employer->avatar)): ?>

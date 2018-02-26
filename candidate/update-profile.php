@@ -13,6 +13,16 @@ $memberships        = Membership::findAllUnderParent($candidate->id, "user_id");
 $employmentHistory  = EmploymentHistory::findAllUnderParent($candidate->id, "user_id");
 $interests          = Interest::findAllUnderParent($candidate->id, "user_id");
 
+
+if ($_POST['submit']) {
+    
+    $session->postValues($_POST);
+    $action = "{$seperator}control/candidate/profile.php";
+    redirect_to($action);
+
+}
+
+
 // header
 include_once("{$seperator}layout/dashboard-header.php"); ?>
 

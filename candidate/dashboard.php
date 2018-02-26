@@ -3,7 +3,28 @@ include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
 if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
- 
+
+// Form Submission and redirection to control file
+if ($_POST['submit']) {
+
+    $session->postValues($_POST);
+    $session->fileValues($_FILES);
+
+    $action = "{$seperator}control/candidate/cv.php";
+    redirect_to($action);
+
+}
+
+// pagination
+$newJobs = Jobs::newJobs();
+$per_page = (int) 5;
+$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+$total_count = count($newJobs);
+
+$pagination = new Pagination($page, $per_page, $total_count);
+$pagination->load($newJobs);
+$jobsPerPage = $pagination->pageItems();
+
 $candidate          = Candidate::findDetails($session->candidateID);
 $desiredJob         = DesiredJob::findAllUnderParent($candidate->id, "user_id");
 $schools            = School::findAllUnderParent($candidate->id, "user_id");
@@ -43,7 +64,7 @@ $interests          = Interest::findAllUnderParent($candidate->id, "user_id");
                             <div class="p-light-bottom-breather p-mid-side-breather">
                                 <!-- cv form -->
                                 <?php echo inline_errors(); ?>
-                                <form method="post" action="<?php echo $seperator; ?>control/candidate/cv.php" enctype="multipart/form-data">
+                                <form method="post" action="" enctype="multipart/form-data">
                                     <div class="m-light-bottom-breather">
                                         <ul class="no-list-style no-left-padding">
                                             <li>The file size must not be more than
@@ -75,10 +96,10 @@ $interests          = Interest::findAllUnderParent($candidate->id, "user_id");
                             <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
                                 <p class="headfont uppercase no-margin">recent jobs on talents and skills </p>
                             </div>
-                            <?php $newJobs = Jobs::newJobs(); ?>
+                            
                             <div class="p-light-bottom-breather p-mid-side-breather">
                                 <ul class="no-list-style no-left-padding">
-                                    <?php foreach($newJobs as $job): ?>
+                                    <?php foreach($jobsPerPage as $job): ?>
                                     <li>
                                         <a href="job.php?id=<?php echo $job->id; ?>">
                                             <?php echo ucwords($job->title); ?>
@@ -87,6 +108,9 @@ $interests          = Interest::findAllUnderParent($candidate->id, "user_id");
 
                                     <?php endforeach; ?>
                                 </ul>
+
+                                <!-- pagination buttons -->
+                                <?php echo paginationNavigation($pagination, $page); ?>
                             </div>
 
                         </div>

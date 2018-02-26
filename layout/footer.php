@@ -25,7 +25,7 @@
                             <ul class="no-left-padding">
                                 <li class=""><a href="<?php echo $seperator; ?>about-us.php">About Us</a></li>
                                 <li class=""><a href="<?php echo $seperator; ?>our-services.php">Recruiting  Services</a></li>
-                                <li class=""><a href="<?php echo $seperator; ?>cv-packages.php">CV Packages</a></li>
+                                <li class=""><a href="<?php echo $seperator; ?>cv-packages.php">CV Access Packages</a></li>
                                 <li class=""><a href="<?php echo $seperator; ?>terms-and-policies.php">Terms and Conditions</a></li>
                                 <li class=""><a href="<?php echo $seperator; ?>contact-us.php">Contact Us</a></li>
                                 <li class=""><a href="<?php echo $seperator; ?>register/">Register</a></li>

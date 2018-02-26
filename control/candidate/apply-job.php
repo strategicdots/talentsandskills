@@ -1,6 +1,8 @@
 <?php $seperator = "../../";
 include_once("{$seperator}includes/initialize.php");
 
+$_POST = $session->postValues();
+$_FILES = $session->fileValues();
 
 /* APPLICATION PROCESSING */
 if(isset($_POST['submit'])) {

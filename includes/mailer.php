@@ -19,7 +19,7 @@ class Mailer extends PHPMailer {
       ];
 
       public function __construct() {
-            $this->isHTML();
+            $this->isHTML(true);
       }
    
 }

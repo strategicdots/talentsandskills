@@ -1,6 +1,22 @@
 <?php $thisPage = "create-job"; $seperator="../"; $navbarType = "employer";
 include_once("{$seperator}includes/initialize.php");
 
+// Form Submission and redirection to control file
+if ($_POST['submit']) {
+
+    $session->postValues($_POST);
+    $session->fileValues($_FILES);
+
+    if($_POST['type']) {
+        $action = "{$seperator}control/employer/job.php";
+    } else {
+        $action = "{$seperator}control/employer/create-job.php";
+    }
+
+    redirect_to($action);
+
+}
+
 /* check user status */
 if (!$session->isEmployerLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 $employer = Employer::findDetails($session->employerID);
@@ -29,7 +45,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                             </div>
                             <div class="p-mid-bottom-breather p-mid-side-breather">
                                 <?php echo inline_errors(); ?>
-                                <form method="post" action="../control/employer/job.php">
+                                <form method="post" action="">
                                     <input type="hidden" name="type" value="post">
                                     <p class="headfont brandtxt-color capitalize">job prerequisites</p>
                                     <div class="row">
@@ -90,7 +106,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                                     <div class="col-sm-4">
                                                         <select name="d" class="form-control">
 
-                                                            <?php for($i = 1; $i<=31; $i++): if($i > $day): if($i<=9): ?>
+                                                            <?php for($i = 1; $i<=31; $i++): if($i >= $day): if($i<=9): ?>
                                                             <option value="<?php echo $i; ?>">0
                                                                 <?php echo $i; ?>
                                                             </option>
@@ -139,15 +155,6 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                                                         </select>
                                                     </div>
-                                                    <div class="form-group">
-                                                    <div class='input-group date' id='datetimepicker1'>
-                                                        <input type='text' class="form-control" />
-                                                        <span class="input-group-addon">
-                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-
                                                 </div>
 
                                             </div>
@@ -259,7 +266,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                         </div>
 
                         <div class="p-mid-side-breather p-light-breather">
-                            <form method="post" action="../control/employer/create-job.php">
+                            <form method="post" action="">
                                 <div class="form-group">
                                     <label class="capitalize">job title</label>
                                     <input type="text" name="job_title" class="form-control" placeholder="Enter Your Job Title">

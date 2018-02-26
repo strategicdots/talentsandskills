@@ -3,10 +3,42 @@ $seperator = "../";
 $navbarType = "intern";
 include_once("{$seperator}includes/initialize.php");
 
+// Form Submission and redirection to control file
+if ($_POST['submit']) {
+
+    $session->postValues($_POST);
+    $session->fileValues($_FILES);
+
+    $action = "{$seperator}control/intern/intern-letter.php";
+    redirect_to($action);
+
+}
+
 /* check user status */
 if (!$session->isInternLoggedIn()) { redirect_to("{$seperator}login.php"); }
 $intern = Intern::findDetails($session->internID);
 
+// check if intern has registered for internship spot
+$internRegistration = InternshipDetails::findByInternID($intern->id);
+
+if($internRegistration) {
+    $intershipRequests = Internships::findAllUnderParent($internRegistration[0]->id, "details_id");
+    
+    // get and append pagination properties
+    $per_page = (int) 2;
+    $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+    $total_count = count($intershipRequests);
+
+    // initialize pagination
+    $pagination = new Pagination($page, $per_page, $total_count);
+
+    // load $jobs to get total job items
+    $pagination->load($intershipRequests);
+
+    // get the job posted per page
+    $internshipsPerPage = $pagination->pageItems();
+
+}
 ?>
 
 <!-- header -->
@@ -27,19 +59,19 @@ $intern = Intern::findDetails($session->internID);
                 <!-- mainbar -->
                 <div class="col-sm-8 mainbar">
                     <?php echo inline_message(); ?>
-                    
+
                     <?php if (empty($intern->cv_path)) : ?>
                     <div class="m-mid-bottom-breather">
                         <div class="light-bx-shadow">
                             <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
-                                <p class="headfont uppercase no-margin">upload your resume / cv here</p>
+                                <p class="headfont uppercase no-margin">upload your internship letter here</p>
                             </div>
 
 
                             <div class="p-light-bottom-breather p-mid-side-breather">
                                 <!-- cv form -->
                                 <?php echo inline_errors(); ?>
-                                <form method="post" action="<?php echo $seperator; ?>control/intern/cv.php" enctype="multipart/form-data">
+                                <form method="post" action="" enctype="multipart/form-data">
                                     <div class="m-light-bottom-breather">
                                         <ul class="no-list-style no-left-padding">
                                             <li>The file size must not be more than
@@ -57,7 +89,7 @@ $intern = Intern::findDetails($session->internID);
                                         <input type="file" name="upload" style="padding-left: 0;">
                                     </div>
 
-                                    <input type="submit" name="submit" value="upload cv / resume" class="btn uppercase m-vlight-top-breather sec-btn mid-font-size">
+                                    <input type="submit" name="submit" value="upload letter" class="btn uppercase m-vlight-top-breather sec-btn mid-font-size">
                                 </form>
                             </div>
 
@@ -66,115 +98,66 @@ $intern = Intern::findDetails($session->internID);
                     </div>
                     <?php endif; ?>
 
-                    <div class="blog m-mid-top-breather">
+                    <div class="m-mid-bottom-breather">
+                        
+                        <!-- internship requests -->
+                        <div class="light-bx-shadow">
+                            <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
+                                <p class="headfont uppercase no-margin">companies that want to employ you</p>
+                            </div>
+                            
+                            <div class="p-light-bottom-breather p-mid-side-breather">
+                                <?php echo inline_message(); ?>
+
+                                <?php if (!$internRegistration) : ?>
+                                <p>You haven't registered for an internship spot.
+                                    <a href="register.php">Click Here</a> to register</p>
+                                
+                                <?php elseif(empty($internshipsPerPage)) : ?>
+                                <p>You haven't been invited by any companies yet.</p>
+                                
+                                <?php else : 
+
+                                    // calculating last item on the last page
+                                    // this is total number of items on previous pages
+                                $n = $per_page * ($page - 1);
+
+                                echo internshipRequests($internshipsPerPage, $n);
+                                ?>
+
+                                <!-- pagination buttons -->
+                                <?php echo paginationNavigation($pagination, $page); ?>
+
+                                <?php endif; ?>
+                            </div>
+
+                        </div>
+                        <!-- end job posted -->
+
+                    </div>
+
+                    <div class="">
                         <div class="light-bx-shadow">
                             <div class="p-vlight-breather sec-bg p-mid-side-breather m-vlight-bottom-breather">
                                 <p class="headfont uppercase no-margin">profile settings</p>
                             </div>
+
                             <div class="p-light-bottom-breather p-mid-side-breather">
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <div class="">
-                                            <p class="mid-font-size capitalize no-margin txt-bold">Email</p>
-                                            <p class="small-font-size">
-                                                <?php 
-                                                if (!isset($intern->email)) {
-                                                      echo "You don't have any email in our records";
-                                                }
-
-                                                echo $intern->email;
-                                                ?>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-4">
-                                        <div class="">
-                                            <p class="mid-font-size capitalize no-margin txt-bold">Phone Number</p>
-                                            <p class="small-font-size">
-                                                <?php
-                                                if (!isset($intern->phone)) {
-                                                      echo "You don't have any phone number in our records";
-                                                } 
-                                                
-                                                echo $intern->phone;
-                                                
-                                                ?>
-                                            </p>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-4">
-                                        <div class="">
-                                            <p class="mid-font-size capitalize no-margin txt-bold">Date of Birth</p>
-                                            <p class="small-font-size">
-                                                <?php
-                                                if (!isset($intern->dob)) {
-                                                      echo "You haven't updated your date of birth";
-                                                } 
-                                                
-                                                echo $intern->dob;
-                                                
-                                                ?>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row m-light-top-breather">
-
-                                    <div class="col-sm-4">
-                                        <div class="">
-                                            <p class="mid-font-size capitalize no-margin txt-bold">Gender</p>
-                                            <p class="small-font-size">
-                                                <?php
-                                                if (!isset($intern->gender)) {
-                                                      echo "You haven't updated your gender status";
-                                                } 
-                                                      
-                                                echo $intern->gender;
-                                                
-                                                ?>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-4">
-                                        <div class="">
-                                            <p class="mid-font-size capitalize no-margin txt-bold">Location</p>
-                                            <p class="small-font-size">
-                                                <?php
-                                                if (!isset($intern->location)) {
-                                                      echo "You haven't updated your current location";
-                                                } 
-                                                      
-                                                echo $intern->location;
-                                                
-                                                ?>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="clearfix m-mid-top-breather sm-container">
-                                    <a href="my-profile.php" class="btn sec-btn capitalize form-control">update your profile</a>
-                                </div>
+                                <?php echo internDashboardProfile($intern); ?>
                             </div>
 
                         </div>
 
-
-
                     </div>
                     <!-- end .featured-jobs-->
 
+                </div>
+                <!-- end .mainbar -->
 
-                </div> <!-- end .mainbar -->
-
-            </div> <!-- end .row -->
-        </div><!-- end .container -->
+            </div>
+            <!-- end .row -->
+        </div>
+        <!-- end .container -->
     </div>
 
 </div>

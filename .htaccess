@@ -1,5 +1,10 @@
+#Options +FollowSymLinks
+#Options +SymLinksIfOwnerMatch
+
 #RewriteEngine on
+#RewriteCond %{REQUEST_FILENAME}.php -f
+#RewriteRule !.*\.php$ %{REQUEST_FILENAME}.php [L,QSA]
+
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
-
 #RewriteRule ^(.*)$ rewrite.php [L,QSA]

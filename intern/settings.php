@@ -1,16 +1,24 @@
-<?php $thisPage = "settings"; $seperator="../"; $navbarType = "candidate";
+<?php $thisPage = "settings"; $seperator="../"; $navbarType = "intern";
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
-if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
+if (!$session->isInternLoggedIn()) {
+    redirect_to("{$seperator}login.php");
+}
 
-$candidate          = Candidate::findDetails($session->candidateID);
-$desiredJob         = DesiredJob::findAllUnderParent($candidate->id, "user_id");
-$schools            = School::findAllUnderParent($candidate->id, "user_id");
-$skills             = Skills::findAllUnderParent($candidate->id, "user_id");
-$memberships        = Membership::findAllUnderParent($candidate->id, "user_id");
-$employmentHistory  = EmploymentHistory::findAllUnderParent($candidate->id, "user_id");
-$interests          = Interest::findAllUnderParent($candidate->id, "user_id");
+// Form Submission and redirection to control file
+if ($_POST['submit']) {
+
+    $session->postValues($_POST);
+    $session->fileValues($_FILES);
+
+    $action = "{$seperator}control/intern/settings.php";
+    redirect_to($action);
+
+}
+$intern = Intern::findDetails($session->internID);
+
+
 
 // header
 include_once("{$seperator}layout/dashboard-header.php"); ?>
@@ -24,7 +32,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                 <!-- sidebar -->
                 <div class="sidebar col-sm-4">
-                    <?php echo candidateSidebar($candidate); ?>
+                    <?php echo internSidebar($intern); ?>
                 </div>
 
                 <!-- mainbar -->
@@ -56,7 +64,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                                                 <!-- password form -->
                                                 <div class="hide-el" id="pswd-div">
-                                                    <form action="../control/candidate/settings.php" method="post" class="sm">
+                                                    <form action="" method="post" class="sm">
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">Enter your old password</label>
                                                             <input class="form-control" type="password" name="password" placeholder="Enter your old password">
@@ -87,14 +95,14 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                             <div class="m-light-bottom-breather">
                                                 <p class=" capitalize no-margin txt-bold">Email</p>
                                                 <p class="mid-font-size">
-                                                    <?php echo $candidate->email; ?>
+                                                    <?php echo $intern->email; ?>
                                                     <br>
                                                     <a href="" class="" id="chng-email">Change Email</a>
                                                 </p>
 
                                                 <!-- email form -->
                                                 <div class="hide-el" id="email-div">
-                                                    <form method="post" action="../control/candidate/settings.php" class="sm">
+                                                    <form method="post" action="" class="sm">
                                                         <div class="form-group">
                                                             <label class="capitalize small-font-size">enter your new email</label>
                                                             <input class="form-control" type="email" name="email" placeholder="enter your new email">
@@ -121,8 +129,8 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                             <div class="m-light-bottom-breather">
                                                 <p class="capitalize no-margin txt-bold m-vlight-bottom-breather">profile avatar </p>
                                                 <p class="mid-font-size capitalize">
-                                                    <?php if($candidate->avatar_url): ?>
-                                                    <img src="<?php echo $candidate->avatar_url; ?>" class="img-responsive" style="width: 100px;">
+                                                    <?php if($intern->avatar_url): ?>
+                                                    <img src="<?php echo $intern->avatar_url; ?>" class="img-responsive" style="width: 100px;">
                                                     <?php else: ?>
                                                     <img src="../img/candidate-placeholder.jpg" class="img-responsive" style="width: 100px;">
                                                     <?php endif; ?>
@@ -131,10 +139,10 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                                                 <!-- avatar form -->
                                                 <div class="hide-el" id="avtr-div">
-                                                    <form method="post" class="sm" action="../control/candidate/settings.php" enctype="multipart/form-data">
+                                                    <form method="post" class="sm" action="" enctype="multipart/form-data">
                                                         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo maxFileSize(); ?>">
 
-                                                        <?php if(!empty($candidate->avatar_url)): ?>
+                                                        <?php if(!empty($intern->avatar_url)): ?>
                                                         <input type="hidden" name="type" value="update">
                                                         <?php endif; ?>
 

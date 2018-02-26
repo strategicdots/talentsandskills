@@ -113,7 +113,7 @@ if($_POST['submit']) {
                     redirect_to($referer);
                 
                 } else {
-                    $session->message("There is a problem");
+                    $session->message("There is a problem, email is not sent");
                    redirect_to($referer);
                 }
             
@@ -164,7 +164,7 @@ if($_POST['submit']) {
             if($employer->create()) {
                // account created successfully, set validation
                 $userValidator = new UserValidator();
-                if($userValidator->setValidator(User::findDetails($candidate->id))) {
+                if($userValidator->setValidator(User::findDetails($employer->id))) {
 
                     $_SESSION['verification_mail'] = true;
                     $msg  = "An email has been sent you to your mail.";
@@ -174,7 +174,7 @@ if($_POST['submit']) {
                     redirect_to($referer);
                 
                 } else {
-                    $session->message("There is a problem");
+                    $session->message("There is a problem, email is not sent");
                    redirect_to($referer);
                 }
             

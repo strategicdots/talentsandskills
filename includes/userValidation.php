@@ -8,14 +8,21 @@ class UserValidator extends DatabaseObject {
       public $selector;
       public $validator;
       public $expires;
+      protected $selectorAndValidator = ["selector" => "", "validator" => ""];
       
       protected function selector() {
             /**
              * @string
              * hexadecimal value, used as a needle to search for validator
+             * 
+             * if already set, return value, if not set value
             */
-            
-            return bin2hex(random_bytes(8));
+
+            if($this->selectorAndValidator['selector'] === "") {
+                  $this->selectorAndValidator['selector'] = bin2hex(random_bytes(8));
+            }
+
+            return $this->selectorAndValidator['selector'];
       
       } 
       
@@ -25,7 +32,11 @@ class UserValidator extends DatabaseObject {
              * binary value, main validator to validate users
             */
 
-            return random_bytes(32);
+            if($this->selectorAndValidator['validator'] === "") {
+                  $this->selectorAndValidator['validator'] = random_bytes(32);
+            }
+
+            return $this->selectorAndValidator['validator'];
       
       }
 
@@ -60,46 +71,49 @@ class UserValidator extends DatabaseObject {
 
       }
 
-      public function emailMessage($fullName, $userEmail, $password) {
+      public function emailMessage($name, $userEmail, $password) {
             global $mailer;
 
-           /*  $msg  = "<p>Dear ";
-            $msg .=  $fullName . ","; 
-            $msg .= "</p><p>You need to verifiy your account before gaining access to TalentsAndSkills. ";
-            $msg .= "Please, click the web address below or copy and paste it into your browser to verify your account:";
-            $msg .= "</p><br><p><a href=\"";
-            $msg .= $this->emailLink();
-            $msg .= "\">";
-            $msg .= $this->emailLink();
-            $msg .= "</a>";
-            $msg .= "</p><br><p style=\"text-decoration: underline; font-weight: bold;\">Note that this link will expire in ONE HOUR.</p>";
-            $msg .= "<br><p>Thanks,</p> <p>The TalentsAndSkills Team</p>"; */
-
-            $msg  = "Dear $fullName," . "\n\n";
+            $msg  = "<p>Dear $name " . ",";
 
             if($password) {
 
-                  $msg .= "To reset the password for your account, " . "\n\n";
-                  $msg .= "click the web address below or copy and paste it into your browser." . "\n\n";
+                  $msg .= "</p><p>To reset the password for your account, ";
 
             } else {
                   
-                  $msg .= "You need to verify your account before gaining access to TalentsAndSkills. " . "\n\n";
-                  $msg .= "Please, click the web address below or copy and paste it into your browser to verify your account:" . "\n\n";
+                  $msg .= "</p><p>You need to verify your account before gaining access to TalentsAndSkills. </p><p>";
             }
             
-            $msg .= $this->emailLink($password) . "\n\n";
-            $msg .= "Note that this link will expire in ONE HOUR." . "\n\n";
-            $msg .= "Thanks, The TalentsAndSkills Team" . "\n\n";
+            $msg .= "Please, <a href=\"" . $this->emailLink($password) . "\">CLICK HERE </a>";
+            $msg .= "or copy and paste the web address below into your browser.</p><p>";
+            $msg .= $this->emailLink($password) . "</p><p>";
+            
+            $msg .= "Note that this link will expire in ONE HOUR." . "</p><p>";
+            $msg .= "Thanks,<br>"; 
+            $msg .= "<b>The TalentsAndSkills Team</b></p>";
 
-            $mailer->AddAddress($userEmail, $fullName);
-            $mailer->Subject  = "Please Verify Your Account";
+            $mailer->AddAddress($userEmail, $name);
+
+            if($password) {
+                  
+                  $mailer->Subject  = "Password Reset";
+
+            } else {
+                  
+                  $mailer->Subject  = "Please Verify Your Account";
+            }
+            
             $mailer->Body     = $msg;
 
             if($mailer->Send()) {
+                  
                   return true;
+            
             } else {
+                  
                   return false;
+            
             }
       }
       
@@ -123,14 +137,35 @@ class UserValidator extends DatabaseObject {
             $sql .= $database->escapeValue($user->id) . "')";
 
             if($database->query($sql)) {
+                  
+                  $sentMail = "";
+                  
+                  /**
+                   * $_SESSION['verificationMail'] is required at the endpoint
+                   * it is used for UI purposes
+                   */
+                  if($user->employer == 1) {
+                        
+                        $sentMail = $this->emailMessage($user->company_name, $user->email, $password);
+                  
+                  } elseif($user->candidate == 1 || $user->intern == 1) {
+                        
+                        $sentMail = $this->emailMessage($user->fullName(), $user->email, $password);
+                  }
 
-                  if($this->emailMessage($user->fullName(), $user->email, $password)) {
+                  if($sentMail) {
+
+                        $_SESSION['verificationMail'] = true;
                         return true;
+                  
                   } else {
                         return false;
                   }
+            
             } else {
+                  
                   return false;
+            
             }
 
       }

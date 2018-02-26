@@ -6,11 +6,11 @@ $_FILES = $session->fileValues();
 
 if(isset($_POST['submit'])) {
       $errors = [];
-      $candidate = Candidate::findDetails($session->candidateID);
+      $intern = Intern::findDetails($session->internID);
       $referer = $_SERVER['HTTP_REFERER'];
       
       // redirect if not active user
-      if(!$candidate) { redirect_to("{$seperator}login.php"); }
+      if(!$intern) { redirect_to("{$seperator}login.php"); }
 
       if(isset($_POST['email'])) {
             
@@ -26,7 +26,7 @@ if(isset($_POST['submit'])) {
 
                   $errors['email'] = "Email not in the right format";
             
-            } elseif(!$candidate->isUnique($email, "email")) {
+            } elseif(!$intern->isUnique($email, "email")) {
 
                   $errors['email'] = "This email has already been taken, please chose another one";
             
@@ -35,19 +35,19 @@ if(isset($_POST['submit'])) {
             if(!empty($errors)) { // errors present
                  
                   $session->errors($errors);
-                  redirect_to("{$seperator}candidate/settings.php");                  
+                  redirect_to("{$seperator}intern/settings.php");                  
             }
             
             // else - no errors present, change email and continue
-            if($candidate->updateValue($email, "email")) {
+            if($intern->updateValue($email, "email")) {
       
                   $session->message("email updated successfully.");
-                  redirect_to("{$seperator}candidate/settings.php");
+                  redirect_to("{$seperator}intern/settings.php");
             
             } else {
                   
                   $session->message("email update failed.");
-                  redirect_to("{$seperator}candidate/settings.php");
+                  redirect_to("{$seperator}intern/settings.php");
             }
 
 
@@ -78,7 +78,7 @@ if(isset($_POST['submit'])) {
             } else { // they match
 
                   // check if password entered is the correct password
-                  if(!password_verify($password, $candidate->password)) {
+                  if(!password_verify($password, $intern->password)) {
                         $errors['password'] = "You entered a wrong password. Please enter the right password and retry.";
                   }
 
@@ -87,20 +87,20 @@ if(isset($_POST['submit'])) {
             if(!empty($errors)) {
                   
                   $session->errors($errors);
-                  redirect_to("{$seperator}candidate/settings.php");
+                  redirect_to("{$seperator}intern/settings.php");
             
             }
                   
             // reassign password and update db                  
-            if($candidate->updateValue($new_password, "password", $needHash = true)) {
+            if($intern->updateValue($new_password, "password", $needHash = true)) {
                   
                   $session->message("password updated successfully");
-                  redirect_to("{$seperator}candidate/settings.php");
+                  redirect_to("{$seperator}intern/settings.php");
             
             } else {
                   
                   $session->message("password update failed");
-                  redirect_to("{$seperator}candidate/settings.php");
+                  redirect_to("{$seperator}intern/settings.php");
             
             }
 
@@ -115,9 +115,9 @@ if(isset($_POST['submit'])) {
                 if($avatar->upload()) {
         
                     // unlink old avatar
-                    if(!empty($candidate->avatar_url) && ($_POST['type'] == "update")) {
+                    if(!empty($intern->avatar_url) && ($_POST['type'] == "update")) {
                         
-                        unlink($candidate->avatar_url);
+                        unlink($intern->avatar_url);
         
                         // update path in db
                         if($avatar->updateValue($avatar->targetPath(), "avatar_url")) {
@@ -128,7 +128,7 @@ if(isset($_POST['submit'])) {
                     } else { 
                     
                         /* save path in db */
-                        if($avatar->updateDB($session->candidateID)) {
+                        if($avatar->updateDB($session->internID)) {
                             // send confirmation msg and redirect
                             $session->message("avatar uploaded successfully");
                             redirect_to($referer);

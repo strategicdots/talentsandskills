@@ -6,11 +6,11 @@ $_FILES = $session->fileValues();
 
 // process form data 
 if(isset($_POST['submit'])) {
-    $candidate = Candidate::findDetails($session->candidateID);
+    $intern = Intern::findDetails($session->internID);
     $referer = $_SERVER['HTTP_REFERER'];
      
     // redirect if not active user
-    if(!$candidate) { redirect_to("{$seperator}login.php"); }
+    if(!$intern) { redirect_to("{$seperator}login.php"); }
 
     $resume = new Resume();
       
@@ -19,22 +19,22 @@ if(isset($_POST['submit'])) {
         if($resume->upload()) {
 
             // unlink old resume
-            if(!empty($candidate->cv_path) && ($_POST['type'] == "1")) {
+            if(!empty($intern->cv_path) && ($_POST['type'] == "1")) {
                 
-                unlink($candidate->cv_path);
+                unlink($intern->cv_path);
 
                 // update path in db
                 if($resume->updateValue($resume->targetPath(), "cv_path")) {
-                    $session->message("CV successfully replaced");
+                    $session->message("Internship letter successfully replaced");
                     redirect_to($referer);
                 }
             
             } else { 
             
                 /* save path in db */
-                if($resume->updateDB($session->candidateID)) {
+                if($resume->updateDB($session->internID)) {
                     // send confirmation msg and redirect
-                    $session->message("CV uploaded successfully");
+                    $session->message("Internship letter uploaded successfully");
                     redirect_to($referer);
                 }
             

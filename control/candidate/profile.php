@@ -1,6 +1,8 @@
 <?php $seperator = "../../";
 include_once("{$seperator}includes/initialize.php");
 
+$_POST = $session->postValues();
+
 $candidate = Candidate::findDetails($session->candidateID); 
 
 if(!$_POST['submit']) {redirect_to("$seperator"); }

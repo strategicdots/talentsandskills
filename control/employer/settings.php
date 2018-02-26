@@ -1,6 +1,9 @@
 <?php $seperator = "../../";
 include_once("{$seperator}includes/initialize.php");
 
+$_POST = $session->postValues();
+$_FILES = $session->fileValues();
+
 if(isset($_POST['submit'])) {
       $errors = [];
       $employer = Employer::findDetails($session->employerID);
@@ -15,8 +18,8 @@ if(isset($_POST['submit'])) {
             $email            = trim($_POST['email']);
             $company_name     = trim($_POST['company_name']);
             $job_field        = trim($_POST['job_field']);
-            $about_company    = trim(htmlentities($_POST['about_company']));
-            $address          = trim(htmlentities($_POST['address']));
+            $about_company    = trim($_POST['about_company']);
+            $address          = trim($_POST['address']);
 
             $raw_fields = [
                   'phone'           => $phone,

@@ -3,10 +3,8 @@
 class Employer extends User {
     protected static $table_name="users";
 
-    public $company_name; 
     public $about_company;
     public $job_field;
-    public $employer;
     public $subscription;
     
     public function create() {

@@ -7,6 +7,7 @@ class User extends DatabaseObject {
     public $identifier;
     public $firstname;
     public $lastname;
+    public $company_name; 
     public $email;
     public $password;
     public $phone;

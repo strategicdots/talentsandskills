@@ -13,6 +13,7 @@ require_once("{$seperator}includes/initialize.php");
 <div class="inner-top verification">
       <div class="sm-container margin-auto m-mid-breather p-mid-breather p-heavy-side-breather">
             <form action="<?php echo $seperator; ?>control/verification.php" method="post" class="p-heavy-side-breather m-mid-breather p-mid-breather white-bg">
+                  <?php echo inline_message(); ?>
                   <h2 class="text-center">Verify Your Account</h2>
                   <p class="text-center small-font-size">Enter your email address below to verify your TalentsAndSkills account.</p>
                   <div class="sm-container m-mid-top-breather">

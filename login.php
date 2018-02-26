@@ -1,19 +1,29 @@
 <?php $thisPage = "login"; $seperator=""; 
 include_once("includes/initialize.php"); 
+
+// Form Submission and redirection to control file
+if($_POST['submit']) {
+    $session->postValues($_POST);
+    redirect_to("control/login.php");
+}
+
+// check for login status
 if($session->isCandidateLoggedIn()) {
     redirect_to("candidate/dashboard.php"); 
 } elseif($session->isEmployerLoggedIn()) {
     redirect_to("employer/dashboard.php");
+} elseif ($session->isInternLoggedIn()) {
+    redirect_to("intern/dashboard.php");
 }
-?>
 
-<!-- header -->
-<?php include_once("layout/header.php"); ?>
+
+// header
+ include_once("layout/header.php"); ?>
 
 <!-- login form -->
 <div class="inner-top login">
     <div class="sm-container margin-auto m-mid-breather p-heavy-breather p-heavy-side-breather">
-        <form method="post" action="control/login.php" class=" p-heavy-side-breather m-mid-breather p-mid-breather white-bg">
+        <form method="post" action="" class=" p-heavy-side-breather m-mid-breather p-mid-breather white-bg">
             <h2 class="text-center">Login</h2>
 
             <div class="sm-container m-mid-top-breather">

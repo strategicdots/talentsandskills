@@ -7,7 +7,7 @@ class Intern extends User {
     public $intern = "1";
     public $cv_path;
 
-
+    
     public function create() {
         global $database;
         $hashedPassword = passwordEncrypt($this->password);
@@ -25,6 +25,26 @@ class Intern extends User {
 
         if($database->query($sql)) {
             $this->id = $database->insertID();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function update()
+    {
+        global $database;
+
+        $sql = "UPDATE " . self::$table_name . " SET ";
+        $sql .= "email='" . $database->escapeValue($this->email) . "', ";
+        $sql .= "phone='" . $database->escapeValue($this->phone) . "', ";
+        $sql .= "address='" . $database->escapeValue(nl2br($this->address)) . "', ";
+        $sql .= "location='" . $database->escapeValue($this->location) . "', ";
+        $sql .= "gender='" . $database->escapeValue($this->gender) . "', ";
+        $sql .= "dob='" . $database->escapeValue($this->dob) . "' ";
+        $sql .= "WHERE id=" . $database->escapeValue($this->id);
+
+        if ($database->query($sql) && ($database->affectedRows() == 1)) {
             return true;
         } else {
             return false;

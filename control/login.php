@@ -1,8 +1,9 @@
 <?php $seperator = "../"; 
 require_once("{$seperator}includes/initialize.php");
 
-$post = $_SESSION['post'] = $_POST;
+$_POST = $session->postValues();
 $errors = [];
+
 if(isset($_POST['submit'])) {
 
 

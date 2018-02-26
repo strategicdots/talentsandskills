@@ -480,7 +480,7 @@ function jobSearchFilter() {
 
     $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
     $output .= "<div class=\"panel-group capitalize\" id=\"accordion\">";
-    $output .= "<form id='search_filter' method=\"post\" action=\"#\">";
+    $output .= "<form id='search_filter' method=\"post\" action=\"\">";
 
     // experience 
     $output .= "<div class=\"panel panel-default\">";
@@ -666,7 +666,7 @@ function pDForm($candidate = null) {
         $dob_m = $dobArray[1];
         $dob_y = $dobArray[2];
     }
-    $output = "<form action=\"../control/candidate/profile.php\" method=\"post\" id=\"pd-form\" class=\"sm\">";
+    $output = "<form action=\"\" method=\"post\" id=\"pd-form\" class=\"sm\">";
     $output .= "<input type=\"hidden\" value=\"pd\" name=\"update_type\">";
     $output .= "<p class=\"capitalize small-font-size txt-bold\">fill in the details</p>";
     $output .= "<div class=\"row\">";
@@ -831,7 +831,7 @@ function CSForm($desiredJob = null) {
     global $states, $jobFields, $jobType, $salaryRange;
 
 
-    $output = "<form action=\"../control/candidate/profile.php\" method=\"post\" class=\"sm\">";
+    $output = "<form action=\"\" method=\"post\" class=\"sm\">";
     $output .= "<input type=\"hidden\" value=\"cs\" name=\"update_type\">";
     $output .= "<div class=\"row\">";
     $output .= "<div class=\"col-sm-6\">";
@@ -949,7 +949,7 @@ function eduForm($schools = null, $newEntry = false) {
 
         if(isset($schools)) {
             foreach($schools as $school) { 
-                $output .= "<form method=\"post\" action=\"../control/user/profile.php\" class=\"sm p-light-bottom-breather\">";
+                $output .= "<form method=\"post\" action=\"\" class=\"sm p-light-bottom-breather\">";
                 $output .= "<input type=\"hidden\" value=\"edu\" name=\"update_type\">";
                 $output .= "<div class=\"row\">";
                 $output .= "<p class=\"uppercase txt-bold text-center\">Entry: <span class=\"secbrandtxt-color\">";
@@ -1070,7 +1070,7 @@ function eduForm($schools = null, $newEntry = false) {
 
     } else { // this is a new entry
 
-        $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+        $output .= "<form method=\"post\" action=\"\" class=\"sm p-light-bottom-breather\">";
         $output .= "<input type=\"hidden\" value=\"edu\" name=\"update_type\">";
         $output .= "<input type=\"hidden\" value=\"add\" name=\"action\">";
         $output .= "<div class=\"row\">";
@@ -1164,7 +1164,7 @@ function skillForm($skills = null, $newEntry = false) {
     if(!$newEntry) {
         if(isset($skills)) {
             foreach($skills as $skill) {
-                $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+                $output .= "<form method=\"post\" action=\"\" class=\"sm p-light-bottom-breather\">";
 
                 // input: HIDDEN TYPE FIELD
                 $output .= "<input type=\"hidden\" name=\"update_type\" value=\"sk\">";
@@ -1214,7 +1214,7 @@ function skillForm($skills = null, $newEntry = false) {
 
     } else { // this is a new entry
 
-        $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+        $output .= "<form method=\"post\" action=\"\" class=\"sm p-light-bottom-breather\">";
 
         // input: HIDDEN TYPE and ACTION FIELD
         $output .= "<input type=\"hidden\" name=\"update_type\" value=\"sk\">";
@@ -1250,7 +1250,7 @@ function memForm($memberships = null, $newEntry = false) {
         if(isset($memberships)) { 
 
             foreach($memberships as $membership) {  
-                $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+                $output .= "<form method=\"post\" action=\"\" class=\"sm p-light-bottom-breather\">";
 
                 // input: HIDDEN TYPE FIELD
                 $output .= "<input type=\"hidden\" name=\"update_type\" value=\"mem\">";
@@ -1305,7 +1305,7 @@ function memForm($memberships = null, $newEntry = false) {
 
     } else { // new entry
 
-        $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+        $output .= "<form method=\"post\" action=\"\" class=\"sm p-light-bottom-breather\">";
 
         // input: HIDDEN TYPE and ACTION FIELD
         $output .= "<input type=\"hidden\" name=\"update_type\" value=\"mem\">";
@@ -1346,7 +1346,7 @@ function EHForm($employmentHistory = null, $newEntry = false) {
         if(isset($employmentHistory)) { 
 
             foreach($employmentHistory as $item) { 
-                $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+                $output .= "<form method=\"post\" action=\"\" class=\"sm p-light-bottom-breather\">";
                 
                 // input: HIDDEN TYPE FIELD
                 $output .= "<input type=\"hidden\" name=\"update_type\" value=\"empl\">";
@@ -1436,7 +1436,7 @@ function EHForm($employmentHistory = null, $newEntry = false) {
     } else {
 
 
-        $output .= "<form method=\"post\" action=\"../control/candidate/profile.php\" class=\"sm p-light-bottom-breather\">";
+        $output .= "<form method=\"post\" action=\"\" class=\"sm p-light-bottom-breather\">";
 
         // input: HIDDEN TYPE and ACTION FIELD
         $output .= "<input type=\"hidden\" name=\"update_type\" value=\"empl\">";
@@ -1626,7 +1626,7 @@ function internSidebar($user)
     $output .= "<p class=\"headfont uppercase no-margin text-center\">employers that have shortlisted you</p>";
     $output .= "</div>";
     $output .= "<div class=\"p-mid-side-breather p-light-breather\">";
-    $output .= "<p class=\"\">You haven't applied for any job</p>";
+    $output .= "<p class=\"\">You haven't been shortlisted</p>";
     $output .= "</div></div>";
 
     return $output;
@@ -1642,7 +1642,7 @@ function pdFormIntern($intern = null)
         $dob_m = $dobArray[1];
         $dob_y = $dobArray[2];
     }
-    $output = "<form action=\"../control/intern/profile.php\" method=\"post\" id=\"pd-form\" class=\"sm\">";
+    $output = "<form action=\"\" method=\"post\" class=\"sm\">";
     $output .= "<input type=\"hidden\" value=\"pd\" name=\"update_type\">";
     $output .= "<p class=\"capitalize small-font-size txt-bold\">fill in the details</p>";
     $output .= "<div class=\"row\">";
@@ -1793,6 +1793,345 @@ function pdFormIntern($intern = null)
 
     return $output;
 }
+
+function internReg()
+{
+    global $states;
+    global $intern;
+
+    $output  = "<form enctype=\"multipart/form-data\" action=\"\" method=\"post\" class=\"sm\">";
+    $output .= "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value =\"maxCVSize()\">";
+
+    $output .= "<p class=\"small-font-size txt-bold\">Register your details</p>";
+    $output .= "<div class=\"row\">";
+
+    // first column
+    #region
+    $output .= "<div class=\"col-sm-6\">";
+
+    // input: SCHOOL
+    $output .= "<div class=\"form-group\">";
+    $output .= "<label class=\"txt-bold small-font-size capitalize\">Institution</label>";
+    $output .= "<input type=\"text\" class=\"form-control\" value=\"\" name=\"school\" placeholder=\"Your current school\"></div>";
+
+    // input: COURSE
+    $output .= "<div class=\"form-group\">";
+    $output .= "<label class=\"txt-bold small-font-size capitalize\">Course of study</label>";
+    $output .= "<input type=\"text\" class=\"form-control\" name=\"course\" value=\"\" placeholder=\"Your course of study\"></div>";
+
+    // input: STATE
+    $output .= "<div class=\"form-group\">";
+    $output .= "<label class=\"txt-bold small-font-size capitalize\">preferred internship location </label>";
+    $output .= "<select class=\"form-control\" id=\"location\" name=\"state\">";
+
+    foreach ($states as $state) {
+        $output .= "<option value=\"";
+        $output .= $state->name . "\">";
+        $output .= $state->name . "</option>";
+    }
+    $output .= "</select></div>";
+
+    $output .= "</div>";
+    #endregion
+
+    // second column
+    #region
+    $output .= "<div class=\"col-sm-6\">";
+
+    // input: DURATION
+    $output .= "<div class=\"form-group\">";
+    $output .= "<label class=\"txt-bold small-font-size capitalize\">Internship Duration</label>";
+    $output .= "<select name=\"duration\" class=\"form-control\">";
+    $output .= "<option value=\"6 months\"> 6 months </option>";
+    $output .= "<option value=\"7 - 12 months\"> 7 - 12 months</option>";
+    $output .= "<option value=\"more than 1 year\">more than 1 year</option>";
+    $output .= "</select></div>";
+
+    // input: START DATE
+    #region
+    $output .= "<div class=\"form-group\">";
+    $output .= "<label class=\"txt-bold small-font-size capitalize\">Preferred internship commencement date</label>";
+    $output .= "<div class=\"row\">";
+
+    // day
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<select name=\"startDate_d\" class=\"form-control\">";
+    $output .= "<option>DD</option>";
+
+    for ($i = 1; $i <= 31; $i++) {
+        if ($i <= 9) {  
+            $output .= "<option value= \"{$i}\">0{$i}</option>";
+        } else {
+            $output .= "<option value= \"{$i}\">{$i}</option>";
+        }
+    }
+
+    $output .= "</select></div>";
+
+    // month
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<select name=\"startDate_m\" class=\"form-control\">";
+    $output .= "<option>MM</option>";
+
+    for ($i = 1; $i <= 12; $i++) {
+        if ($i <= 9) {
+            $output .= "<option value= \"{$i}\">0{$i}</option>";
+            
+        } else {
+            $output .= "<option value= \"{$i}\">{$i}</option>";
+        }
+
+    }
+
+    $output .= "</select></div>";
+
+    // year
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<select name=\"startDate_y\" class=\"form-control\">";
+    $output .= "<option>YYYY</option>";
+    
+    for ($i = date('Y'); $i <= (date('Y') + 1); $i++) {
+        
+        $output .= "<option value= \"{$i}\">{$i}</option>";
+
+    }
+    $output .= "</select></div></div></div>";
+    #endregion
+
+    $output .= "</div></div>";
+
+    #endregion
+    
+    // input: INTERNSHIP LETTER 
+    $output .= "<div class=\"form-group small-font-size\">";
+
+    if (!$intern->cv_path) {
+
+        $output .= "<p class= \"no-margin \"> You haven't uploaded an internship letter to your account</p>";
+        $output .= "<p class=\" \">Upload from your computer now.</p>";
+        $output .= "<input type=\"file\" name=\"intern-letter\">";
+
+    } else {
+        $output .= "<p class=\"no-margin \">You've already uploaded an internship letter to your account</p>";
+        $output .= "<p class=\" \">Need to upload a new one? Select from your computer below.</p>";
+        $output .= "<input type=\"file\" name=\"update-letter\">";
+    }
+
+    $output .= "</div>";
+
+    // input: SUBMIT BUTTON
+    $output .= "<div class=\"sm-container m-vlight-breather\">";
+    $output .= "<div class=\"row\">";
+    $output .= "<div class=\"col-sm-8\">";
+    $output .= "<input type=\"submit\" value=\"Submit\" name=\"submit\" class=\"form-control btn sec-btn capitalize\"></div>";
+
+    // input: CANCEL BUTTON
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<a href=\"my-profile.php\" class=\"form-control capitalize btn main-btn\" >cancel</a>";
+    $output .= "</div></div></div></form>";
+
+    return $output;
+}
+
+function internDashboardProfile($intern) 
+{
+    $output = "<div class=\"row\">";
+
+    // email
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<div class=\"\">";
+    $output .= "<p class=\"mid-font-size capitalize no-margin txt-bold\">Email</p>";
+    $output .= "<p class=\"small-font-size\">";
+
+    if (!isset($intern->email)) {
+        $output .= "\"You don't have any email in our records\"";
+    }
+
+    $intern->email;
+
+    $output .= "</p></div></div>";
+
+    // phone
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<div class=\"\">";
+    $output .= "<p class=\"mid-font-size capitalize no-margin txt-bold\">Phone Number</p>";
+    $output .= "<p class=\"small-font-size\">";
+
+    if (!isset($intern->phone)) {
+        $output .= "\"You don't have any phone number in our records\"";
+    }
+
+    $output .= $intern->phone;
+    $output .= "</p></div></div>";
+
+    // dob
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<div class=\"\">";
+    $output .= "<p class=\"mid-font-size capitalize no-margin txt-bold\">Date of Birth</p>";
+    $output .= "<p class=\"small-font-size\">";
+
+    if (!isset($intern->dob)) {
+        $output .= "\"You haven't updated your date of birth\"";
+    }
+
+    $output .= $intern->dob;
+    $output .= "</p></div></div>";
+
+    // end row
+    $output .= "</div>";
+
+    // row starts
+    $output .= "<div class=\"row m-light-top-breather\">";
+
+    // gender
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<div class=\"\">";
+    $output .= "<p class=\"mid-font-size capitalize no-margin txt-bold\">Gender</p>";
+    $output .= "<p class=\"small-font-size\">";
+
+    if (!isset($intern->gender)) {
+        $output .= "\"You haven't updated your gender status\"";
+    }
+
+    $output .= $intern->gender;
+    $output .= "</p></div></div>";
+
+    // location
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<div class=\"\">";
+    $output .= "<p class=\"mid-font-size capitalize no-margin txt-bold\">Location</p>";
+    $output .= "<p class=\"small-font-size\">";
+
+    if (!isset($intern->location)) {
+        $output .= "\"You haven't updated your current location\"";
+    }
+
+    $output .= $intern->location;
+    $output .= "</p></div></div>";
+
+    // end row
+    $output .= "</div>";
+
+    // update btn
+    $output .= "<div class=\"clearfix m-mid-top-breather sm-container\">";
+    $output .= "<a href=\"my-profile.php\" class=\"btn sec-btn capitalize form-control\">update your profile</a>";
+    $output .= "</div>";
+
+    return $output;
+}
+
+function internRegDetails($details) 
+{
+    $output  = "<div class=\"row\">";
+
+    // school
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<div class=\"\">";
+    $output .= "<p class=\"mid-font-size capitalize no-margin txt-bold\">Your current institution</p>";
+    $output .= "<p class=\"small-font-size\">";
+
+    $output .= $details[0]->school;
+    $output .= "</p></div></div>";
+
+    // course
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<div class=\"\">";
+    $output .= "<p class=\"mid-font-size capitalize no-margin txt-bold\">Your current course</p>";
+    $output .= "<p class=\"small-font-size\">";
+
+    $output .= $details[0]->course;
+    $output .= "</p></div></div>";
+
+    // start_date
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<div class=\"\">";
+    $output .= "<p class=\"mid-font-size capitalize no-margin txt-bold\">preferred start date</p>";
+    $output .= "<p class=\"small-font-size\">";
+
+    $output .= $details[0]->start_date;
+    $output .= "</p></div></div>";
+
+    // end row
+    $output .= "</div>";
+
+    // row starts
+    $output .= "<div class=\"row m-light-top-breather\">";
+
+    // state
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<div class=\"\">";
+    $output .= "<p class=\"mid-font-size capitalize no-margin txt-bold\">preferred location</p>";
+    $output .= "<p class=\"small-font-size\">";
+
+    $output .= $details[0]->state;
+    $output .= "</p></div></div>";
+
+    // duration
+    $output .= "<div class=\"col-sm-4\">";
+    $output .= "<div class=\"\">";
+    $output .= "<p class=\"mid-font-size capitalize no-margin txt-bold\">Internship Duration</p>";
+    $output .= "<p class=\"small-font-size\">";
+
+    $output .= $details[0]->duration;
+    $output .= "</p></div></div>";
+
+    // end row
+    $output .= "</div>";
+
+    // re-register btn
+    $output .= "<div class=\"clearfix m-mid-top-breather sm-container\">";
+    $output .= "<a href=\"../control/intern/delete-register.php?id={$details[0]->id}\" class=\"btn sec-btn capitalize form-control\">delete details and re-register your spot</a>";
+    $output .= "</div>";
+
+    return $output;
+}
+
+function internshipRequests($internshipRequests, $n)
+{
+    $i = $n;
+
+    $output = "";
+    $output = "<div class=\"table-responsive\"><table><tbody>";
+
+    // table head
+    $output .= "<tr class=\"capitalize\">";
+    $output .= "<td>S/N</td>";
+    $output .= "<td>employer's name</td>";
+    $output .= "<td>location</td>";
+    $output .= "<td>action</td>";
+    $output .= "</tr>";
+
+    // table data
+    foreach ($internshipRequests as $request) {
+        $i++;
+
+        // employer details
+        $employer = Employer::findDetails($request->employer_id);
+
+        $output .= "<tr>";
+
+        // serial number
+        $output .= "<td>" . $i . "</td>";
+
+        // employer's name
+        $output .= "<td class=\"capitalize\"><a href=\"dashboard/employer.php?id={$employer->id}\">";
+        $output .= $employer->company_name . "</a></td>";
+
+        // location
+        $output .= "<td>" . $employer->location . "</td>";
+
+        // action
+        $output .= "<td class=\"small-font-size\"> <a href=\"\">Accept</a><br>";
+        $output .= "<a href=\"\">Reject</a></td>";
+
+        $output .= "</tr>";
+
+    }
+    $output .= "</tbody></table></div>";
+
+    return $output;
+}
+
 #endregion
 
 // EMPLOYER VIEW FUNCTIONS
@@ -1844,6 +2183,8 @@ function jobPosted($jobsPosted, $n) {
         // action
         $output .= "<td class=\"small-font-size\"> <a href=\"create-job.php?id={$job->id}\">edit</a><br>";
         $output .= "<a href=\"delete-job.php?id={$job->id}\">delete</a></td>";
+
+        $output .= "</tr>";
 
     }
     $output .= "</tbody></table></div>";

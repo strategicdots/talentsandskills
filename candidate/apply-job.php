@@ -87,9 +87,9 @@ if(isset($_POST['submit'])) {
                                           <?php echo $employer->company_name; ?>
                                     </h2>
                               </div>
-                              <form method="post" action="#" class="" enctype="multipart/form-data">
+                              <form method="post" action="" class="" enctype="multipart/form-data">
                                     <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo maxCVSize(); ?>">
-
+                                    
                                     <div class="m-mid-breather">
 
                                           <div class="form-group m-light-bottom-breather">

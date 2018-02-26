@@ -1,0 +1,21 @@
+when accepted,
+ - delete all internship requests
+ - delete internship entry
+
+when rejected
+ - delete employer's internship request
+ - prevent employer from sending new requests
+
+
+
+Employer
+ - search through internship requests
+ - request interns
+ - employs interns (intern phone visible afterwards)
+
+
+
+
+1) SOCIAL LOGIN
+2) ADMIN ACCOUNT
+3) BLOG

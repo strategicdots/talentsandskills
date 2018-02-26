@@ -14,7 +14,9 @@ class Session {
     
     // other session settings
     public $message;
-    public $errors;    
+    public $errors;  
+    public $postValues; 
+    public $fileValues; 
 
     function __construct() {
         $this->checkMessage();
@@ -23,6 +25,8 @@ class Session {
         $this->checkInternLogin();
         // $this->checkAdminLogin();
         $this->checkErrors();
+        $this->checkPostValues();
+        $this->checkFileValues();
 
         if(
             $this->candidateLoggedIn || 
@@ -61,6 +65,8 @@ class Session {
     }
 
     // CANDIDATE LOGIN & LOGOUT DETAILS
+
+    #region
     public function isCandidateLoggedIn() {
         return $this->candidateLoggedIn;
     }
@@ -89,8 +95,11 @@ class Session {
         }
     }
 
+    #endregion
 
     // INTERN LOGIN & LOGOUT DETAILS
+
+    #region
     public function isInternLoggedIn()
     {
         return $this->internLoggedIn;
@@ -123,8 +132,11 @@ class Session {
         }
     }
 
+    #endregion
 
     // EMPLOYER LOGIN & LOGOUT DETAILS
+
+    #region
     public function isEmployerLoggedIn() {
         return $this->employerLoggedIn;
     }
@@ -151,10 +163,10 @@ class Session {
             $this->employerLoggedIn = false;
         }
     }
-    
+    #endregion
 
 
-    // SESSION MESSAGES
+    // session messages
     private function checkMessage() {
         if(isset($_SESSION['message'])) {
             $this->message = $_SESSION['message'];
@@ -172,7 +184,7 @@ class Session {
         }
     }
 
-    // session error display
+    // session error displays
     private function checkErrors() {
         if(isset($_SESSION['errors'])) {
             $this->errors = $_SESSION['errors'];
@@ -188,6 +200,50 @@ class Session {
             $_SESSION['errors'] = $errors;
         } else {
             return $this->errors;
+        }
+    }
+
+
+    // session $_POST setters and getters
+    private function checkPostValues()
+    {
+        if (isset($_SESSION['POST'])) {
+            $this->postValues = $_SESSION['POST'];
+            unset($_SESSION['POST']);
+        } else {
+            $this->postValues = "";
+        }
+
+    }
+
+    public function postValues($postValues = "")
+    {
+        if (!empty($postValues)) {
+            $_SESSION['POST'] = $postValues;
+        } else {
+            return $this->postValues;
+        }
+    }
+
+
+    // session $_FILES setters and getters
+    private function checkFileValues()
+    {
+        if (isset($_SESSION['FILES'])) {
+            $this->fileValues = $_SESSION['FILES'];
+            unset($_SESSION['FILES']);
+        } else {
+            $this->fileValues = "";
+        }
+
+    }
+
+    public function fileValues($fileValues = "")
+    {
+        if (!empty($fileValues)) {
+            $_SESSION['FILES'] = $fileValues;
+        } else {
+            return $this->fileValues;
         }
     }
 }

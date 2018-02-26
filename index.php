@@ -14,10 +14,10 @@ $newJobs = Jobs::newJobs(); ?>
 <div class="top">
       <div class="sm-container text-center">
             <div class="text-center">
-                  <form class="p-light-top-breather p-light-bottom-breather" action="view-jobs/job-search.php" method="get">
+                  <form class="form-inline p-light-top-breather p-light-bottom-breather" action="view-jobs/job-search.php" method="get">
                         <h1 class="sectxt-color">
                               <span>Find your dream job.</span> Right now.</h1>
-                        <div class="">
+                        <div class="inputs-div">
                               <input type="text" name="keyword" placeholder="Job Title, Skills or Company">
                               <select name="location">
                                     <option selected disabled>Location</option>
@@ -27,8 +27,9 @@ $newJobs = Jobs::newJobs(); ?>
                                     </option>
                                     <?php endforeach; ?>
                               </select>
+                              <input type="submit" class="visible-xs btn main-btn" name="submit" value="Find Jobs">
                         </div>
-                        <div class="m-light-top-breather">
+                        <div class="m-light-top-breather hidden-xs">
                               <input type="submit" class="btn main-btn" name="submit" value="Find Jobs">
                         </div>
                   </form>
@@ -39,7 +40,7 @@ $newJobs = Jobs::newJobs(); ?>
       <div class="jumbo-stripe p-vlight-breather">
             <div class="container">
                   <a href="#" class="sectxt-color">
-                        <p>Looking for candidates? We can help you find better ones, too. Find the most qualified people faster
+                        <p>Looking for candidates? We can help you find better ones. Find the most qualified people faster
                               with our help. Start now.</p>
                   </a>
             </div>
@@ -97,13 +98,14 @@ $newJobs = Jobs::newJobs(); ?>
             <div class="row">
 
                   <!-- .featured-jobs -->
-                  <div class="col-sm-8 featured-jobs">
+                  <div class="col-sm-8 featured-jobs m-light-bottom-breather">
                         <div class="light-bx-shadow">
                               <div class="p-vlight-breather sec-bg p-mid-side-breather">
                                     <p class="headfont uppercase no-margin">Featured jobs</p>
                               </div>
 
-                              <?php foreach ($newJobs as $job) :
+                              <?php if(!empty($newJobs)) :
+                                    foreach ($newJobs as $job) :
                                     $employer = Employer::findDetails($job->employer_id);
                               ?>
                               <div class="item">
@@ -129,14 +131,28 @@ $newJobs = Jobs::newJobs(); ?>
                                           </div>
                                     </div>
                               </div>
-                              <?php endforeach; ?>
+                              <?php endforeach; else : ?>
+                              
+                              <!-- no featured jobs -->
+                              <div class="item">
+                                    <div class="btm m-mid-top-breather">
+                                          <div class="row">
+                                                <div class="col-sm-9">
+                                                      <h2 class="mid-font-size capitalize no-margin">
+                                                            No Featured job to display as at now!
+                                                      </h2>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                              <?php endif; ?>
                         </div>
 
                   </div>
                   <!-- end .featured-jobs -->
 
                   <!-- .career-content-section-->
-                  <div class="col-sm-4 career-cnt-sectn">
+                  <div class="col-sm-4 career-cnt-sectn m-light-bottom-breather">
                         <div class="light-bx-shadow p-light-bottom-breather">
                               <div class="p-vlight-breather sec-bg p-mid-side-breather">
                                     <p class="headfont no-margin uppercase">career tips:</p>

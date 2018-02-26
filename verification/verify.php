@@ -15,8 +15,8 @@ if($validatorEntry[0]) { // valid entry,
     if($expires < time()) { // token expired, delete all records and resend
         
         $_SESSION['expiredToken'] = true;
-        $session->message("This link has expired. Fill your email to verify your account");
         $userValidator->deleteValidator($_GET['selector']);
+        $session->message("This link has expired. Fill your email to verify your account");
 
         redirect_to("{$seperator}verification/");
 
@@ -29,8 +29,6 @@ if($validatorEntry[0]) { // valid entry,
          */
         
         $hashedQueryValidator = hash('sha512', hex2bin($_GET['validator']));
-        //echo $validatorEntry[0]->validator . "<br>";
-        //echo $hashedQueryValidator; exit;
 
         if(hash_equals($validatorEntry[0]->validator, $hashedQueryValidator)) {
             // token provided is valid,

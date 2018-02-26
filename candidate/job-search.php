@@ -1,4 +1,4 @@
-<?php $thisPage = "search-jobs"; $seperator="../"; $navbarType = "candidate";
+<?php $thisPage = "jobsPage"; $seperator="../"; $navbarType = "candidate";
 include_once("{$seperator}includes/initialize.php");
 
 /* check user status */
@@ -36,40 +36,6 @@ $jobs = Jobs::topSearch($keyword, $location);
 
 <!-- header -->
 <?php include_once("{$seperator}layout/dashboard-header.php"); ?>
-
-<style>
-    .panel-default {
-        border-color: #c4c4c4;
-    }
-
-    .panel-group .panel {
-        border-radius: inherit;
-    }
-
-    .panel-group .panel {
-        border-radius: inherit;
-        margin-bottom: 10px;
-    }
-
-    .panel-heading {
-        border-top-left-radius: inherit;
-        border-top-right-radius: inherit;
-    }
-
-    .panel-default>.panel-heading {
-        background-color: #fff;
-        cursor: pointer;
-    }
-
-    .panel-body {
-        padding: 10px;
-    }
-
-    label {
-        font-weight: 400;
-        font-size: 16px;
-    }
-</style>
 
 <!--  main content  -->
 <div class="inner-top dashboard">

@@ -49,32 +49,34 @@
       <?php
 
 // candidate
-function candidate($thisPage) { 
+function candidate($thisPage) {
+      global $seperator;
+
       $output  = "<ul class=\"nav navbar-nav navbar-right\">";
       
       // dashboard
-      $output .= "<li> <a href=\"dashboard.php\"";
+      $output .= "<li> <a href=\"{$seperator}/candidate/dashboard.php\"";
       if($thisPage=="dashboard" ) { 
             $output .= currentPage(); 
       }
       $output .= "> dashboard </a></li>";
       
       // profile
-      $output .= "<li> <a href=\"my-profile.php\"";  
+      $output .= "<li> <a href=\"{$seperator}/candidate/my-profile.php\"";  
       if($thisPage=="my-profile") { 
             $output .= currentPage(); 
       }
       $output .= "> my profile </a></li>";
       
       // job search
-      $output .= "<li> <a href=\"job-search.php\"";
+      $output .= "<li> <a href=\"{$seperator}/candidate/job-search.php\"";
       if($thisPage=="search-jobs" || $thisPage=="apply-job") { 
             $output .= currentPage(); 
       } 
       $output .= "> search jobs </a> </li>";
       
       // my jobs
-      $output .= "<li> <a href=\"my-jobs.php\"";  
+      $output .= "<li> <a href=\"{$seperator}/candidate/my-jobs.php\"";  
       if($thisPage=="my-jobs" ) { 
             $output .= currentPage(); 
       } 
@@ -88,7 +90,7 @@ function candidate($thisPage) {
       $output .= "> settings </a></li>";
       
       // logout
-      $output .= "<li> <a href=\"logout.php\" class=\"last\"> logout </a> </li>";
+      $output .= "<li> <a href=\"{$seperator}/candidate/logout.php\" class=\"last\"> logout </a> </li>";
       $output .= "</ul>";
 
       return $output;
@@ -96,38 +98,40 @@ function candidate($thisPage) {
 
 // intern
 function intern($thisPage) {
+      global $seperator; 
+
       $output = "<ul class=\"nav navbar-nav navbar-right\">";
 
       // dashboard
-      $output .= "<li> <a href=\"dashboard.php\"";
+      $output .= "<li> <a href=\"{$seperator}/intern/dashboard.php\"";
       if ($thisPage == "dashboard") {
             $output .= currentPage();
       }
       $output .= "> dashboard </a></li>";
 
       // my profile
-      $output .= "<li> <a href=\"my-profile.php\"";
+      $output .= "<li> <a href=\"{$seperator}/intern/my-profile.php\"";
       if ($thisPage == "my-profile") {
             $output .= currentPage();
       }
       $output .= "> my profile </a></li>";
             
       // register
-      $output .= "<li> <a href=\"register.php\"";
-      if ($thisPage == "internship registration") {
+      $output .= "<li> <a href=\"{$seperator}/intern/register.php\"";
+      if ($thisPage == "registration") {
             $output .= currentPage();
       }
       $output .= "> register your spot </a> </li>";
             
       // settings
-      $output .= "<li> <a href=\"settings.php\"";
+      $output .= "<li> <a href=\"{$seperator}/intern/settings.php\"";
       if ($thisPage == "settings") {
             $output .= currentPage();
       }
       $output .= "> settings </a></li>";
 
       // logout
-      $output .= "<li> <a href=\"logout.php\" class=\"last\"> logout </a> </li>";
+      $output .= "<li> <a href=\"{$seperator}/intern/logout.php\" class=\"last\"> logout </a> </li>";
       $output .= "</ul>";
 
       return $output;
@@ -135,38 +139,40 @@ function intern($thisPage) {
 
 // employer
 function employer($thisPage) { 
-    $output .= "<ul class=\"nav navbar-nav navbar-right\">";
+      global $seperator; 
+
+    $output  = "<ul class=\"nav navbar-nav navbar-right\">";
     
     // dashboard
-    $output .= "<li> <a href=\"dashboard.php\"";
+    $output .= "<li> <a href=\"{$seperator}/employer/dashboard.php\"";
     if($thisPage=="dashboard" ) { 
         $output .= currentPage(); 
     } 
     $output .= "> dashboard </a></li>";
     
     // post a job
-    $output .= "<li> <a href=\"create-job.php\"";
+    $output .= "<li> <a href=\"{$seperator}/employer/create-job.php\"";
     if($thisPage=="create-job" ) { 
         $output .= currentPage(); 
     } 
     $output .= "> post a job </a></li>";
     
     // job posts
-    $output .= "<li> <a href=\"jobs.php\"";  
+    $output .= "<li> <a href=\"{$seperator}/employer/jobs.php\"";  
     if($thisPage=="jobs" ) { 
         $output .= currentPage(); 
     } 
     $output .= "> job posts </a></li>";     
     
     // profile
-    $output .= "<li> <a href=\"profile.php\""; 
+    $output .= "<li> <a href=\"{$seperator}/employer/profile.php\""; 
     if($thisPage=="employer_profile" ) { 
         $output .= currentPage(); 
     }
     $output .= "> profile </a> </li>";
     
     // subscription
-    $output .= "<li> <a href=\"subscription.php\"";
+    $output .= "<li> <a href=\"{$seperator}/employer/subscription.php\"";
     if($thisPage=="subscription" ) { 
         $output .= currentPage(); 
     }
