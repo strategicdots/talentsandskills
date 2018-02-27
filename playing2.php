@@ -19,3 +19,10 @@ $queryString['foo'] = "bar";
 //echo "<pre>"; print_r($queryString);
 
 // echo "<pre>"; print_r($_SERVER['QUERY_STRING']);
+
+if(move_uploaded_file('C:\xampp\tmp\php8D8B.tmp', 'C:/xampp/htdocs/talents/uploads/avatar/download.png')) {
+             
+      echo "true";  exit;          
+} else {
+      echo "false"; exit;
+}

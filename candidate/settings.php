@@ -5,15 +5,15 @@ include_once("{$seperator}includes/initialize.php");
 if (!$session->isCandidateLoggedIn()) {redirect_to("{$seperator}login.php"); } 
 
 // Form Submission and redirection to control file
-if ($_POST['submit']) {
+// if ($_POST['submit']) {
 
-    $session->postValues($_POST);
-    $session->fileValues($_FILES);
+//     $session->postValues($_POST);
+//     $session->fileValues($_FILES);
 
-    $action = "{$seperator}control/candidate/settings.php";
-    redirect_to($action);
+//     $action = "{$seperator}control/candidate/settings.php";
+//     redirect_to($action);
 
-}
+// }
 
 $candidate          = Candidate::findDetails($session->candidateID);
 $desiredJob         = DesiredJob::findAllUnderParent($candidate->id, "user_id");
@@ -133,7 +133,9 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                                 <p class="capitalize no-margin txt-bold m-vlight-bottom-breather">profile avatar </p>
                                                 <p class="mid-font-size capitalize">
                                                     <?php if($candidate->avatar_url): ?>
-                                                    <img src="<?php echo $candidate->avatar_url; ?>" class="img-responsive" style="width: 100px;">
+                                                    
+                                                    <img src="<?php echo urlFromWebRoot($candidate->avatar_url); ?>" class="img-responsive" style="width: 100px;">
+                                                    
                                                     <?php else: ?>
                                                     <img src="../img/candidate-placeholder.jpg" class="img-responsive" style="width: 100px;">
                                                     <?php endif; ?>
@@ -142,7 +144,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
 
                                                 <!-- avatar form -->
                                                 <div class="hide-el" id="avtr-div">
-                                                    <form method="post" class="sm" action="" enctype="multipart/form-data">
+                                                    <form method="post" class="sm" action="<?php echo $seperator; ?>control/candidate/settings.php" enctype="multipart/form-data">
                                                         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo maxFileSize(); ?>">
 
                                                         <?php if(!empty($candidate->avatar_url)): ?>

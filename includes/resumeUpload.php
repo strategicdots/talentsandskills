@@ -16,6 +16,9 @@ class Resume extends FileUpload {
     protected static $table_name = "users";
     public static $parentDir = SITE_ROOT.DS."uploads";
 
+    // overwriting upload errors message
+
+
    
     public function upload() {
         if(!empty($this->errors)) { exit; return false; }
@@ -40,9 +43,13 @@ class Resume extends FileUpload {
                 return false;
         }
 
+
         if(move_uploaded_file($this->temp_path, $this->targetPath())) {
+
              
-                unset($this->temp_path);
+                if(!empty($this->temp_path)) {
+                    unset($this->temp_path);
+                }
                 return true;
             
         } else {                

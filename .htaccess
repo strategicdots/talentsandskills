@@ -8,3 +8,6 @@
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
 #RewriteRule ^(.*)$ rewrite.php [L,QSA]
+
+RewriteCond %{THE_REQUEST} //
+RewriteRule ^.*$ $0 [R=302,L,NE]

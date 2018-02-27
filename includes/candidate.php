@@ -8,7 +8,7 @@ class Candidate extends User {
     public $personal_statement;
     public $cv_path;
 
-
+    
     public function create() {
         global $database;
         $hashedPassword = passwordEncrypt($this->password);

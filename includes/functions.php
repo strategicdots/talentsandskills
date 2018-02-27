@@ -101,7 +101,12 @@ function closeDiv($n = 1) {
     return $output;
 }
 
-function trimContent($content, $count = 10) { // count is the number of words required before content is trimmed
+function urlFromWebRoot($webRootURL) {
+    return str_replace($_SERVER['DOCUMENT_ROOT'],"",$webRootURL);
+}
+
+function trimContent($content, $count = 10) { 
+    // count is the number of words required before content is trimmed
     preg_match("/(?:[^\s,\.;\?\!]+(?:[\s,\.;\?\!]+|$)){0,$count}/", $content, $matches);
     return $matches[0];
 }
@@ -373,7 +378,9 @@ function candidateSidebar($user) {
             $output .= " src = \"../img/candidate-placeholder.jpg\"";
     }
 
-    $output .= "src=\"$user->avatar_url\"";
+    $output .= "src=\"";
+    $output .= urlFromWebRoot($user->avatar_url);
+    $output .= "\"";
     $output .= "alt=\"\">";    $output .= "</div>";
 
     $output .= "<div class=\"col-sm-8 bio-details\">";
@@ -1599,7 +1606,9 @@ function internSidebar($user)
         $output .= "src=\"../img/candidate-placeholder.jpg\"";
     }
 
-    $output .= "src=\"$user->avatar_url\"";
+    $output .= "src=\"";
+    $output .= urlFromWebRoot($user->avatar_url);
+    $output .= "\"";
     $output .= "alt=\"\">";
     $output .= "</div>";
 
@@ -2256,7 +2265,7 @@ function employerSidebar($employer) {
     if(!is_null($employer->avatar_url)) { 
 
         $output .= "<img class=\"img-center\" src=\"";
-        $output .= $employer->avatar_url; 
+        $output .= urlFromWebRoot($employer->avatar_url); 
         $output .= "\" alt=\"\">";
 
     } else { 

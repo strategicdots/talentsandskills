@@ -85,8 +85,8 @@ class UserValidator extends DatabaseObject {
                   $msg .= "</p><p>You need to verify your account before gaining access to TalentsAndSkills. </p><p>";
             }
             
-            $msg .= "Please, <a href=\"" . $this->emailLink($password) . "\">CLICK HERE </a>";
-            $msg .= "or copy and paste the web address below into your browser.</p><p>";
+            $msg .= "Please, <a href=\"" . $this->emailLink($password) . "\">CLICK HERE</a>";
+            $msg .= " or copy and paste the web address below into your browser.</p><p>";
             $msg .= $this->emailLink($password) . "</p><p>";
             
             $msg .= "Note that this link will expire in ONE HOUR." . "</p><p>";

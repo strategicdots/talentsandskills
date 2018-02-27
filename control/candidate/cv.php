@@ -15,7 +15,7 @@ if(isset($_POST['submit'])) {
     $resume = new Resume();
       
     if($resume->attach_file($_FILES['upload'])) {
-
+        
         if($resume->upload()) {
 
             // unlink old resume

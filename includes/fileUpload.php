@@ -1,5 +1,18 @@
 <?php require_once('initialize.php');
 
+
+function checkUploadedFileName ($filename) {
+    
+    return (bool) ((preg_match("`^[-0-9A-Z_\.]+$`i",$filename)) ? true : false);
+
+}
+
+function checkUploadedFileNameLength ($filename) {
+    
+    return (bool) ((mb_strlen($filename,"UTF-8") > 225) ? true : false);
+
+}
+
 class FileUpload extends DatabaseObject {
     // protected static $table_name="images";
     public $filename;
@@ -27,16 +40,33 @@ class FileUpload extends DatabaseObject {
     public function attach_file($file) {
 
         if(!$file || empty($file) || !is_array($file)) {
+            
             // CASE 1: nothing uploaded or wrong argument usage
             $this->errors[] = "No file was uploaded.";
             return false;
 
         } elseif($file['error'] != 0) {
-            // CASE 2: image upload error
+            
+            // CASE 2: file upload error
             $this->errors[] = $this->upload_errors[$file['error']];
             return false;
-        } else {
-            // CASE 3: upload success
+        
+        } 
+        // elseif(!checkUploadedFileName($file['name'])) {
+
+        //     // CASE 3: filename is not in English
+        //     $this->errors[] = "Please rename your file with standard English letters";
+        //     return false;
+
+        // } elseif(checkUploadedFileNameLength($file['name'])) {
+
+        //     // CASE 4: filename too long
+        //     $this->errors[] = "The filename is too long";
+        //     return false;
+
+        // } 
+        else {
+            // CASE 5: upload success
             $this->temp_path  = $file['tmp_name'];
             $this->filename   = str_replace(" ", "-", basename($file['name']));
             $this->type       = $file['type'];

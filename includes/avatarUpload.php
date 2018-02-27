@@ -23,10 +23,10 @@ class Avatar extends FileUpload {
         if(!imgFormat($this->type)) {
             
                 $this->errors[]  = "The file uploaded is not in the right format. <br>"; 
-                $this->errors[] .= "Please upload either .png, .jpg format";
+                $this->errors[] .= "Please upload either .png, or .jpg format";
                 return false;
             }
-            
+
         // check if file exists
         if(file_exists($this->targetPath())) {
              
@@ -36,30 +36,17 @@ class Avatar extends FileUpload {
 
         if(move_uploaded_file($this->temp_path, $this->targetPath())) {
              
-                unset($this->temp_path);
+                if(!empty($this->temp_path)) {
+                    unset($this->temp_path);
+                }
                 return true;
             
-        } else {                
-             
+        } else {    
               // File was not moved.
                 $this->errors[] = "The file upload failed, possibly due to incorrect permissions on the upload folder.";
                 return false;
             }
     }
-
-    /* public function destroy() {
-        // First remove the database entry
-        if($this->delete()) {
-            // then remove the file
-            // Note that even though the database entry is gone, this object 
-            // is still around (which lets us use $this->image_path()).
-            $target_path = SITE_ROOT.DS.'public'.DS.$this->image_path();
-            return unlink($target_path) ? true : false;
-        } else {
-            // database delete failed
-            return false;
-        }
-    } */
 
     public function updateDB($user_id) {
         global $database;

@@ -1,8 +1,8 @@
 <?php $seperator = "../../";
 include_once("{$seperator}includes/initialize.php");
 
-$_POST = $session->postValues();
-$_FILES = $session->fileValues();
+// $_POST = $session->postValues();
+// $_FILES = $session->fileValues();
 
 if(isset($_POST['submit'])) {
       $errors = [];
@@ -113,14 +113,14 @@ if(isset($_POST['submit'])) {
             if($avatar->attach_file($_FILES['avatar'])) {
         
                 if($avatar->upload()) {
-        
+
                     // unlink old avatar
                     if(!empty($candidate->avatar_url) && ($_POST['type'] == "update")) {
                         
                         unlink($candidate->avatar_url);
-        
+
                         // update path in db
-                        if($avatar->updateValue($avatar->targetPath(), "avatar_url")) {
+                        if($candidate->updateValue($avatar->targetPath(), "avatar_url")) {
                             $session->message("avatar successfully replaced");
                             redirect_to($referer);
                         }
