@@ -210,7 +210,7 @@ if(isset($_POST['submit'])) {
                         unlink($employer->avatar_url);
         
                         // update path in db
-                        if($avatar->updateValue($avatar->targetPath(), "avatar_url")) {
+                        if($avatar->updateDB($session->employerID)) {
                             $session->message("avatar successfully replaced");
                             redirect_to($referer);
                         }

@@ -134,7 +134,7 @@ include_once("{$seperator}layout/dashboard-header.php"); ?>
                                                 <p class="mid-font-size capitalize">
                                                     <?php if($candidate->avatar_url): ?>
                                                     
-                                                    <img src="<?php echo urlFromWebRoot($candidate->avatar_url); ?>" class="img-responsive" style="width: 100px;">
+                                                    <img src="<?php echo $candidate->avatar_url; ?>" class="img-responsive" style="width: 100px;">
                                                     
                                                     <?php else: ?>
                                                     <img src="../img/candidate-placeholder.jpg" class="img-responsive" style="width: 100px;">

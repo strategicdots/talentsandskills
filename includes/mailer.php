@@ -1,13 +1,13 @@
 <?php require_once('initialize.php');
 
 class Mailer extends PHPMailer {
-      public $Host = "smtp.ipage.com";
-      public $Port = 587;
+      public $Host = "mail.talentsandskills.net";
+      public $Port = 26;
       public $SMTPAuth = true;
-      public $Username = "testing@strategicdots.org";
-      public $Password = "T#706vK7Xn";
+      public $Username = "info2@talentsandskills.net";
+      public $Password = "+8xJ,n2eB~s0";
       public $FromName = "TalentsAndSkills";
-      public $From = "Talents@talentsandskills.net";
+      public $From = "Info@talentsandskills.net";
       public $CharSet = "text/html; charset=UTF-8;";
       public $WordWrap = 80;
       public $SMTPOptions = [

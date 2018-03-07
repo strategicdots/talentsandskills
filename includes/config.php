@@ -13,5 +13,12 @@ $config =  [
                   'user' => 'talents',
                   'password' => '1UrFkudSOnYbsojG9EInm8M7hRbGu9F80l6sSJ5Go6CKWG',
                   'db' => 'talents_skills', 
+            ],
+            
+            'liveDB2' => [
+                  'server' => 'localhost',
+                  'user' => 'talentw0_talents',
+                  'password' => '1UrFkudSOnYbsojG9EInm8M7hRbGu9F80l6sSJ5Go6CKWG',
+                  'db' => 'talentw0_talentsnskills_sd',
             ]
       ];

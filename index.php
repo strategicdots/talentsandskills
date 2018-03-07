@@ -98,7 +98,8 @@ $newJobs = Jobs::newJobs(); ?>
             <div class="row">
 
                   <!-- .featured-jobs -->
-                  <div class="col-sm-8 featured-jobs m-light-bottom-breather">
+                  <!-- this should remain col-sm-8 -->
+                  <div class="col-sm-12 featured-jobs m-light-bottom-breather">
                         <div class="light-bx-shadow">
                               <div class="p-vlight-breather sec-bg p-mid-side-breather">
                                     <p class="headfont uppercase no-margin">Featured jobs</p>
@@ -152,7 +153,9 @@ $newJobs = Jobs::newJobs(); ?>
                   <!-- end .featured-jobs -->
 
                   <!-- .career-content-section-->
-                  <div class="col-sm-4 career-cnt-sectn m-light-bottom-breather">
+                  <!-- This will be active when the blog has been developed -->
+                  
+                  <!-- <div class="col-sm-4 career-cnt-sectn m-light-bottom-breather">
                         <div class="light-bx-shadow p-light-bottom-breather">
                               <div class="p-vlight-breather sec-bg p-mid-side-breather">
                                     <p class="headfont no-margin uppercase">career tips:</p>
@@ -175,7 +178,7 @@ $newJobs = Jobs::newJobs(); ?>
 
                               </div>
                         </div>
-                  </div>
+                  </div> -->
                   <!-- end .career-content-section -->
 
             </div>

@@ -35,7 +35,7 @@ if($session->isCandidateLoggedIn()) {
 
                 <div class="form-group">
                     <label for="email">Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="Enter Your Email Address">
+                    <input type="password" name="password" class="form-control" placeholder="Enter Your Password">
                 </div>
 
                 <input type="submit" name="submit" class="btn capitalize main-btn form-control" value="login">

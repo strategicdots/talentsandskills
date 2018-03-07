@@ -379,7 +379,7 @@ function candidateSidebar($user) {
     }
 
     $output .= "src=\"";
-    $output .= urlFromWebRoot($user->avatar_url);
+    $output .= $user->avatar_url;
     $output .= "\"";
     $output .= "alt=\"\">";    $output .= "</div>";
 
@@ -1607,7 +1607,7 @@ function internSidebar($user)
     }
 
     $output .= "src=\"";
-    $output .= urlFromWebRoot($user->avatar_url);
+    $output .= $user->avatar_url;
     $output .= "\"";
     $output .= "alt=\"\">";
     $output .= "</div>";
@@ -2265,7 +2265,7 @@ function employerSidebar($employer) {
     if(!is_null($employer->avatar_url)) { 
 
         $output .= "<img class=\"img-center\" src=\"";
-        $output .= urlFromWebRoot($employer->avatar_url); 
+        $output .= $employer->avatar_url; 
         $output .= "\" alt=\"\">";
 
     } else { 

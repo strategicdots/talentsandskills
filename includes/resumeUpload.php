@@ -64,7 +64,7 @@ class Resume extends FileUpload {
         global $database;
 
         $sql  = "UPDATE " . self::$table_name . " SET ";
-        $sql .= "cv_path='" . $database->escapeValue($this->targetPath()) . "' ";
+        $sql .= "cv_path='" . $database->escapeValue(urlFromWebRoot($this->targetPath())) . "' ";
         $sql .= "WHERE id=" . $database->escapeValue($user_id);
 
         if($database->query($sql) && ($database->affectedRows() == 1)) {

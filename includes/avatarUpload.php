@@ -47,12 +47,12 @@ class Avatar extends FileUpload {
                 return false;
             }
     }
-
+    
     public function updateDB($user_id) {
         global $database;
 
         $sql  = "UPDATE " . self::$table_name . " SET ";
-        $sql .= "avatar_url='" . $database->escapeValue($this->targetPath()) . "' ";
+        $sql .= "avatar_url='" . $database->escapeValue(urlFromWebRoot($this->targetPath())) . "' ";
         $sql .= "WHERE id=" . $database->escapeValue($user_id);
 
         if($database->query($sql) && ($database->affectedRows() == 1)) {

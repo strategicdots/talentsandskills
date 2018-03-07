@@ -111,15 +111,22 @@ class DatabaseObject {
     public static function findDetails($id) {
         global $database;
         $sql = "SELECT * FROM ". static::$table_name . " WHERE id = '{$database->escapeValue($id)}' LIMIT 1";
+
+        $result = static::findBySQLQuery($sql);
+        if ($result) {
+            return $result;
+        } else {
+            return false;
+        }
   
-        $result_array = $database->fetchArray($database->query($sql));
+        /* $result_array = $database->fetchArray($database->query($sql));
         
         if(!empty($result_array)) { 
             $object_array = static::instantiate($result_array);
             return $object_array;
         } else {
             return false;
-        }
+        } */
 
     }
     

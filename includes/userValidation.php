@@ -57,11 +57,11 @@ class UserValidator extends DatabaseObject {
 
             if($password) {
                   
-                  $link  = "http://www.strategicdots.org/talents/password/reset/confirm-token.php?";    
+                  $link  = "http://www.talentsandskills.net/password/reset/confirm-token.php?";    
             
             } else {
                   
-                  $link  = "http://www.strategicdots.org/talents/verification/verify.php?";
+                  $link  = "http://www.talentsandskills.net/verification/verify.php?";
 
             }
             

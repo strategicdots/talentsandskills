@@ -38,7 +38,7 @@
                             <div class="">
                                 <address>
                                     <span> 
-                                        Our Address <br />167c 332 Ikorodu Road, Anthony Village/Maryland, Lagos<br />+234 8125771958, +234 8058805444, +234 8058805333,<br>
+                                        Our Address <br /><b>The Professional Place.</b> <br />12B, Olumoroti Street, Gbagada Phase II, Gbagada<br />+234 8125771958, +234 8058805444, +234 8058805333,<br>
                                         admin@talentsandskills.net                            
                                     </span>
 

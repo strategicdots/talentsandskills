@@ -22,7 +22,14 @@ if($_POST['submit']) {
     } elseif($_POST['account_type'] == "employer") { // employer
             
             $raw_fields['job_field']     = $_POST['job_field']; 
-            $raw_fields['company_name']  = $_POST['job_field']; 
+            $raw_fields['company_name']  = $_POST['company_name'];
+            
+            if($raw_fields['job_field'] == "Others : Please specify") {
+                // this means the user must fill the hidden job field
+                if(!isset($_POST['job_field_hidden'])) {
+                    $errors['hidden-field'] = "Please specify your industry";
+                }
+            }
             
     }
 
@@ -156,10 +163,17 @@ if($_POST['submit']) {
             
             $employer->phone         = trim($_POST['phone']); 
             $employer->email         = trim($_POST['email']); 
-            $employer->company_name  = trim($_POST['company_name']); 
+            $employer->company_name  = trim($_POST['company_name']);
             $employer->job_field     = trim($_POST['job_field']); 
             $employer->password      = trim($_POST['password']); 
             $employer->employer      = "1";
+
+            if (isset($_POST['job_field_hidden']) 
+            && !empty($_POST['job_field_hidden'])) {
+                
+                $employer->job_field = trim($_POST['job_field_hidden']);
+
+            }
             
             if($employer->create()) {
                // account created successfully, set validation

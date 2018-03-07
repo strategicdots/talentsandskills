@@ -12,6 +12,7 @@ class MySQLDatabase {
         global $config;
         $configLocal = $config['localDB'];
         $configLive = $config['liveDB'];
+        $configLive2 = $config['liveDB2'];
 
         $this->conn = mysqli_connect(
             

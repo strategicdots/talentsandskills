@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="description" content="">
-    <link rel="stylesheet" href="<?php echo $seperator; ?>css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo $seperator; ?>css/bootstrap.min.css">   
+    
+    <!-- favicon -->
+    <link rel="shortcut icon" href="http://talentsandskills.net/favicon.ico" />
+    
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo $seperator; ?>css/main.css">
     <?php if($thisPage == "pricingTable"): ?>
@@ -63,7 +67,7 @@
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown"> employers <i class="caret"></i></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="<?php echo $seperator; ?>register/employer.php">register</a></li>
-                                    <li><a href="<?php echo $seperator; ?>resume-packages">CV access packages</a></li>
+                                    <li><a href="<?php echo $seperator; ?>cv-packages.php">CV access packages</a></li>
                                     <li><a href="<?php echo $seperator; ?>recruitment-solutions.php">request for recruitment service</a></li>
                                     <li><a href="<?php echo $seperator; ?>employer/request-interns.php">request for interns</a></li>
                                     <li><a href="http://localhost/talents/career-resources/recruitment-advice">recruitment advice</a></li>

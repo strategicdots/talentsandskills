@@ -6,7 +6,7 @@ defined('LIB_PATH') ? null : define('LIB_PATH', SITE_ROOT . DS . 'includes');
 
 // CORE OBJECT
 require_once(LIB_PATH . DS . "config.php");
-// require_once(LIB_PATH . DS . "socialConfig.php");
+require_once(LIB_PATH . DS . "socialConfig.php");
 
 // Router
 require_once("Router.php");

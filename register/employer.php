@@ -25,10 +25,10 @@ if(!empty($_SESSION['PART_REG'])) {
             <p class="text-center">Get instant access to great candidates</p>
 
             <div class="sm-container m-mid-top-breather">
-                
+
                 <?php echo inline_message(); ?>
                 <?php echo inline_errors(); ?>
-                
+
                 <input type="hidden" name="account_type" value="employer">
                 <div class="form-group">
                     <input type="email" name="email" value="<?php if(!empty($_POST['email'])) {echo $_POST['email']; }?>" placeholder="Company Email Address"
@@ -41,8 +41,8 @@ if(!empty($_SESSION['PART_REG'])) {
                 </div>
 
                 <div class="form-group">
-                    <select class="form-control" name="job_field" required>
-                        <option class="capitalize">Please select your field</option>
+                    <select class="form-control" name="job_field" id="jobField" required>
+                        <option class="capitalize">Please select your industry</option>
 
                         <?php foreach($jobFields as $field): ?>
 
@@ -63,6 +63,11 @@ if(!empty($_SESSION['PART_REG'])) {
                     </select>
                 </div>
 
+                <!-- if user selects "Others: Please Specify", this input pops up -->
+                <div class="form-group hide-el" id="hiddenJobField">
+                    <input type="text" name="job_field_hidden" value="" placeholder="Please, enter your Industry here" class="form-control" required>
+                </div>
+
                 <div class="form-group">
                     <input type="tel" name="phone" value="<?php if(!empty($_POST['phone'])) {echo $_POST['phone']; }?>" placeholder="Phone Number"
                         class="form-control" required>
@@ -80,6 +85,20 @@ if(!empty($_SESSION['PART_REG'])) {
 
     </div>
 </div>
+<script>
+    const jobField = document.getElementById('jobField');
+    const hiddenJobField = document.getElementById('hiddenJobField');
 
+
+    function selectChangeHandler(e) {
+        if (e.target.value == "Others : Please specify") {
+            hiddenJobField.classList.remove('hide-el');
+        } else {
+            hiddenJobField.classList.add('hide-el');
+        }
+    }
+
+    jobField.onchange = selectChangeHandler;
+</script>
 <!-- footer -->
 <?php include_once("{$seperator}layout/footer.php"); ?>
